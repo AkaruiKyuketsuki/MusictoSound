@@ -1,1 +1,27 @@
-[]
+[
+    {
+        "hash": "896bf115006397206186774d3b0dcc5f22f965f2",
+        "date": "2025-12-04",
+        "message": "A\u00c3\u00b1adido el registro de cambios internos y la estructura minima de la memoria"
+    },
+    {
+        "hash": "0e762173cd0c1cfb8d5c892806d8070f04b723fa",
+        "date": "2025-12-04",
+        "message": "creada la estructura tipo latex para docs"
+    },
+    {
+        "hash": "77b6b67ad950e6f4516b578a6c7f3190527e24a2",
+        "date": "2025-12-04",
+        "message": "creacion inicial de carpetas"
+    },
+    {
+        "hash": "dc6cb852ec2605597b8de3b1905c8a8fe7b0eaa1",
+        "date": "2025-10-01",
+        "message": "prueba hello world"
+    },
+    {
+        "hash": "047635b74d1747283b894f7edb4091cac5ec9de3",
+        "date": "2025-10-01",
+        "message": "Initial commit"
+    }
+]
