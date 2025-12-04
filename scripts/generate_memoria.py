@@ -2,10 +2,16 @@ import subprocess
 import json
 from datetime import datetime
 import os
+import openai
 
 # Archivos del sistema
 DATA_FILE = "docs/memoria_data.json"
 OUTPUT_FILE = "docs/capitulos/04_desarrollo.tex"
+
+# Leer API KEY desde variable de entorno
+openai.api_key = os.environ.get("OPENAI_API_KEY")
+
+MODEL = "gpt-4.1"  # Puedes cambiar a gpt-4.1-mini si quieres ahorrar
 
 def load_saved_commits():
     if not os.path.exists(DATA_FILE):
@@ -40,19 +46,44 @@ def get_git_commits():
 
     return commits
 
-def generate_plain_text(commits):
-    """Texto básico (sin ChatGPT aún)."""
-    text = "\n\n% === AUTO-GENERATED ENTRY ===\n"
+def generate_academic_text(commits):
+    """Usa ChatGPT para generar un texto académico en LaTeX"""
+    
+    commits_json = json.dumps(commits, indent=2, ensure_ascii=False)
 
-    for c in commits:
-        text += f"\\section*{{Commit del {c['date']}}}\n"
-        text += f"{c['message'].capitalize()}.\n\n"
+    prompt = f"""
+Eres un asistente experto en redacción académica y ayudarás a escribir
+el capítulo de Desarrollo de un TFG de Ingeniería Informática.
 
-    return text
+Genera un texto académico en LaTeX explicando los avances siguientes:
+
+{commits_json}
+
+Requisitos:
+- Organiza la explicación por fechas.
+- Para cada fecha usa un título: \section*{{Avances del YYYY-MM-DD}}
+- Debes escribir un texto fluido, formal, técnico.
+- Explica el propósito de cada cambio, su impacto en el proyecto
+  y las decisiones de diseño implicadas.
+- No repitas los mensajes de commit literalmente: interprétalos.
+- Escribe solo LaTeX, sin preámbulo.
+    """
+
+    response = openai.chat.completions.create(
+        model=MODEL,
+        messages=[
+            {"role": "system", "content": "Eres un generador experto de textos académicos en LaTeX."},
+            {"role": "user", "content": prompt}
+        ]
+    )
+
+    return response.choices[0].message["content"]
 
 def append_to_latex(text):
     with open(OUTPUT_FILE, "a", encoding="utf-8") as f:
+        f.write("\n")
         f.write(text)
+        f.write("\n")
 
 def main():
     print("Procesando commits...")
@@ -71,10 +102,10 @@ def main():
 
     print(f"Encontrados {len(new_commits)} commits nuevos.")
 
-    # Generar texto para LaTeX
-    text = generate_plain_text(new_commits)
+    # Generar texto académico con ChatGPT
+    text = generate_academic_text(new_commits)
 
-    # Añadir a la memoria
+    # Añadir a LaTeX
     append_to_latex(text)
 
     # Guardar commits procesados
