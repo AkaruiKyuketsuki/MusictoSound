@@ -26,3 +26,11 @@ En esta fase del desarrollo, se implementó una corrección integral en la funci
 Desde el punto de vista del diseño, se revisaron los mecanismos de gestión de errores y excepciones relacionados con las llamadas a la API, incorporando estrategias que permiten una recuperación efectiva ante posibles fallos de comunicación o respuestas inesperadas. Esta decisión se tomó para garantizar que el sistema pueda continuar operando sin interrupciones significativas, evitando pérdidas de información o resultados incompletos.
 
 El impacto de estos ajustes es fundamental para asegurar una experiencia de usuario consistente y mejorar la calidad del output generado, aspectos cruciales para el éxito en la presentación y defensa del Trabajo de Fin de Grado. Además, este trabajo facilita futuras ampliaciones o adaptaciones, al contar con una infraestructura de manejo de API más sólida y mantenible.
+
+\section*{Avances del 2025-12-04}
+
+En esta fecha se completó la integración del sistema con la API de OpenAI, lo cual representa un hito crucial en el desarrollo del proyecto. El propósito principal de este avance fue habilitar la comunicación directa entre la plataforma del trabajo y los servicios de inteligencia artificial proporcionados por OpenAI, permitiendo así el uso de modelos avanzados para el procesamiento y generación de texto.
+
+Desde un punto de vista técnico, la decisión de enlazar con la API externa estuvo guiada por la necesidad de aprovechar capacidades de procesamiento natural del lenguaje sin incurrir en el desarrollo de modelos propios, lo que supone un ahorro significativo en recursos y tiempo. La implementación consideró aspectos clave como la gestión eficiente de las solicitudes HTTP, el manejo de respuestas asíncronas y la correcta administración de las claves de acceso para garantizar la seguridad y estabilidad del sistema.
+
+El impacto de esta integración se refleja en la ampliación de las funcionalidades del proyecto, mejorando la calidad y precisión de las tareas automáticas que dependen de la inteligencia artificial, además de establecer una base robusta para futuras extensiones. Se realizaron pruebas exhaustivas para validar la correcta comunicación, respuesta y tolerancia a fallos en el enlace con la API, asegurando así la fiabilidad del sistema en entornos reales.
