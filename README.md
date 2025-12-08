@@ -1,6 +1,13 @@
 # MusictoSound
 TFG
 
+# COSAS A EJECUTAR TODOS LOS DIAS
+Conectarse con la api
+$Env:OPENAI_API_KEY = "tu-api-key-aquí"
+
+combrobar la conexion con la api
+echo $Env:OPENAI_API_KEY
+
 Para guardar los cambios en la memoria ejecutar en el terminal:
 Add-Content "docs\diario.md" "## $(Get-Date -Format 'yyyy-MM-dd')`n"
 python scripts/generate_memoria.py

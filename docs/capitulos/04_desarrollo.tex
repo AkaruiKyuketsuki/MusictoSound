@@ -4,24 +4,22 @@
 
 
 % === AUTO-GENERATED ENTRY ===
-\section*{Commit del 2025-12-04}
-Añadido el registro de cambios internos y la estructura minima de la memoria.
 
-\section*{Commit del 2025-12-04}
-Creada la estructura tipo latex para docs.
-
-\section*{Commit del 2025-12-04}
-Creacion inicial de carpetas.
-
-\section*{Commit del 2025-10-01}
+\section{Commits del 2025-10-01}
 Prueba hello world.
-
-\section*{Commit del 2025-10-01}
+\subsection*{Commit 1}
 Initial commit.
 
+\section{Commits del 2025-12-04}
+\subsection*{Commit 1 del 2025-12-04}
+Añadido el registro de cambios internos y la estructura minima de la memoria.
+\subsection*{Commit 2 del 2025-12-04}
+Creada la estructura tipo latex para docs.
+\subsection*{Commit 3 del 2025-12-04}
+Creacion inicial de carpetas.
 
-\section*{Avances del 2025-12-04}
-
+\section{Avances del 2025-12-04}
+\subsection*{Funcion de generación de código}
 En esta fase del desarrollo, se implementa una correccion intral en la funcion encargada de la generacion de la memoria tecnica del proyecto (\texttt{generate\_memoria}). La modificacion tuvo como objetivo principal mejorar la robustez en el manejo de las interacciones con la API de OpenAI, lo que se traduce en una mayor estabilidad y fiabilidad durante el proceso de generacion automatica de contenidos.
 
 Desde el punto de vista del diseño, se revisaron los mecanismos de gestion de errores y excepciones relacionados con las llamadas a la API, incorporando estrategias que permiten una recuperacion efectiva ante posibles fallos de comunicacion o respuestas inesperadas. Esta decision se tomó para garantizar que el sistema pueda continuar operando sin interrupciones significativas, evitando perdidas de informacion o resultados incompletos.
@@ -30,7 +28,7 @@ El impacto de estos ajustes es fundamental para asegurar una experiencia de usua
 
 El impacto de estos ajustes es fundamental para asegurar una experiencia de usuario consistente y mejorar la calidad del output generado, aspectos cruciales para el éxito en la presentación y defensa del Trabajo de Fin de Grado. Además, este trabajo facilita futuras ampliaciones o adaptaciones, al contar con una infraestructura de manejo de API más sólida y mantenible.
 
-\section*{Avances del 2025-12-04}
+\subsection*{integración con la API de OpenAI}
 
 En esta fecha se completó la integración del sistema con la API de OpenAI, lo cual representa un hito crucial en el desarrollo del proyecto. El propósito principal de este avance fue habilitar la comunicación directa entre la plataforma del trabajo y los servicios de inteligencia artificial proporcionados por OpenAI, permitiendo así el uso de modelos avanzados para el procesamiento y generación de texto.
 
@@ -39,6 +37,7 @@ Desde un punto de vista técnico, la decisión de enlazar con la API externa est
 El impacto de esta integración se refleja en la ampliación de las funcionalidades del proyecto, mejorando la calidad y precisión de las tareas automáticas que dependen de la inteligencia artificial, además de establecer una base robusta para futuras extensiones. Se realizaron pruebas exhaustivas para validar la correcta comunicación, respuesta y tolerancia a fallos en el enlace con la API, asegurando así la fiabilidad del sistema en entornos reales.
 
 \section*{Avances del 2025-12-05}
+\subsection*{incorporación del contenido}
 
 En esta fecha se realizó una integración importante al proyecto mediante la incorporación del contenido desde la rama principal del repositorio remoto \texttt{https://github.com/AkaruiKyuketsuki/MusictoSound}. Esta acción representa la consolidación de desarrollos previos y la sincronización del código base con las últimas funcionalidades implementadas.
 
@@ -46,7 +45,7 @@ El propósito principal de esta integración fue unificar el trabajo realizado e
 
 Desde una perspectiva técnica, esta decisión de diseño implica un enfoque de desarrollo colaborativo que prioriza la integración continua, reduciendo riesgos asociados a divergencias prolongadas en el código. Además, la incorporación de los cambios remotos asegura que el sistema se beneficie de las últimas correcciones y optimizaciones, fortaleciendo la base inicial para futuras etapas de desarrollo.
 
-\section*{Avances del 2025-12-05}
+\subsection*{rama principal}
 
 En esta fecha se llevó a cabo la integración del trabajo desarrollado en la rama principal del repositorio del proyecto \textit{MusictoSound}. Esta acción consistió en fusionar los cambios recientes realizados por otros colaboradores con la versión local del proyecto, asegurando así la coherencia y actualización del código base.
 
@@ -58,3 +57,12 @@ En términos de diseño, se reafirmó la estrategia de uso de control de version
 
 
 
+
+\section{Avances del 2025-12-08}
+
+\subsection*{Optimización de la conexión con la API en la nueva terminal}
+En esta etapa del desarrollo se abordó la mejora y corrección del mecanismo de conexión con la API en el contexto de la actualización a la nueva terminal. La implementación previa presentaba inconsistencias en la comunicación entre el sistema y el servicio externo, lo cual comprometía la estabilidad y eficiencia de la interacción.
+
+Como resultado, se revisaron y ajustaron los controladores y protocolos de conexión para garantizar una correcta autenticación, manejo de sesiones y procesamiento de peticiones. Esta corrección permite una integración más robusta y confiable, minimizando errores y tiempos de espera en la transferencia de datos. Además, se consideraron aspectos de compatibilidad y seguridad para adecuar la conexión a las características de la nueva terminal, asegurando que el sistema mantenga su funcionalidad óptima en el entorno renovado.
+
+La mejora implementada contribuye significativamente a la solidez del sistema, facilitando futuras ampliaciones y manteniendo la calidad en la experiencia de usuario final.

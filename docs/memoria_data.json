@@ -1,5 +1,10 @@
 [
     {
+        "hash": "5d88144bfa627885743223c8de1161024e6eabfd",
+        "date": "2025-12-08",
+        "message": "correccion de la conexion con la api en la nueva terminal"
+    },
+    {
         "hash": "34a8deeb13320a87e57753db227b7e2ad58bc7f9",
         "date": "2025-12-08",
         "message": "prueba 4 de generacion de campitulos con titulo adecuado"
