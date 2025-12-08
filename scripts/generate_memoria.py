@@ -13,7 +13,7 @@ try:
     from openai import OpenAIError
     from openai.error import RateLimitError
 except Exception:
-    # Si la estructura del paquete OpenAI cambia (como en SDK v1.0+),
+    # Si la estructura del paquete OpenAI cambia (como en SDK v1.0+), 
     # definimos clases de fallback para evitar romper el script.
     class RateLimitError(Exception):
         pass
@@ -75,7 +75,6 @@ def get_git_commits():
 
     return commits
 
-
 def group_commits_by_date(commits):
     """Agrupa commits por fecha: { 'YYYY-MM-DD': [commits...] }."""
     grouped = {}
@@ -87,7 +86,16 @@ def group_commits_by_date(commits):
 # ==========================================================
 #   FALLBACK SIN OPENAI (funciona incluso sin crédito)
 # ==========================================================
-
+"""
+def generate_plain_text(commits):
+    Versión simple sin llamar a la API (fallback).
+    text = "\n\n% === AUTO-GENERATED ENTRY (FALLBACK) ===\n"
+    for c in commits:
+        text += f"\\section*{{Avances del {c['date']}}}\n"
+        text += f"{c['message'].capitalize()}.\n\n"
+    text += "% Nota: Este texto se generó sin usar la API (fallback: cuota agotada o error).\n"
+    return text
+"""
 def generate_plain_text(commits):
     """
     Versión simple sin llamar a la API (fallback).
@@ -99,6 +107,7 @@ def generate_plain_text(commits):
 
     text = "\n\n% === AUTO-GENERATED ENTRY (FALLBACK) ===\n"
     for date_str in sorted(grouped.keys()):
+        # Sección POR DÍA (sale en el índice)
         text += f"\\section{{Avances del {date_str}}}\n\n"
         for c in grouped[date_str]:
             short_hash = c["hash"][:7]
@@ -114,58 +123,33 @@ def generate_plain_text(commits):
 # ==========================================================
 
 def generate_academic_text(commits):
-    """
-    Genera texto académico en LaTeX usando OpenAI.
-
-    Estructura deseada:
-    - Para cada fecha:       \section{Avances del YYYY-MM-DD}   (SALE en el índice)
-    - Para cada commit del día:
-        \subsection*{Commit <hash corto>}   (NO sale en el índice)
-        <texto académico explicando ese commit>
-    """
-
-    grouped = group_commits_by_date(commits)
-
-    # Lo pasamos como JSON agrupado por fecha
-    commits_json = json.dumps(grouped, indent=2, ensure_ascii=False)
-
+    """Genera texto académico en LaTeX usando OpenAI."""
+    
+    commits_json = json.dumps(commits, indent=2, ensure_ascii=False)
+    
     prompt = f"""
 Eres un asistente experto en redacción académica y ayudarás a escribir
 el capítulo de Desarrollo de un TFG de Ingeniería Informática.
 
-Te paso los commits NUEVOS agrupados por fecha en este JSON:
+Genera un texto académico en LaTeX basado en los avances siguientes:
 
 {commits_json}
 
-La estructura del JSON es:
-{{
-  "YYYY-MM-DD": [
-    {{ "hash": "abc123...", "message": "mensaje del commit" }},
-    ...
-  ],
-  ...
-}}
-
-REQUISITOS DE FORMATO (MUY IMPORTANTE):
-
-- AGRUPA SIEMPRE POR FECHA.
+Requisitos de formato (muy importante):
+- Organiza la explicación por FECHAS.
 - Para cada fecha genera UNA ÚNICA sección:
     \\section{{Avances del YYYY-MM-DD}}
-  (SIN asterisco, para que salga en el índice).
-
-- Dentro de cada fecha, para cada commit:
+  (sin asterisco, para que salga en el índice).
+- Dentro de cada fecha, para cada commit de ese día:
     - Crea un subtítulo SIN número:
         \\subsection*{{Commit <HASH_CORTO>}}
-      donde <HASH_CORTO> son los primeros 7 caracteres del hash.
+      (usa los primeros 7 caracteres del hash o un identificador corto).
     - Debajo del subtítulo escribe uno o varios párrafos de texto académico
-      explicando qué se hizo en ese commit, su propósito, impacto técnico,
-      decisiones de diseño, etc.
-
+      explicando qué se hizo en ese commit, su propósito, impacto técnico
+      y decisiones de diseño.
 - Redacción formal, clara y técnica, en español.
-- No repitas literalmente los mensajes de commit: interprétalos y unifícalos
-  en un relato coherente del desarrollo.
-- No añadas preámbulo de LaTeX (ni \\documentclass, ni \\begin{{document}}, etc.).
-- Devuelve ÚNICAMENTE el contenido LaTeX del capítulo (secciones y texto).
+- No repitas literalmente los mensajes de commit: interprétalos.
+- Produce solo LaTeX, sin preámbulo (sin \\documentclass, ni \\begin{{document}}, etc.).
     """
 
     tries = 0
@@ -177,10 +161,7 @@ REQUISITOS DE FORMATO (MUY IMPORTANTE):
             response = openai.chat.completions.create(
                 model=MODEL,
                 messages=[
-                    {
-                        "role": "system",
-                        "content": "Eres un generador experto de textos académicos en LaTeX."
-                    },
+                    {"role": "system", "content": "Eres un generador experto de textos académicos en LaTeX."},
                     {"role": "user", "content": prompt}
                 ],
                 timeout=60
