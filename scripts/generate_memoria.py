@@ -75,17 +75,45 @@ def get_git_commits():
 
     return commits
 
+def group_commits_by_date(commits):
+    """Agrupa commits por fecha: { 'YYYY-MM-DD': [commits...] }."""
+    grouped = {}
+    for c in commits:
+        grouped.setdefault(c["date"], []).append(c)
+    return grouped
+
 
 # ==========================================================
 #   FALLBACK SIN OPENAI (funciona incluso sin crédito)
 # ==========================================================
-
+"""
 def generate_plain_text(commits):
-    """Versión simple sin llamar a la API (fallback)."""
+    Versión simple sin llamar a la API (fallback).
     text = "\n\n% === AUTO-GENERATED ENTRY (FALLBACK) ===\n"
     for c in commits:
         text += f"\\section*{{Avances del {c['date']}}}\n"
         text += f"{c['message'].capitalize()}.\n\n"
+    text += "% Nota: Este texto se generó sin usar la API (fallback: cuota agotada o error).\n"
+    return text
+"""
+def generate_plain_text(commits):
+    """
+    Versión simple sin llamar a la API (fallback).
+
+    - Una sola sección por día: \section{Avances del YYYY-MM-DD}
+    - Dentro, un bloque por commit con \subsection*{Commit <hash>}
+    """
+    grouped = group_commits_by_date(commits)
+
+    text = "\n\n% === AUTO-GENERATED ENTRY (FALLBACK) ===\n"
+    for date_str in sorted(grouped.keys()):
+        # Sección POR DÍA (sale en el índice)
+        text += f"\\section{{Avances del {date_str}}}\n\n"
+        for c in grouped[date_str]:
+            short_hash = c["hash"][:7]
+            text += f"\\subsection*{{Commit {short_hash}}}\n"
+            text += f"{c['message'].capitalize()}.\n\n"
+
     text += "% Nota: Este texto se generó sin usar la API (fallback: cuota agotada o error).\n"
     return text
 
@@ -107,13 +135,21 @@ Genera un texto académico en LaTeX basado en los avances siguientes:
 
 {commits_json}
 
-Requisitos:
-- Organiza la explicación por fechas.
-- Para cada fecha usa un título: \\section*{{Avances del YYYY-MM-DD}}
-- Redacción formal, clara y técnica.
-- Explica el propósito de cada cambio, impacto y decisiones de diseño.
-- No repitas los mensajes de commit literalmente: interprétalos.
-- Produce solo LaTeX, sin preámbulo.
+Requisitos de formato (muy importante):
+- Organiza la explicación por FECHAS.
+- Para cada fecha genera UNA ÚNICA sección:
+    \\section{{Avances del YYYY-MM-DD}}
+  (sin asterisco, para que salga en el índice).
+- Dentro de cada fecha, para cada commit de ese día:
+    - Crea un subtítulo SIN número:
+        \\subsection*{{Commit <HASH_CORTO>}}
+      (usa los primeros 7 caracteres del hash o un identificador corto).
+    - Debajo del subtítulo escribe uno o varios párrafos de texto académico
+      explicando qué se hizo en ese commit, su propósito, impacto técnico
+      y decisiones de diseño.
+- Redacción formal, clara y técnica, en español.
+- No repitas literalmente los mensajes de commit: interprétalos.
+- Produce solo LaTeX, sin preámbulo (sin \\documentclass, ni \\begin{{document}}, etc.).
     """
 
     tries = 0
