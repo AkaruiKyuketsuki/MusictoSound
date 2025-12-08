@@ -101,21 +101,28 @@ def generate_plain_text(commits):
     Versión simple sin llamar a la API (fallback).
 
     - Una sola sección por día: \section{Avances del YYYY-MM-DD}
-    - Dentro, un bloque por commit con \subsection*{Commit <hash>}
+    - Dentro, un bloque por commit con \subsection*{<título basado en el mensaje>}
     """
     grouped = group_commits_by_date(commits)
 
     text = "\n\n% === AUTO-GENERATED ENTRY (FALLBACK) ===\n"
     for date_str in sorted(grouped.keys()):
-        # Sección POR DÍA (sale en el índice)
+        # Sección por día (sale en el índice)
         text += f"\\section{{Avances del {date_str}}}\n\n"
         for c in grouped[date_str]:
-            short_hash = c["hash"][:7]
-            text += f"\\subsection*{{Commit {short_hash}}}\n"
-            text += f"{c['message'].capitalize()}.\n\n"
+            # Título bonito a partir del mensaje del commit
+            raw_msg = c["message"].strip()
+            title = raw_msg[0].upper() + raw_msg[1:] if raw_msg else "Cambio en el código"
+
+            text += f"\\subsection*{{{title}}}\n"
+            text += (
+                "En esta fecha se realizó el siguiente cambio en el repositorio: "
+                f"{title}.\n\n"
+            )
 
     text += "% Nota: Este texto se generó sin usar la API (fallback: cuota agotada o error).\n"
     return text
+
 
 
 # ==========================================================
@@ -124,16 +131,27 @@ def generate_plain_text(commits):
 
 def generate_academic_text(commits):
     """Genera texto académico en LaTeX usando OpenAI."""
-    
+     # Agrupamos por fecha para que el modelo siga esa estructura
+    grouped = group_commits_by_date(commits)
+
     commits_json = json.dumps(commits, indent=2, ensure_ascii=False)
     
     prompt = f"""
 Eres un asistente experto en redacción académica y ayudarás a escribir
 el capítulo de Desarrollo de un TFG de Ingeniería Informática.
 
-Genera un texto académico en LaTeX basado en los avances siguientes:
+Genera un texto académico en LaTeX basado en los avances siguientes, Te paso los commits NUEVOS agrupados por fecha en este JSON:
 
 {commits_json}
+
+La estructura del JSON es:
+{{
+  "YYYY-MM-DD": [
+    {{ "hash": "abc123...", "message": "mensaje del commit" }},
+    ...
+  ],
+  ...
+}}
 
 Requisitos de formato (muy importante):
 - Organiza la explicación por FECHAS.
@@ -142,14 +160,24 @@ Requisitos de formato (muy importante):
   (sin asterisco, para que salga en el índice).
 - Dentro de cada fecha, para cada commit de ese día:
     - Crea un subtítulo SIN número:
-        \\subsection*{{Commit <HASH_CORTO>}}
-      (usa los primeros 7 caracteres del hash o un identificador corto).
-    - Debajo del subtítulo escribe uno o varios párrafos de texto académico
-      explicando qué se hizo en ese commit, su propósito, impacto técnico
-      y decisiones de diseño.
-- Redacción formal, clara y técnica, en español.
-- No repitas literalmente los mensajes de commit: interprétalos.
-- Produce solo LaTeX, sin preámbulo (sin \\documentclass, ni \\begin{{document}}, etc.).
+        \\subsection*{{TÍTULO DEL CAMBIO>}}
+      donde <TÍTULO DEL CAMBIO> es una frase corta y descriptiva
+      basada en el mensaje del commit (NO incluyas la palabra "Commit"
+      ni el hash literal).
+    -Debajo de ese subtítulo escribe uno o varios párrafos de texto académico
+      explicando ese cambio: contexto, propósito, impacto técnico,
+      decisiones de diseño, posibles problemas resueltos, etc.
+
+- Estilo:
+    - Redacción formal, clara y técnica, en español.
+    - No repitas literalmente los mensajes de commit: interprétalos y
+      conviértelos en un relato coherente del desarrollo.
+    - Puedes agrupar varios commits relacionados en un mismo párrafo si tiene sentido,
+      pero mantén un subtítulo por commit para que la estructura quede clara.
+
+- Formato LaTeX:
+    - NO añadas preámbulo (ni \\documentclass, ni \\begin{{document}}, etc.).
+    - Devuelve ÚNICAMENTE \\section{{...}}, \\subsection*{{...}} y los párrafos de texto.
     """
 
     tries = 0
