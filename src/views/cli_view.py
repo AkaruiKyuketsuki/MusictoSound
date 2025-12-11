@@ -2,7 +2,7 @@
 from pathlib import Path
 from typing import Optional
 
-from models import ConversionMode, ConversionResult
+from models.models import ConversionMode, ConversionResult
 
 
 def show_welcome() -> None:

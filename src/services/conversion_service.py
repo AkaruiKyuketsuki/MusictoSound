@@ -1,9 +1,9 @@
 # src/conversion_service.py
 from pathlib import Path
 
-from config import DEFAULT_OUTPUT_DIR
-from models import ConversionMode, ConversionRequest, ConversionResult
-from audiveris_client import run_audiveris, AudiverisError
+from config.config import DEFAULT_OUTPUT_DIR
+from models.models import ConversionMode, ConversionRequest, ConversionResult
+from providers.audiveris_client import run_audiveris, AudiverisError
 
 
 def convert_score(request: ConversionRequest) -> ConversionResult:

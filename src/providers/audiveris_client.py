@@ -4,8 +4,8 @@ import shutil
 from pathlib import Path
 from typing import Optional
 
-from config import AUDIVERIS_JAR_PATH
-from models import ConversionMode
+from config.config import AUDIVERIS_JAR_PATH
+from models.models import ConversionMode
 
 class AudiverisError(Exception):
     """Errores específicos al llamar a Audiveris."""

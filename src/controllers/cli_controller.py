@@ -1,7 +1,7 @@
 # src/cli_controller.py
-from models import ConversionRequest
-from conversion_service import convert_score
-from cli_view import (
+from models.models import ConversionRequest
+from services.conversion_service import convert_score
+from views.cli_view import (
     show_welcome,
     ask_input_file,
     ask_output_dir,

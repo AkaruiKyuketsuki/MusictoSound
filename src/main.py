@@ -1,5 +1,5 @@
 # src/main.py
-from cli_controller import run_cli
+from controllers.cli_controller import run_cli
 
 
 def main() -> None:
