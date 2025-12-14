@@ -17,3 +17,5 @@ Este archivo registra las decisiones, cambios, avances y problemas del desarroll
 
 ## 2025-12-11
 
+## 2025-12-14
+

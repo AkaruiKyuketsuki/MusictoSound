@@ -9,7 +9,6 @@ from views.cli_view import (
     show_result,
 )
 
-
 def run_cli() -> None:
     """
     Punto de entrada del modo consola (CLI).

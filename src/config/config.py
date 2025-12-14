@@ -1,5 +1,6 @@
 # src/config.py
 from pathlib import Path
+import platform
 
 # Ruta al JAR de Audiveris
 # 👉 IMPORTANTE: cámbiala a la ruta real en tu máquina
@@ -9,3 +10,4 @@ AUDIVERIS_JAR_PATH: Path = Path(r"C:\Program Files\Audiveris\app\audiveris.jar")
 DEFAULT_OUTPUT_DIR: Path = Path("output")
 
 # Aañadir más parámetros aquí (idioma, opciones, etc.)
+MUSESCORE_PATH: Path = Path(r"C:\Program Files\MuseScore 4\bin\MuseScore4.exe")

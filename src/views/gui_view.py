@@ -48,10 +48,16 @@ def build_window():
     # BUTTONS
     bfrm = ttk.Frame(frm)
     bfrm.pack(fill="x", pady=10)
+
     start_btn = ttk.Button(bfrm, text="Iniciar")
     start_btn.pack(side="left", padx=5)
+
     open_btn = ttk.Button(bfrm, text="Abrir carpeta salida")
     open_btn.pack(side="left", padx=5)
+
+    view_xml_btn = ttk.Button(bfrm, text="Visualizar XML")
+    view_xml_btn.pack(side="left", padx=5)
+
     quit_btn = ttk.Button(bfrm, text="Salir", command=root.destroy)
     quit_btn.pack(side="right", padx=5)
 
@@ -76,5 +82,6 @@ def build_window():
         "mode_var": mode_var,
         "start_btn": start_btn,
         "open_btn": open_btn,
+        "view_xml_btn": view_xml_btn,
         "log": log,
     }
