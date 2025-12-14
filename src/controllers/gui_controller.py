@@ -9,6 +9,8 @@ from views.gui_view import build_window
 from models.models import ConversionRequest, ConversionMode
 from services.conversion_service import convert_score
 
+from services.xml_render_service import render_xml_to_pdf
+from views.xml_viewer import show_xml_score
 
 # ==========================================================
 # Utilidades
@@ -68,6 +70,7 @@ def run_gui():
     mode_var = widgets["mode_var"]
     start_btn = widgets["start_btn"]
     open_btn = widgets["open_btn"]
+    view_xml_btn = widgets["view_xml_btn"]
 
     log("Interfaz gráfica lista.")
 
@@ -126,8 +129,36 @@ def run_gui():
         except Exception as e:
             log(f"❌ No se pudo abrir la carpeta: {e}")
 
+
+    # ------------------------------------------------------
+    def on_view_xml():
+        outdir = Path(outdir_var.get().strip() or "output")
+
+        if not outdir.exists():
+            log(f"⚠ La carpeta de salida no existe: {outdir}")
+            return
+
+        xml_files = list(outdir.glob("*.xml")) + list(outdir.glob("*.mxl"))
+
+        if not xml_files:
+            log("⚠ No se ha encontrado ningún archivo MusicXML para visualizar")
+            return
+
+        # Por simplicidad, tomamos el primer XML encontrado
+        xml_path = xml_files[0]
+        log(f"🎼 Generando partitura desde: {xml_path.name}")
+
+        try:
+            pdf_path = render_xml_to_pdf(xml_path, outdir)
+            log(f"✅ Partitura generada correctamente: {pdf_path.name}")
+            show_xml_score(pdf_path)
+        except Exception as e:
+            log(f"❌ Error al visualizar la partitura: {e}")
+
+
     # ------------------------------------------------------
     start_btn.config(command=on_start)
     open_btn.config(command=on_open_output)
+    view_xml_btn.config(command=on_view_xml)
 
     root.mainloop()
