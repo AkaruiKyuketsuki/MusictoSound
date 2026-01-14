@@ -12,38 +12,18 @@ def show_comparison_view(
     title_right: str = "Partitura generada",
     
 ):
+
     """
     Muestra dos imágenes lado a lado con scroll vertical sincronizado.
     """
     zoom_level = 0.6  # 60% al abrir
+    overlay_mode = False
+
     win = tk.Toplevel()
     win.title("Comparación de partituras")
     win.geometry("1000x700")
 
-    # =====================================
-    # Actualizar imágenes al hacer zoom
-    # =====================================
-
-    def update_images():
-        nonlocal tk_left, tk_right
-
-        left_resized = resize_image(left_image, zoom_level)
-        right_resized = resize_image(right_image, zoom_level)
-
-        tk_left = ImageTk.PhotoImage(left_resized)
-        tk_right = ImageTk.PhotoImage(right_resized)
-
-        left_label.configure(image=tk_left)
-        right_label.configure(image=tk_right)
-
-        win._images = [tk_left, tk_right]
-
-        inner_left.update_idletasks()
-        inner_right.update_idletasks()
-
-        canvas_left.configure(scrollregion=canvas_left.bbox("all"))
-        canvas_right.configure(scrollregion=canvas_right.bbox("all"))
-
+    
 
     # =========================
     # Botones de zoom
@@ -70,6 +50,41 @@ def show_comparison_view(
     ttk.Button(toolbar, text="Zoom −", command=zoom_out).pack(side="left")
 
     # =========================
+    # Botón de superposición
+    # =========================
+
+    def toggle_overlay():
+        nonlocal overlay_mode
+        overlay_mode = not overlay_mode
+
+        if overlay_mode:
+            overlay_btn.config(text="Comparar")
+            title_left_label.config(text="Comparación por superposición")
+
+            right_frame.grid_remove()
+
+            container.columnconfigure(0, weight=1)
+            container.columnconfigure(1, weight=0)
+
+        else:
+            overlay_btn.config(text="Superponer")
+            title_left_label.config(text=title_left)
+
+            right_frame.grid(row=0, column=1, sticky="nsew")
+
+            container.columnconfigure(0, weight=1)
+            container.columnconfigure(1, weight=1)
+
+        update_images()
+
+
+    #ttk.Button(toolbar, text="Superponer", command=toggle_overlay).pack(side="left", padx=8)
+    overlay_btn = ttk.Button(toolbar, text="Superponer")
+    overlay_btn.pack(side="left", padx=8)
+
+    overlay_btn.config(command=toggle_overlay)
+
+    # =========================
 
     container = ttk.Frame(win)
     container.pack(fill="both", expand=True)
@@ -78,15 +93,30 @@ def show_comparison_view(
     # Frames izquierdo y derecho
     # =========================
     left_frame = ttk.Frame(container)
-    left_frame.pack(side="left", fill="both", expand=True)
+    #left_frame.pack(side="left", fill="both", expand=True)
 
     right_frame = ttk.Frame(container)
-    right_frame.pack(side="left", fill="both", expand=True)
+    #right_frame.pack(side="left", fill="both", expand=True)
+
+    container.columnconfigure(0, weight=1)
+    container.columnconfigure(1, weight=1)
+    container.rowconfigure(0, weight=1)
+
+    left_frame.grid(row=0, column=0, sticky="nsew")
+    right_frame.grid(row=0, column=1, sticky="nsew")
+
 
     # =========================
     # Títulos
     # =========================
-    ttk.Label(left_frame, text=title_left, font=("Segoe UI", 10, "bold")).pack(pady=4)
+    #ttk.Label(left_frame, text=title_left, font=("Segoe UI", 10, "bold")).pack(pady=4)
+    title_left_label = ttk.Label(
+        left_frame,
+        text=title_left,
+        font=("Segoe UI", 10, "bold")
+    )
+    title_left_label.pack(pady=4)
+
     ttk.Label(right_frame, text=title_right, font=("Segoe UI", 10, "bold")).pack(pady=4)
 
     # =========================
@@ -128,6 +158,11 @@ def show_comparison_view(
         w, h = img.size
         return img.resize((int(w * zoom), int(h * zoom)))
 
+    def blend_images(img1, img2, alpha=0.5):
+        # Asegurar mismo tamaño
+        img2 = img2.resize(img1.size)
+        return Image.blend(img1, img2, alpha)
+
     left_resized = resize_image(left_image, zoom_level)
     right_resized = resize_image(right_image, zoom_level)
 
@@ -140,6 +175,38 @@ def show_comparison_view(
     right_label = ttk.Label(inner_right, image=tk_right)
     right_label.pack(pady=10)
 
+    # =====================================
+    # Actualizar imágenes al hacer zoom
+    # =====================================
+
+    def update_images():
+        nonlocal tk_left, tk_right
+
+        left_resized = resize_image(left_image, zoom_level)
+        right_resized = resize_image(right_image, zoom_level)
+
+        if overlay_mode:
+            blended = blend_images(left_resized, right_resized, alpha=0.5)
+            tk_blend = ImageTk.PhotoImage(blended)
+
+            left_label.configure(image=tk_blend)
+            right_label.configure(image="")  # ocultamos derecha
+
+            win._images = [tk_blend]
+        else:
+            tk_left = ImageTk.PhotoImage(left_resized)
+            tk_right = ImageTk.PhotoImage(right_resized)
+
+            left_label.configure(image=tk_left)
+            right_label.configure(image=tk_right)
+
+            win._images = [tk_left, tk_right]
+
+        inner_left.update_idletasks()
+        inner_right.update_idletasks()
+
+        canvas_left.configure(scrollregion=canvas_left.bbox("all"))
+        canvas_right.configure(scrollregion=canvas_right.bbox("all"))
 
     # Evitar garbage collection
     win._images = [tk_left, tk_right]
@@ -150,11 +217,14 @@ def show_comparison_view(
     # =========================
     def _sync_left(*args):
         canvas_left.yview(*args)
-        canvas_right.yview_moveto(canvas_left.yview()[0])
+        if not overlay_mode:
+            canvas_right.yview_moveto(canvas_left.yview()[0])
+
 
     def _sync_right(*args):
         canvas_right.yview(*args)
-        canvas_left.yview_moveto(canvas_right.yview()[0])
+        if not overlay_mode:
+            canvas_left.yview_moveto(canvas_right.yview()[0])
 
     scrollbar_left.config(command=_sync_left)
     scrollbar_right.config(command=_sync_right)
