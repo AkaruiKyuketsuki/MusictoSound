@@ -199,7 +199,9 @@ def show_comparison_view(
         right_resized = resize_image(right_image, zoom_level)
 
         if overlay_mode:
-            blended = blend_images(left_resized, right_resized, alpha=0.5)
+            #blended = blend_images(left_resized, right_resized, alpha=0.5)
+            blended = tinted_overlay(left_resized, right_resized, alpha=0.5)
+            
             tk_blend = ImageTk.PhotoImage(blended)
 
             left_label.configure(image=tk_blend)
@@ -264,4 +266,30 @@ def show_comparison_view(
     canvas_left.configure(scrollregion=canvas_left.bbox("all"))
     canvas_right.configure(scrollregion=canvas_right.bbox("all"))
 
-   
+    def tint_image(img, tint="red", strength=0.7):
+        """
+        Aplica un tinte rojo o azul a una imagen RGB.
+        strength ∈ [0,1]
+        """
+        img = img.convert("RGB")
+        r, g, b = img.split()
+
+        if tint == "red":
+            g = g.point(lambda x: int(x * (1 - strength)))
+            b = b.point(lambda x: int(x * (1 - strength)))
+        elif tint == "blue":
+            r = r.point(lambda x: int(x * (1 - strength)))
+            g = g.point(lambda x: int(x * (1 - strength)))
+
+        return Image.merge("RGB", (r, g, b))
+
+    def tinted_overlay(img1, img2, alpha=0.5):
+        """
+        Superpone img1 (rojo) e img2 (azul)
+        """
+        img2 = img2.resize(img1.size)
+
+        red_img = tint_image(img1, "red", strength=0.7)
+        blue_img = tint_image(img2, "blue", strength=0.7)
+
+        return Image.blend(red_img, blue_img, alpha)
