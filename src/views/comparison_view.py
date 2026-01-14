@@ -18,6 +18,7 @@ def show_comparison_view(
     """
     zoom_level = 0.6  # 60% al abrir
     overlay_mode = False
+    previous_zoom = None
 
     win = tk.Toplevel()
     win.title("Comparación de partituras")
@@ -54,10 +55,17 @@ def show_comparison_view(
     # =========================
 
     def toggle_overlay():
-        nonlocal overlay_mode
+        nonlocal overlay_mode, zoom_level, previous_zoom
+
         overlay_mode = not overlay_mode
 
         if overlay_mode:
+            # Guardamos el zoom actual
+            previous_zoom = zoom_level
+
+            # Aumentamos el zoom x3 (con límite razonable)
+            zoom_level = min(zoom_level * 2, 5.0) 
+
             overlay_btn.config(text="Comparar")
             title_left_label.config(text="Comparación por superposición")
 
@@ -67,6 +75,10 @@ def show_comparison_view(
             container.columnconfigure(1, weight=0)
 
         else:
+            # Restauramos el zoom anterior
+            if previous_zoom is not None:
+                zoom_level = previous_zoom
+
             overlay_btn.config(text="Superponer")
             title_left_label.config(text=title_left)
 
@@ -76,6 +88,7 @@ def show_comparison_view(
             container.columnconfigure(1, weight=1)
 
         update_images()
+
 
 
     #ttk.Button(toolbar, text="Superponer", command=toggle_overlay).pack(side="left", padx=8)
