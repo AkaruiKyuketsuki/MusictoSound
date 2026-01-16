@@ -124,6 +124,10 @@ def show_comparison_view(
             red_offset_y = 0
             red_scale = 1.0
 
+            canvas_left.yview_moveto(0)
+            canvas_right.yview_moveto(0)
+
+
             # Restauramos el zoom anterior
             if previous_zoom is not None:
                 zoom_level = previous_zoom
@@ -135,6 +139,10 @@ def show_comparison_view(
 
             container.columnconfigure(0, weight=1)
             container.columnconfigure(1, weight=1)
+            
+            canvas_left.delete("overlay")
+            canvas_left.delete("all")
+
 
         update_images()
 
@@ -371,6 +379,9 @@ def show_comparison_view(
             win._images = [blue_tk, red_tk]            
 
         else:
+            canvas_left.delete("all")
+            canvas_left.create_window((0, 0), window=inner_left, anchor="nw")
+
             tk_left = ImageTk.PhotoImage(left_resized)
             tk_right = ImageTk.PhotoImage(right_resized)
 
