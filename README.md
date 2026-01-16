@@ -2,6 +2,9 @@
 TFG
 
 # COSAS A EJECUTAR TODOS LOS DIAS
+Ejecutar la aplicacion
+python -m main
+
 Conectarse con la api
 $Env:OPENAI_API_KEY = "tu-api-key-aquí"
 

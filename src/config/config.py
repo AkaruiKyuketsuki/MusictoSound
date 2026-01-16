@@ -11,3 +11,6 @@ DEFAULT_OUTPUT_DIR: Path = Path("output")
 
 # Aañadir más parámetros aquí (idioma, opciones, etc.)
 MUSESCORE_PATH: Path = Path(r"C:\Program Files\MuseScore 4\bin\MuseScore4.exe")
+
+# Ruta a Poppler (necesario para convertir PDF a imagen en Windows)
+POPPLER_PATH = Path(r"C:\Release-25.12.0-0\poppler-25.12.0\Library\bin")

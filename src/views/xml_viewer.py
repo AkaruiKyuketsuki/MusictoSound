@@ -7,6 +7,10 @@ import subprocess
 import platform
 from tkinter import messagebox
 
+from services.pdf_image_service import pdf_to_images
+from config.config import POPPLER_PATH
+from views.comparison_view import show_comparison_view
+
 
 def _open_pdf(pdf_path: Path):
     """Abre un PDF con el visor por defecto del sistema."""
@@ -18,7 +22,7 @@ def _open_pdf(pdf_path: Path):
         subprocess.Popen(["xdg-open", str(pdf_path)])
 
 
-def show_xml_score(pdf_path: Path):
+def show_xml_score(original_pdf: Path, generated_pdf: Path):
     """
     Muestra una ventana para visualizar la partitura generada desde MusicXML.
     """
@@ -50,16 +54,36 @@ def show_xml_score(pdf_path: Path):
     ttk.Button(
         frm,
         text="🎼 Abrir en visor del sistema",
-        command=lambda: _open_pdf(pdf_path),
+        command=lambda: _open_pdf(generated_pdf),
         width=30,
     ).pack(pady=6)
 
+    """
     def _open_in_app():
         tk.messagebox.showinfo(
             "Funcionalidad en desarrollo",
             "La visualización de la partitura dentro de la aplicación "
             "se implementará en una fase posterior."
         )
+    """
+
+    def _open_in_app():
+        try:
+            original_images = pdf_to_images(original_pdf, POPPLER_PATH)
+            generated_images = pdf_to_images(generated_pdf, POPPLER_PATH)
+
+            # De momento usamos solo la primera página
+            show_comparison_view(
+                left_image=original_images[0],
+                right_image=generated_images[0],
+                title_left="Partitura original",
+                title_right="Partitura generada",
+            )
+        except Exception as e:
+            messagebox.showerror(
+                "Error al visualizar",
+                f"No se pudo mostrar la comparación: COMPRUEBE QUE HA AÑADIDO LA CARPETA DE ENTRADA\n{e}"
+            )
 
     ttk.Button(
         frm,

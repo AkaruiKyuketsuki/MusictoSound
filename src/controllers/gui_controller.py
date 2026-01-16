@@ -151,7 +151,11 @@ def run_gui():
         try:
             pdf_path = render_xml_to_pdf(xml_path, outdir)
             log(f"✅ Partitura generada correctamente: {pdf_path.name}")
-            show_xml_score(pdf_path)
+
+            #show_xml_score(pdf_path)
+            original_pdf = Path(infile_var.get())
+            show_xml_score(original_pdf, pdf_path)
+
         except Exception as e:
             log(f"❌ Error al visualizar la partitura: {e}")
 
