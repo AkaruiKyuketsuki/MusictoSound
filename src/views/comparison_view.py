@@ -20,6 +20,21 @@ def show_comparison_view(
     overlay_mode = False
     previous_zoom = None
 
+    #Variables para la interacción con el ratón
+    red_offset_x = 0
+    red_offset_y = 0
+
+    dragging = False
+    drag_start_x = 0
+    drag_start_y = 0
+
+    #Variables para la interacción con el ratón
+    blue_image_id = None
+    red_image_id = None
+    handle_id = None
+
+
+
     win = tk.Toplevel()
     win.title("Comparación de partituras")
     win.geometry("1000x700")
@@ -35,7 +50,6 @@ def show_comparison_view(
 
     def zoom_in():
         nonlocal zoom_level
-        #zoom_level *= 1.2
         zoom_level = min(zoom_level * 1.2, 3.0)
 
         update_images()
@@ -56,6 +70,7 @@ def show_comparison_view(
 
     def toggle_overlay():
         nonlocal overlay_mode, zoom_level, previous_zoom
+        nonlocal red_offset_x, red_offset_y
 
         overlay_mode = not overlay_mode
 
@@ -74,7 +89,15 @@ def show_comparison_view(
             container.columnconfigure(0, weight=1)
             container.columnconfigure(1, weight=0)
 
+            canvas_left.bind("<ButtonPress-1>", on_handle_press)
+            canvas_left.bind("<B1-Motion>", on_handle_motion)
+            canvas_left.bind("<ButtonRelease-1>", on_handle_release)
+
+
         else:
+            red_offset_x = 0
+            red_offset_y = 0
+
             # Restauramos el zoom anterior
             if previous_zoom is not None:
                 zoom_level = previous_zoom
@@ -188,26 +211,100 @@ def show_comparison_view(
     right_label = ttk.Label(inner_right, image=tk_right)
     right_label.pack(pady=10)
 
+
+
+    # =========================
+    # Funciones de tinte y superposición
+    # =========================
+
+    def tint_image(img, tint="red", strength=0.7):
+        """
+        Aplica un tinte rojo o azul a una imagen RGB.
+        strength ∈ [0,1]
+        """
+        img = img.convert("RGB")
+        r, g, b = img.split()
+
+        if tint == "red":
+            g = g.point(lambda x: int(x * (1 - strength)))
+            b = b.point(lambda x: int(x * (1 - strength)))
+        elif tint == "blue":
+            r = r.point(lambda x: int(x * (1 - strength)))
+            g = g.point(lambda x: int(x * (1 - strength)))
+
+        return Image.merge("RGB", (r, g, b))
+
+    def add_alpha(img, alpha=128):
+        """
+        Añade canal alpha a una imagen PIL.
+        alpha ∈ [0,255]
+        """
+        img = img.convert("RGBA")
+        img.putalpha(alpha)
+        return img
+
+
+    def tinted_overlay(img1, img2, alpha=0.5):
+        """
+        Superpone img1 (rojo) e img2 (azul)
+        """
+        img2 = img2.resize(img1.size)
+
+        red_img = tint_image(img1, "red", strength=0.7)
+        blue_img = tint_image(img2, "blue", strength=0.7)
+
+        return Image.blend(red_img, blue_img, alpha)
+
     # =====================================
     # Actualizar imágenes al hacer zoom
     # =====================================
 
     def update_images():
         nonlocal tk_left, tk_right
+        nonlocal blue_image_id, red_image_id, handle_id
 
         left_resized = resize_image(left_image, zoom_level)
         right_resized = resize_image(right_image, zoom_level)
 
         if overlay_mode:
-            #blended = blend_images(left_resized, right_resized, alpha=0.5)
-            blended = tinted_overlay(left_resized, right_resized, alpha=0.5)
-            
-            tk_blend = ImageTk.PhotoImage(blended)
 
-            left_label.configure(image=tk_blend)
-            right_label.configure(image="")  # ocultamos derecha
+            left_label.configure(image="")
+            right_label.configure(image="")
+            canvas_left.delete("overlay")
 
-            win._images = [tk_blend]
+            blue_img = add_alpha(
+                tint_image(left_resized, "blue", strength=0.7),
+                alpha=120
+            )
+            red_img = add_alpha(
+                tint_image(right_resized, "red", strength=0.7),
+                alpha=120
+            )
+
+            blue_tk = ImageTk.PhotoImage(blue_img)
+            red_tk = ImageTk.PhotoImage(red_img)
+
+
+            blue_image_id = canvas_left.create_image(
+                0, 0, image=blue_tk, anchor="nw", tags="overlay"
+            )
+
+            red_image_id = canvas_left.create_image(
+                red_offset_x, red_offset_y,
+                image=red_tk, anchor="nw", tags="overlay"
+            )
+
+            handle_id = canvas_left.create_oval(
+                red_offset_x - 10, red_offset_y - 10,
+                red_offset_x + 10, red_offset_y + 10,
+                fill="red", outline="black", width=2,
+                tags="overlay"
+            )
+
+            right_frame.grid_remove()
+
+            win._images = [blue_tk, red_tk]            
+
         else:
             tk_left = ImageTk.PhotoImage(left_resized)
             tk_right = ImageTk.PhotoImage(right_resized)
@@ -226,7 +323,59 @@ def show_comparison_view(
     # Evitar garbage collection
     win._images = [tk_left, tk_right]
 
-    
+    # =========================
+    # Eventos del ratón para arrastrar
+    # =========================
+
+    def on_handle_press(event):
+        nonlocal dragging, drag_start_x, drag_start_y
+        
+        if not overlay_mode:
+            return
+        
+        if handle_id is None:
+            return
+
+        dragging = True
+        drag_start_x = event.x
+        drag_start_y = event.y
+
+
+    def on_handle_motion(event):
+        nonlocal red_offset_x, red_offset_y, drag_start_x, drag_start_y
+
+        if not dragging or not overlay_mode:
+            return
+
+        dx = event.x - drag_start_x
+        dy = event.y - drag_start_y
+
+        red_offset_x += dx
+        red_offset_y += dy
+
+        drag_start_x = event.x
+        drag_start_y = event.y
+
+        canvas_left.coords(
+            red_image_id,
+            red_offset_x,
+            red_offset_y
+        )
+
+        canvas_left.coords(
+            handle_id,
+            red_offset_x - 10, red_offset_y - 10,
+            red_offset_x + 10, red_offset_y + 10
+        )
+
+
+    def on_handle_release(event):
+        nonlocal dragging
+        dragging = False
+
+
+
+
     # =========================
     # Scroll sincronizado
     # =========================
@@ -266,30 +415,4 @@ def show_comparison_view(
     canvas_left.configure(scrollregion=canvas_left.bbox("all"))
     canvas_right.configure(scrollregion=canvas_right.bbox("all"))
 
-    def tint_image(img, tint="red", strength=0.7):
-        """
-        Aplica un tinte rojo o azul a una imagen RGB.
-        strength ∈ [0,1]
-        """
-        img = img.convert("RGB")
-        r, g, b = img.split()
-
-        if tint == "red":
-            g = g.point(lambda x: int(x * (1 - strength)))
-            b = b.point(lambda x: int(x * (1 - strength)))
-        elif tint == "blue":
-            r = r.point(lambda x: int(x * (1 - strength)))
-            g = g.point(lambda x: int(x * (1 - strength)))
-
-        return Image.merge("RGB", (r, g, b))
-
-    def tinted_overlay(img1, img2, alpha=0.5):
-        """
-        Superpone img1 (rojo) e img2 (azul)
-        """
-        img2 = img2.resize(img1.size)
-
-        red_img = tint_image(img1, "red", strength=0.7)
-        blue_img = tint_image(img2, "blue", strength=0.7)
-
-        return Image.blend(red_img, blue_img, alpha)
+    
