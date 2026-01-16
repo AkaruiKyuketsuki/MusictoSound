@@ -23,6 +23,7 @@ def show_comparison_view(
     #Variables para la interacción con el ratón
     red_offset_x = 0
     red_offset_y = 0
+    red_scale = 1.0
 
     dragging = False
     drag_start_x = 0
@@ -33,6 +34,12 @@ def show_comparison_view(
     red_image_id = None
     handle_id = None
 
+    scale_handle_id = None
+    scale_plus_btn = None
+    scale_minus_btn = None
+    scaling = False
+    scale_start_y = 0
+    scale_buttons_window_id = None
 
 
     win = tk.Toplevel()
@@ -65,12 +72,26 @@ def show_comparison_view(
     ttk.Button(toolbar, text="Zoom −", command=zoom_out).pack(side="left")
 
     # =========================
+    # Botones de escala de la imagen roja
+    # =========================
+
+    def scale_up():
+        nonlocal red_scale
+        red_scale = min(red_scale * 1.03, 1.2)
+        update_images()
+
+    def scale_down():
+        nonlocal red_scale
+        red_scale = max(red_scale / 1.03, 0.8)
+        update_images()
+
+    # =========================
     # Botón de superposición
     # =========================
 
     def toggle_overlay():
         nonlocal overlay_mode, zoom_level, previous_zoom
-        nonlocal red_offset_x, red_offset_y
+        nonlocal red_offset_x, red_offset_y, red_scale
 
         overlay_mode = not overlay_mode
 
@@ -93,10 +114,15 @@ def show_comparison_view(
             canvas_left.bind("<B1-Motion>", on_handle_motion)
             canvas_left.bind("<ButtonRelease-1>", on_handle_release)
 
+            canvas_left.bind("<ButtonPress-3>", on_scale_press)
+            canvas_left.bind("<B3-Motion>", on_scale_motion)
+            canvas_left.bind("<ButtonRelease-3>", on_scale_release)
+
 
         else:
             red_offset_x = 0
             red_offset_y = 0
+            red_scale = 1.0
 
             # Restauramos el zoom anterior
             if previous_zoom is not None:
@@ -261,7 +287,7 @@ def show_comparison_view(
 
     def update_images():
         nonlocal tk_left, tk_right
-        nonlocal blue_image_id, red_image_id, handle_id
+        nonlocal blue_image_id, red_image_id, handle_id, scale_handle_id, scale_buttons_window_id
 
         left_resized = resize_image(left_image, zoom_level)
         right_resized = resize_image(right_image, zoom_level)
@@ -276,10 +302,17 @@ def show_comparison_view(
                 tint_image(left_resized, "blue", strength=0.7),
                 alpha=120
             )
+
+            right_resized = resize_image(
+                right_image,
+                zoom_level * red_scale
+            )
+
             red_img = add_alpha(
                 tint_image(right_resized, "red", strength=0.7),
                 alpha=120
             )
+
 
             blue_tk = ImageTk.PhotoImage(blue_img)
             red_tk = ImageTk.PhotoImage(red_img)
@@ -293,6 +326,38 @@ def show_comparison_view(
                 red_offset_x, red_offset_y,
                 image=red_tk, anchor="nw", tags="overlay"
             )
+
+            # Botones + / - para escalar
+            btn_frame = ttk.Frame(canvas_left)
+
+            scale_plus_btn = ttk.Button(
+                btn_frame,
+                text="+",
+                width=2,
+                command=scale_up
+            )
+
+            scale_minus_btn = ttk.Button(
+                btn_frame,
+                text="−",
+                width=2,
+                command=scale_down
+            )
+
+            scale_plus_btn.pack(side="top", padx=1, pady=1)
+            scale_minus_btn.pack(side="top", padx=1, pady=1)
+
+            w, _ = red_img.size
+
+            scale_buttons_window_id = canvas_left.create_window(
+                red_offset_x + w - 10,
+                red_offset_y + 10,
+                window=btn_frame,
+                anchor="ne",
+                tags="overlay"
+            )
+
+
 
             handle_id = canvas_left.create_oval(
                 red_offset_x - 10, red_offset_y - 10,
@@ -368,12 +433,53 @@ def show_comparison_view(
             red_offset_x + 10, red_offset_y + 10
         )
 
+        # Mover también los botones + / -
+        if scale_buttons_window_id is not None:
+            w = int(canvas_left.bbox(red_image_id)[2] - canvas_left.bbox(red_image_id)[0])
+            canvas_left.coords(
+                scale_buttons_window_id,
+                red_offset_x + w - 10,
+                red_offset_y + 10
+            )
+
+
 
     def on_handle_release(event):
         nonlocal dragging
         dragging = False
 
+    # =========================
+    # Eventos del ratón para escalar
+    # =========================
 
+    def on_scale_press(event):
+        nonlocal scaling, scale_start_y
+        if not overlay_mode:
+            return
+        scaling = True
+        scale_start_y = event.y
+
+    def on_scale_motion(event):
+        nonlocal red_scale, scale_start_y
+        dragging = False
+
+        if not scaling:
+            return
+
+        dy = event.y - scale_start_y
+
+        # sensibilidad suave
+        red_scale *= 1.0 + dy * 0.002
+        red_scale = max(0.8, min(red_scale, 1.2))
+
+        scale_start_y = event.y
+        update_images()
+
+    def on_scale_release(event):
+        nonlocal scaling
+        scaling = False
+
+    
 
 
     # =========================
