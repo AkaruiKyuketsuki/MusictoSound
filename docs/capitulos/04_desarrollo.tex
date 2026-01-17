@@ -105,21 +105,10 @@ Se fusionaron las ramas principales del repositorio, garantizando que los últim
 \subsection*{Consolidación de la interfaz gráfica y operaciones de botones}
 Se afianzó la conexión entre la interfaz y los botones, confirmando que los elementos visuales respondan adecuadamente a las entradas del usuario. Esto mejora la usabilidad y aporta una experiencia más intuitiva para la interacción con el sistema.
 
-<<<<<<< HEAD
-\subsection*{Integración y sincronización con el repositorio principal}
-En esta fecha se realizó la integración de los avances locales con la rama principal del repositorio remoto. Este proceso de merge tiene un papel fundamental para mantener la coherencia y actualización continua del proyecto, asegurando que todas las modificaciones desarrolladas tanto local como remotamente estén coordinadas en una única línea de desarrollo. La operación permitió resolver posibles conflictos de versiones y unificar el código base, facilitando la colaboración entre distintos miembros y mejorando la estabilidad general del sistema. Asimismo, este procedimiento optimiza la trazabilidad del proyecto, consolidando las mejoras implementadas y preparando la base para futuras funcionalidades o correcciones.
-
-\section{Avances del 2025-12-13}
-
-\subsection*{Integración de la rama principal del repositorio remoto}
-En esta etapa del desarrollo se realizó la integración de los cambios provenientes de la rama principal del repositorio remoto alojado en GitHub. Esta fusión representa un paso importante para mantener el código local actualizado con las últimas modificaciones, garantizando así la coherencia y la sincronización entre las distintas ramas de desarrollo. La incorporación de estos cambios permite evitar conflictos futuros y facilita la colaboración conjunta, asegurando que las funcionalidades desarrolladas se fundamenten sobre una base común y estable. Desde un punto de vista técnico, esta operación implica la resolución automática o manual de posibles discrepancias en el código, la adaptación a nuevas dependencias o configuraciones, así como la consolidación de mejoras implementadas en paralelo por otros colaboradores. Este proceso es esencial para asegurar la integridad y la calidad del proyecto durante su evolución.
-
 \section{Avances del 2025-12-14}
 
 \subsection*{Integración de la rama principal del repositorio remoto}
 En esta fecha se realizó la fusión de la rama principal del repositorio remoto hacia la rama local del proyecto MusictoSound. Esta acción tuvo como propósito principal sincronizar los desarrollos más recientes realizados en la rama principal con el entorno de trabajo local, garantizando así que el código fuente disponible estuviera actualizado y reflejara los cambios más recientes implementados por el equipo. Técnicamente, esta integración facilita la consolidación del progreso del proyecto, evita conflictos de versiones y permite que futuras modificaciones se realicen sobre una base estable y común. Además, la actualización contribuye a mantener la coherencia entre los distintos desarrolladores y a agilizar los procesos de desarrollo conjunto. Esta práctica evita la divergencia del código y asegura que las nuevas funcionalidades o correcciones sean accesibles para todos los integrantes del equipo, lo que es fundamental para la correcta evolución del proyecto.
-
-\section{Avances del 2025-12-14}
 
 \subsection*{Optimización y corrección de gestión de memoria}
 En esta etapa del desarrollo se resolvieron diversos problemas relacionados con la gestión de la memoria dentro del sistema implementado. La correcta administración de la memoria es crucial para garantizar la estabilidad y eficiencia de la aplicación, especialmente en proyectos de ingeniería informática donde el procesamiento intensivo puede provocar fugas o fragmentación.
@@ -127,3 +116,31 @@ En esta etapa del desarrollo se resolvieron diversos problemas relacionados con 
 El análisis de estos problemas reveló inconsistencias en la asignación y liberación de recursos dinámicos, lo que podía llevar a pérdidas progresivas de memoria y, en consecuencia, a una degradación del rendimiento o fallos inesperados en la ejecución. Se aplicaron técnicas de depuración y profiling para identificar los puntos conflictivos y se rediseñaron los manejadores de memoria para asegurar un control riguroso y seguro, evitando el acceso a zonas inválidas y asegurando la liberación correcta de los bloques utilizados.
 
 Este avance mejora significativamente la robustez del sistema, disminuyendo la probabilidad de errores en tiempo de ejecución y facilitando el mantenimiento futuro. Además, un manejo de memoria eficiente es fundamental para el escalado del proyecto, asegurando que pueda operar de manera estable bajo condiciones de alta carga o en entornos de producción.
+
+\section{Avances del 2026-01-14}
+
+\subsection*{Añadido de efecto overlay con tintes en la visualización}
+Se incorporó un efecto de superposición con tintes de color en el visualizador de partituras, lo que mejora la capacidad para distinguir diferentes elementos y resaltar diferencias mediante coloración selectiva. Esta solución visual es especialmente útil para la comparación detallada de documentos musicales.
+
+\subsection*{Incorporación de zoom automático}
+Se implementó un sistema de zoom automático en el visualizador, que ajusta la escala de la partitura para optimizar su presentación en pantalla. Este mecanismo facilita la inspección visual sin que el usuario necesite realizar ajustes manuales constantes.
+
+\subsection*{Visualización por superposición añadida}
+Se añadió un nuevo modo de visualización por superposición para las partituras, lo que permite observar simultáneamente diferentes versiones o estados del documento musical combinados en una sola vista. Esta modalidad aporta una nueva perspectiva analítica para el usuario.
+
+\subsection*{Desarrollo del visualizador interno para partituras}
+Se completó la implementación de un visualizador interno capaz de mostrar partituras dentro de la aplicación, eliminando la dependencia de herramientas externas. Esta integración mejora la ergonomía del sistema y agiliza el flujo de trabajo en la transcripción y análisis musical.
+
+\section{Avances del 2026-01-16}
+
+\subsection*{Integración y sincronización del repositorio principal}
+Durante esta fecha se realizaron dos integraciones importantes para mantener el proyecto actualizado con la rama principal del repositorio remoto. Estas fusiones garantizaron que el desarrollo local incorporara los últimos cambios externos, lo cual es fundamental para evitar conflictos y asegurar la coherencia del código a largo plazo.
+
+\subsection*{Corrección del scroll en el modo comparación}
+Se corrigió un problema relacionado con la navegación mediante scroll en el modo de comparación de partituras. Este ajuste mejora la usabilidad y la experiencia del usuario al analizar diferencias entre dos documentos musicales, asegurando que el desplazamiento sea fluido y preciso.
+
+\subsection*{Implementación de reducción individual de la imagen roja en modo superposición}
+Se desarrolló una función para reducir individualmente la imagen codificada en rojo cuando se utiliza el modo de superposición de partituras. Esta mejora permite un ajuste más fino en la representación visual, facilitando la distinción y comparación entre capas superpuestas de información musical.
+
+\subsection*{Interacción mediante ratón para mover la partitura nueva sobre la antigua}
+Se añadió una interacción gráfica que posibilita al usuario desplazar la partitura nueva sobre la antigua utilizando el ratón. Esta funcionalidad incrementa la interactividad del visualizador, otorgando mayor control manual en la comparación y superposición de documentos.
