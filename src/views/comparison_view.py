@@ -6,16 +6,20 @@ from pathlib import Path
 
 
 def show_comparison_view(
-    left_image: Image.Image,
-    right_image: Image.Image,
+    #left_image: Image.Image,
+    #right_image: Image.Image,
+    left_images: list[Image.Image],
+    right_images: list[Image.Image],
     title_left: str = "Partitura original",
     title_right: str = "Partitura generada",
     
 ):
-
     """
     Muestra dos imágenes lado a lado con scroll vertical sincronizado.
-    """
+    """ 
+    current_page = 0
+    num_pages = min(len(left_images), len(right_images))
+
     zoom_level = 0.6  # 60% al abrir
     overlay_mode = False
     previous_zoom = None
@@ -54,6 +58,9 @@ def show_comparison_view(
 
     toolbar = ttk.Frame(win)
     toolbar.pack(fill="x", pady=4)
+    
+    page_label = ttk.Label(toolbar, text=f"Página 1 / {num_pages}")
+    page_label.pack(side="left", padx=8)
 
     def zoom_in():
         nonlocal zoom_level
@@ -70,6 +77,37 @@ def show_comparison_view(
 
     ttk.Button(toolbar, text="Zoom +", command=zoom_in).pack(side="left", padx=4)
     ttk.Button(toolbar, text="Zoom −", command=zoom_out).pack(side="left")
+
+    # =========================
+    # Botones de página
+    # =========================
+
+    def reset_page_state():
+        nonlocal red_offset_x, red_offset_y, red_scale, overlay_mode
+        red_offset_x = 0
+        red_offset_y = 0
+        red_scale = 1.0
+        if overlay_mode:
+            toggle_overlay()
+
+    def prev_page():
+        nonlocal current_page
+        if current_page > 0:
+            current_page -= 1
+            reset_page_state()
+            update_images()
+
+    def next_page():
+        nonlocal current_page
+        if current_page < num_pages - 1:
+            current_page += 1
+            reset_page_state()
+            update_images()
+
+    ttk.Button(toolbar, text="◀ Página", command=prev_page).pack(side="left", padx=4)
+    ttk.Button(toolbar, text="Página ▶", command=next_page).pack(side="left", padx=4)
+
+
 
     # =========================
     # Botones de escala de la imagen roja
@@ -233,8 +271,12 @@ def show_comparison_view(
         img2 = img2.resize(img1.size)
         return Image.blend(img1, img2, alpha)
 
-    left_resized = resize_image(left_image, zoom_level)
-    right_resized = resize_image(right_image, zoom_level)
+
+    #left_resized = resize_image(left_image, zoom_level)
+    left_resized = resize_image(left_images[current_page], zoom_level)
+    #right_resized = resize_image(right_image, zoom_level)
+    right_resized = resize_image(right_images[current_page], zoom_level)
+
 
     tk_left = ImageTk.PhotoImage(left_resized)
     tk_right = ImageTk.PhotoImage(right_resized)
@@ -297,8 +339,10 @@ def show_comparison_view(
         nonlocal tk_left, tk_right
         nonlocal blue_image_id, red_image_id, handle_id, scale_handle_id, scale_buttons_window_id
 
-        left_resized = resize_image(left_image, zoom_level)
-        right_resized = resize_image(right_image, zoom_level)
+        #left_resized = resize_image(left_image, zoom_level)
+        left_resized = resize_image(left_images[current_page], zoom_level)
+        #right_resized = resize_image(right_image, zoom_level)
+        right_resized = resize_image(right_images[current_page], zoom_level)
 
         if overlay_mode:
 
@@ -312,7 +356,8 @@ def show_comparison_view(
             )
 
             right_resized = resize_image(
-                right_image,
+                #right_image,
+                right_images[current_page],
                 zoom_level * red_scale
             )
 
@@ -395,6 +440,8 @@ def show_comparison_view(
 
         canvas_left.configure(scrollregion=canvas_left.bbox("all"))
         canvas_right.configure(scrollregion=canvas_right.bbox("all"))
+        page_label.config(text=f"Página {current_page + 1} / {num_pages}")
+
 
     # Evitar garbage collection
     win._images = [tk_left, tk_right]
