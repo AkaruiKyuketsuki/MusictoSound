@@ -73,12 +73,21 @@ def show_xml_score(original_pdf: Path, generated_pdf: Path):
             generated_images = pdf_to_images(generated_pdf, POPPLER_PATH)
 
             # De momento usamos solo la primera página
+            """
             show_comparison_view(
                 left_image=original_images[0],
                 right_image=generated_images[0],
                 title_left="Partitura original",
                 title_right="Partitura generada",
             )
+            """
+            show_comparison_view(
+                left_images=original_images,
+                right_images=generated_images,
+                title_left="Partitura original",
+                title_right="Partitura generada",
+            )
+
         except Exception as e:
             messagebox.showerror(
                 "Error al visualizar",

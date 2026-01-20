@@ -45,6 +45,11 @@ def build_window():
     ttk.Radiobutton(mode_frame, text="Automático", variable=mode_var, value="auto").pack(side="left", padx=6)
     ttk.Radiobutton(mode_frame, text="Asistido (Audiveris)", variable=mode_var, value="manual").pack(side="left", padx=6)
 
+    # PROGRESS BAR
+    progress = ttk.Progressbar(root, mode="indeterminate", length=300)
+    progress.pack(pady=6)
+    progress.pack_forget()
+
     # BUTTONS
     bfrm = ttk.Frame(frm)
     bfrm.pack(fill="x", pady=10)
@@ -84,4 +89,5 @@ def build_window():
         "open_btn": open_btn,
         "view_xml_btn": view_xml_btn,
         "log": log,
+        "progress": progress,
     }

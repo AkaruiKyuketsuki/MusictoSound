@@ -27,9 +27,9 @@ def _open_with_default_app(path: Path):
 # ==========================================================
 # Worker (hilo de conversión)
 # ==========================================================
-def _run_conversion(log, request: ConversionRequest):
+def _run_conversion(log, request: ConversionRequest, root, progress, start_btn):
     try:
-        log("▶ Iniciando conversión...")
+        log("▶ Iniciando conversión... (ESTE PROCESO PODRÍA TARDAR UNOS MINUTOS)")
         log(f"  Entrada: {request.input_path}")
         log(f"  Salida:  {request.output_dir}")
         log(f"  Modo:    {request.mode.name}")
@@ -53,9 +53,16 @@ def _run_conversion(log, request: ConversionRequest):
 
     except Exception as e:
         log(f"❌ Excepción inesperada: {e}")
+    
+    finally:
+        log("— Fin del proceso —")
+        
+        def finish():
+            progress.stop()
+            progress.pack_forget()
+            start_btn.config(state="normal")
 
-    log("— Fin del proceso —")
-
+        root.after(0, finish)
 
 # ==========================================================
 # Controlador principal GUI
@@ -71,6 +78,7 @@ def run_gui():
     start_btn = widgets["start_btn"]
     open_btn = widgets["open_btn"]
     view_xml_btn = widgets["view_xml_btn"]
+    progress = widgets["progress"]
 
     log("Interfaz gráfica lista.")
 
@@ -108,10 +116,15 @@ def run_gui():
         log("🟢 Botón INICIAR pulsado")
         log(f"Modo seleccionado: {mode.name}")
 
+        progress.pack(pady=6)
+        progress.start(10)   # velocidad de animación
+        start_btn.config(state="disabled")
+
+
         # Lanzar conversión en hilo
         thread = threading.Thread(
             target=_run_conversion,
-            args=(log, request),
+            args=(log, request, root, progress, start_btn),
             daemon=True,
         )
         thread.start()
@@ -144,8 +157,9 @@ def run_gui():
             log("⚠ No se ha encontrado ningún archivo MusicXML para visualizar")
             return
 
-        # Por simplicidad, tomamos el primer XML encontrado
-        xml_path = xml_files[0]
+        # Elegir el archivo más reciente (última transcripción)
+        xml_path = max(xml_files, key=lambda p: p.stat().st_mtime)
+
         log(f"🎼 Generando partitura desde: {xml_path.name}")
 
         try:
