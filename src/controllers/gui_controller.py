@@ -78,6 +78,7 @@ def run_gui():
     start_btn = widgets["start_btn"]
     open_btn = widgets["open_btn"]
     view_xml_btn = widgets["view_xml_btn"]
+    edit_btn = widgets["edit_btn"]
     progress = widgets["progress"]
 
     log("Interfaz gráfica lista.")
@@ -173,10 +174,34 @@ def run_gui():
         except Exception as e:
             log(f"❌ Error al visualizar la partitura: {e}")
 
+    # ------------------------------------------------------
+    def on_edit():
+        outdir = Path(outdir_var.get().strip() or "output")
+
+        if not outdir.exists():
+            log(f"⚠ La carpeta de salida no existe: {outdir}")
+            return
+
+        # Solo buscamos archivos editables
+        xml_files = list(outdir.glob("*.mxl")) + list(outdir.glob("*.xml"))
+
+        if not xml_files:
+            log("⚠ No se ha encontrado ningún archivo MusicXML para editar")
+            return
+
+        # Usar el más reciente
+        xml_path = max(xml_files, key=lambda p: p.stat().st_mtime)
+
+        try:
+            _open_with_default_app(xml_path)
+            log(f"🎵 Abriendo partitura para edición: {xml_path.name}")
+        except Exception as e:
+            log(f"❌ No se pudo abrir el editor: {e}")
 
     # ------------------------------------------------------
     start_btn.config(command=on_start)
     open_btn.config(command=on_open_output)
     view_xml_btn.config(command=on_view_xml)
+    edit_btn.config(command=on_edit)
 
     root.mainloop()

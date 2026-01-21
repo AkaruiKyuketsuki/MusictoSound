@@ -63,6 +63,9 @@ def build_window():
     view_xml_btn = ttk.Button(bfrm, text="Visualizar XML")
     view_xml_btn.pack(side="left", padx=5)
 
+    edit_btn = ttk.Button(bfrm, text="Edición")
+    edit_btn.pack(side="left", padx=5)
+
     quit_btn = ttk.Button(bfrm, text="Salir", command=root.destroy)
     quit_btn.pack(side="right", padx=5)
 
@@ -88,6 +91,7 @@ def build_window():
         "start_btn": start_btn,
         "open_btn": open_btn,
         "view_xml_btn": view_xml_btn,
+        "edit_btn": edit_btn,
         "log": log,
         "progress": progress,
     }
