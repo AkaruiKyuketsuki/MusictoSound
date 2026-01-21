@@ -87,6 +87,9 @@ def run_gui():
     edit_btn = widgets["edit_btn"]
     progress = widgets["progress"]
     auto_open_var = widgets["auto_open_var"]
+    view_in_app_var = widgets["view_in_app_var"]
+    view_in_system_var = widgets["view_in_system_var"]
+
 
     log("Interfaz gráfica lista.")
 
@@ -176,7 +179,20 @@ def run_gui():
 
             #show_xml_score(pdf_path)
             original_pdf = Path(infile_var.get())
-            show_xml_score(original_pdf, pdf_path)
+
+            # Preferencias del usuario
+            if view_in_app_var.get():
+                log("🖥 Visualización directa en la aplicación")
+                show_xml_score(original_pdf, pdf_path, mode="app")
+
+            elif view_in_system_var.get():
+                log("📂 Visualización directa en visor del sistema")
+                #show_xml_score(original_pdf, pdf_path, mode="system")
+                _open_with_default_app(pdf_path)
+
+            else:
+                # Comportamiento por defecto: mostrar ventana de elección
+                show_xml_score(original_pdf, pdf_path)
 
         except Exception as e:
             log(f"❌ Error al visualizar la partitura: {e}")
