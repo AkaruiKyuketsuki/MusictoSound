@@ -69,6 +69,16 @@ def build_window():
     quit_btn = ttk.Button(bfrm, text="Salir", command=root.destroy)
     quit_btn.pack(side="right", padx=5)
 
+    # AUTO OPEN OPTION
+    auto_open_var = tk.BooleanVar(value=True)
+
+    auto_open_chk = ttk.Checkbutton(
+        frm,
+        text="Abrir automáticamente la partitura al finalizar",
+        variable=auto_open_var
+    )
+    auto_open_chk.pack(anchor="w", pady=(0, 6))
+
     # LOG AREA
     ttk.Separator(frm).pack(fill="x", pady=6)
     ttk.Label(frm, text="Registro:").pack(anchor="w")
@@ -93,5 +103,6 @@ def build_window():
         "view_xml_btn": view_xml_btn,
         "edit_btn": edit_btn,
         "log": log,
+        "auto_open_var": auto_open_var,
         "progress": progress,
     }

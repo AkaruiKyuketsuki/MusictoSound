@@ -27,7 +27,7 @@ def _open_with_default_app(path: Path):
 # ==========================================================
 # Worker (hilo de conversión)
 # ==========================================================
-def _run_conversion(log, request: ConversionRequest, root, progress, start_btn):
+def _run_conversion(log, request: ConversionRequest, root, progress, start_btn, auto_open_var, on_view_xml, on_edit,):
     try:
         log("▶ Iniciando conversión... (ESTE PROCESO PODRÍA TARDAR UNOS MINUTOS)")
         log(f"  Entrada: {request.input_path}")
@@ -47,6 +47,12 @@ def _run_conversion(log, request: ConversionRequest, root, progress, start_btn):
                     log("📂 Archivo abierto con la aplicación por defecto")
                 except Exception as e:
                     log(f"⚠ No se pudo abrir automáticamente: {e}")
+
+            if auto_open_var.get():
+                log("🔁 Apertura automática activada")
+                root.after(0, on_view_xml)
+                root.after(0, on_edit)
+
         else:
             log("❌ Error durante la conversión")
             log(result.message)
@@ -80,6 +86,7 @@ def run_gui():
     view_xml_btn = widgets["view_xml_btn"]
     edit_btn = widgets["edit_btn"]
     progress = widgets["progress"]
+    auto_open_var = widgets["auto_open_var"]
 
     log("Interfaz gráfica lista.")
 
@@ -125,7 +132,7 @@ def run_gui():
         # Lanzar conversión en hilo
         thread = threading.Thread(
             target=_run_conversion,
-            args=(log, request, root, progress, start_btn),
+            args=(log, request, root, progress, start_btn, auto_open_var, on_view_xml, on_edit,),
             daemon=True,
         )
         thread.start()
