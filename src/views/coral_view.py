@@ -93,11 +93,17 @@ def build_coral_view_window():
     voices_list_frame.pack(fill="both", expand=True)
 
     # ===============================
-    # Botón para generar MIDI
+    # Frame inferior de acciones
     # ===============================
-    generate_btn = ttk.Button(main_frame, text="Generar MIDI")
-    generate_btn.pack(pady=10, ipady=5)
-    
+    bottom_buttons_frame = ttk.Frame(main_frame)
+    bottom_buttons_frame.pack(fill="x", pady=10)
+
+    generate_btn = ttk.Button(bottom_buttons_frame, text="Generar MIDI")
+    generate_btn.pack(side="left", ipady=5)
+
+    back_btn = ttk.Button(bottom_buttons_frame, text="Volver")
+    back_btn.pack(side="right", ipady=5)
+
     # ===============================
     # Variables para checkbuttons de voces
     # ===============================
@@ -115,26 +121,36 @@ def build_coral_view_window():
             part_id = part["id"]
             part_name = part["name"]
 
+            row_frame = ttk.Frame(voices_list_frame)
+            row_frame.pack(fill="x", pady=2)
+
             var = tk.BooleanVar(value=True)
 
             chk = ttk.Checkbutton(
-                voices_list_frame,
-                text=part_name,
+                row_frame,
                 variable=var
             )
-            chk.pack(anchor="w", pady=2)
+            chk.pack(side="left")
 
-            #voice_vars[part_id] = var
+            name_var = tk.StringVar(value=part_name)
+
+            entry = ttk.Entry(
+                row_frame,
+                textvariable=name_var,
+                width=40
+            )
+            entry.pack(side="left", padx=5, fill="x", expand=True)
+
             voice_vars[part_id] = {
                 "var": var,
-                "name": part_name
+                "name_var": name_var
             }
-            
+                
     def get_selected_voices():
         return [
             {
                 "id": part_id,
-                "name": data["name"]
+                "name": data["name_var"].get().strip()
             }
             for part_id, data in voice_vars.items()
             if data["var"].get()
@@ -156,12 +172,6 @@ def build_coral_view_window():
         log_box.see("end")
         log_box.configure(state="disabled")
 
-    # ===============================
-    # Botón volver
-    # ===============================
-    back_btn = ttk.Button(main_frame, text="Volver")
-    back_btn.pack(pady=10)
-
     return {
         "root": root,
         "xml_path_var": xml_path_var,
@@ -175,8 +185,6 @@ def build_coral_view_window():
         "get_selected_voices": get_selected_voices,
         "back_btn": back_btn,
         "generate_btn": generate_btn,
-        #"output_dir_var": output_dir_var,
-        #"browse_output_btn": browse_output_btn,
         "folder_name_var": folder_name_var,
         "base_path_var": base_path_var,
         "browse_base_btn": browse_base_btn,

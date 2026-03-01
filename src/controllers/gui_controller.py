@@ -107,12 +107,12 @@ def run_coral_gui():
     analyze_btn = widgets["analyze_btn"]
     back_btn = widgets["back_btn"]
     log = widgets["log"]
+
     set_voices = widgets["set_voices"]
     view_score_btn = widgets["view_score_btn"]
     generate_btn = widgets["generate_btn"]
     get_selected_voices = widgets["get_selected_voices"]
-    #output_dir_var = widgets["output_dir_var"]
-    #browse_output_btn = widgets["browse_output_btn"]
+  
     folder_name_var = widgets["folder_name_var"]
     base_path_var = widgets["base_path_var"]
     browse_base_btn = widgets["browse_base_btn"]
@@ -169,6 +169,10 @@ def run_coral_gui():
 
         if path:
             xml_path_var.set(path)
+
+            # 🔹 Limpiar voces anteriores
+            clear_detected_voices()
+
             log(f"Archivo seleccionado: {path}")
 
     # ------------------------------------------------------
@@ -267,6 +271,14 @@ def run_coral_gui():
         except Exception as e:
             log(f"❌ Error al generar MIDI: {e}")
 
+
+    # ------------------------------------------------------
+    # Limpiar voces detectadas
+    # ------------------------------------------------------
+    def clear_detected_voices():
+        set_voices([])  # reutilizamos la función existente
+        log("Voces limpiadas.")
+        
     # ------------------------------------------------------
     # Examinar ubicación de salida
     # ------------------------------------------------------
