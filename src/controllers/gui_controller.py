@@ -13,7 +13,7 @@ from services.xml_render_service import render_xml_to_pdf
 from views.xml_viewer import show_xml_score
 
 from views.start_view import build_start_window
-from views.reaper_view import build_reaper_window
+from views.coral_view import build_coral_view_window
 
 # ==========================================================
 # Utilidades
@@ -82,22 +82,22 @@ def run_gui():
         root.destroy()
         run_transcription_gui()
 
-    def open_reaper():
+    def open_coral():
         root.destroy()
-        run_reaper_gui()
+        run_coral_gui()
 
     transcribe_btn.config(command=open_transcription)
-    reaper_btn.config(command=open_reaper)
+    reaper_btn.config(command=open_coral)
 
     root.mainloop()
 
 
 # ==========================================================
-# Placeholder vista Reaper (vacía por ahora)
+# Placeholder vista Coral (vacía por ahora)
 # ==========================================================
-def run_reaper_gui():
+def run_coral_gui():
 
-    widgets = build_reaper_window()
+    widgets = build_coral_view_window()
 
     root = widgets["root"]
     back_btn = widgets["back_btn"]

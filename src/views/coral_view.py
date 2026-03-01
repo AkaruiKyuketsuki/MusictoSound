@@ -2,9 +2,9 @@ import tkinter as tk
 from tkinter import ttk
 
 
-def build_reaper_window():
+def build_coral_view_window():
     root = tk.Tk()
-    root.title("MusictoSound - Reaper XML")
+    root.title("MusictoSound - Coral")
     root.state("zoomed")
 
     frm = ttk.Frame(root, padding=40)
@@ -12,7 +12,7 @@ def build_reaper_window():
 
     ttk.Label(
         frm,
-        text="Procesamiento XML para Reaper",
+        text="Procesamiento XML",
         font=("Segoe UI", 20, "bold")
     ).pack(pady=(0, 30))
 
