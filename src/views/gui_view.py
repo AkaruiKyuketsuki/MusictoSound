@@ -63,8 +63,49 @@ def build_window():
     view_xml_btn = ttk.Button(bfrm, text="Visualizar XML")
     view_xml_btn.pack(side="left", padx=5)
 
+    edit_btn = ttk.Button(bfrm, text="Edición")
+    edit_btn.pack(side="left", padx=5)
+
     quit_btn = ttk.Button(bfrm, text="Salir", command=root.destroy)
     quit_btn.pack(side="right", padx=5)
+
+    # AUTO OPEN OPTIONS
+    auto_open_var = tk.BooleanVar(value=True)
+    view_in_app_var = tk.BooleanVar(value=False)
+    view_in_system_var = tk.BooleanVar(value=False)
+
+
+    auto_open_chk = ttk.Checkbutton(
+        frm,
+        text="Abrir automáticamente la partitura al finalizar",
+        variable=auto_open_var
+    )
+    auto_open_chk.pack(anchor="w", pady=(0, 6))
+
+    def on_view_in_app_toggle():
+        if view_in_app_var.get():
+            view_in_system_var.set(False)
+
+    def on_view_in_system_toggle():
+        if view_in_system_var.get():
+            view_in_app_var.set(False)
+
+    view_in_app_chk = ttk.Checkbutton(
+        frm,
+        text="Visualizar siempre en la aplicación",
+        variable=view_in_app_var,
+        command=on_view_in_app_toggle
+    )
+    view_in_app_chk.pack(anchor="w")
+
+    view_in_system_chk = ttk.Checkbutton(
+        frm,
+        text="Abrir siempre en el visor del sistema",
+        variable=view_in_system_var,
+        command=on_view_in_system_toggle
+    )
+    view_in_system_chk.pack(anchor="w", pady=(0, 6))
+
 
     # LOG AREA
     ttk.Separator(frm).pack(fill="x", pady=6)
@@ -88,6 +129,10 @@ def build_window():
         "start_btn": start_btn,
         "open_btn": open_btn,
         "view_xml_btn": view_xml_btn,
+        "edit_btn": edit_btn,
         "log": log,
+        "auto_open_var": auto_open_var,
+        "view_in_app_var": view_in_app_var,
+        "view_in_system_var": view_in_system_var,
         "progress": progress,
     }

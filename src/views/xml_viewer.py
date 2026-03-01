@@ -22,10 +22,36 @@ def _open_pdf(pdf_path: Path):
         subprocess.Popen(["xdg-open", str(pdf_path)])
 
 
-def show_xml_score(original_pdf: Path, generated_pdf: Path):
+def show_xml_score(original_pdf: Path, generated_pdf: Path, mode: str = "ask"):
     """
     Muestra una ventana para visualizar la partitura generada desde MusicXML.
     """
+    # ======================================================
+    # MODO DIRECTO: abrir sin mostrar la ventana de selección
+    # ======================================================
+
+    if mode == "system":
+        _open_pdf(generated_pdf)
+        return
+
+    if mode == "app":
+        try:
+            original_images = pdf_to_images(original_pdf, POPPLER_PATH)
+            generated_images = pdf_to_images(generated_pdf, POPPLER_PATH)
+
+            show_comparison_view(
+                left_images=original_images,
+                right_images=generated_images,
+                title_left="Partitura original",
+                title_right="Partitura generada",
+            )
+        except Exception as e:
+            messagebox.showerror(
+                "Error al visualizar",
+                f"No se pudo mostrar la comparación:\n{e}"
+            )
+        return
+
     win = tk.Toplevel()
     win.title("Partitura generada desde MusicXML")
     win.geometry("500x260")
@@ -57,15 +83,6 @@ def show_xml_score(original_pdf: Path, generated_pdf: Path):
         command=lambda: _open_pdf(generated_pdf),
         width=30,
     ).pack(pady=6)
-
-    """
-    def _open_in_app():
-        tk.messagebox.showinfo(
-            "Funcionalidad en desarrollo",
-            "La visualización de la partitura dentro de la aplicación "
-            "se implementará en una fase posterior."
-        )
-    """
 
     def _open_in_app():
         try:

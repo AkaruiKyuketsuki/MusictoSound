@@ -27,7 +27,7 @@ def _open_with_default_app(path: Path):
 # ==========================================================
 # Worker (hilo de conversión)
 # ==========================================================
-def _run_conversion(log, request: ConversionRequest, root, progress, start_btn):
+def _run_conversion(log, request: ConversionRequest, root, progress, start_btn, auto_open_var, on_view_xml, on_edit,):
     try:
         log("▶ Iniciando conversión... (ESTE PROCESO PODRÍA TARDAR UNOS MINUTOS)")
         log(f"  Entrada: {request.input_path}")
@@ -47,6 +47,12 @@ def _run_conversion(log, request: ConversionRequest, root, progress, start_btn):
                     log("📂 Archivo abierto con la aplicación por defecto")
                 except Exception as e:
                     log(f"⚠ No se pudo abrir automáticamente: {e}")
+
+            if auto_open_var.get():
+                log("🔁 Apertura automática activada")
+                root.after(0, on_view_xml)
+                root.after(0, on_edit)
+
         else:
             log("❌ Error durante la conversión")
             log(result.message)
@@ -78,7 +84,12 @@ def run_gui():
     start_btn = widgets["start_btn"]
     open_btn = widgets["open_btn"]
     view_xml_btn = widgets["view_xml_btn"]
+    edit_btn = widgets["edit_btn"]
     progress = widgets["progress"]
+    auto_open_var = widgets["auto_open_var"]
+    view_in_app_var = widgets["view_in_app_var"]
+    view_in_system_var = widgets["view_in_system_var"]
+
 
     log("Interfaz gráfica lista.")
 
@@ -124,7 +135,7 @@ def run_gui():
         # Lanzar conversión en hilo
         thread = threading.Thread(
             target=_run_conversion,
-            args=(log, request, root, progress, start_btn),
+            args=(log, request, root, progress, start_btn, auto_open_var, on_view_xml, on_edit,),
             daemon=True,
         )
         thread.start()
@@ -168,15 +179,52 @@ def run_gui():
 
             #show_xml_score(pdf_path)
             original_pdf = Path(infile_var.get())
-            show_xml_score(original_pdf, pdf_path)
+
+            # Preferencias del usuario
+            if view_in_app_var.get():
+                log("🖥 Visualización directa en la aplicación")
+                show_xml_score(original_pdf, pdf_path, mode="app")
+
+            elif view_in_system_var.get():
+                log("📂 Visualización directa en visor del sistema")
+                #show_xml_score(original_pdf, pdf_path, mode="system")
+                _open_with_default_app(pdf_path)
+
+            else:
+                # Comportamiento por defecto: mostrar ventana de elección
+                show_xml_score(original_pdf, pdf_path)
 
         except Exception as e:
             log(f"❌ Error al visualizar la partitura: {e}")
 
+    # ------------------------------------------------------
+    def on_edit():
+        outdir = Path(outdir_var.get().strip() or "output")
+
+        if not outdir.exists():
+            log(f"⚠ La carpeta de salida no existe: {outdir}")
+            return
+
+        # Solo buscamos archivos editables
+        xml_files = list(outdir.glob("*.mxl")) + list(outdir.glob("*.xml"))
+
+        if not xml_files:
+            log("⚠ No se ha encontrado ningún archivo MusicXML para editar")
+            return
+
+        # Usar el más reciente
+        xml_path = max(xml_files, key=lambda p: p.stat().st_mtime)
+
+        try:
+            _open_with_default_app(xml_path)
+            log(f"🎵 Abriendo partitura para edición: {xml_path.name}")
+        except Exception as e:
+            log(f"❌ No se pudo abrir el editor: {e}")
 
     # ------------------------------------------------------
     start_btn.config(command=on_start)
     open_btn.config(command=on_open_output)
     view_xml_btn.config(command=on_view_xml)
+    edit_btn.config(command=on_edit)
 
     root.mainloop()
