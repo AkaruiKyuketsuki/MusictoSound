@@ -31,6 +31,45 @@ def build_coral_view_window():
 
     browse_btn = ttk.Button(file_frame, text="Examinar")
     browse_btn.pack(side="left")
+    
+    # ======================================
+    # Carpeta de salida (opcional)
+    # ======================================
+    ttk.Label(
+        main_frame,
+        text="Carpeta de salida (opcional)",
+        font=("Segoe UI", 10, "bold")
+    ).pack(anchor="w", pady=(15, 5))
+
+    output_frame = ttk.Frame(main_frame)
+    output_frame.pack(fill="x", pady=5)
+
+    # Nombre de carpeta
+    ttk.Label(output_frame, text="Nombre:", width=10).pack(side="left")
+
+    folder_name_var = tk.StringVar(value="coral_output")
+
+    folder_name_entry = ttk.Entry(
+        output_frame,
+        textvariable=folder_name_var,
+        width=25
+    )
+    folder_name_entry.pack(side="left", padx=5)
+
+    # Ubicación base
+    ttk.Label(output_frame, text="Ubicación:", width=10).pack(side="left", padx=(20, 0))
+
+    base_path_var = tk.StringVar()
+
+    base_path_entry = ttk.Entry(
+        output_frame,
+        textvariable=base_path_var,
+        width=40
+    )
+    base_path_entry.pack(side="left", padx=5, fill="x", expand=True)
+
+    browse_base_btn = ttk.Button(output_frame, text="Examinar")
+    browse_base_btn.pack(side="left", padx=5)
 
     # ===============================
     # Botones de acción
@@ -54,32 +93,52 @@ def build_coral_view_window():
     voices_list_frame.pack(fill="both", expand=True)
 
     # ===============================
+    # Botón para generar MIDI
+    # ===============================
+    generate_btn = ttk.Button(main_frame, text="Generar MIDI")
+    generate_btn.pack(pady=10, ipady=5)
+    
+    # ===============================
     # Variables para checkbuttons de voces
     # ===============================
 
     voice_vars = {}
 
-    def set_voices(voices: list[str]):
-        # limpiar
+    def set_voices(parts: list[dict]):
+        # Limpiar lista anterior
         for widget in voices_list_frame.winfo_children():
             widget.destroy()
 
         voice_vars.clear()
 
-        for name in voices:
+        for part in parts:
+            part_id = part["id"]
+            part_name = part["name"]
+
             var = tk.BooleanVar(value=True)
 
             chk = ttk.Checkbutton(
                 voices_list_frame,
-                text=name,
+                text=part_name,
                 variable=var
             )
             chk.pack(anchor="w", pady=2)
 
-            voice_vars[name] = var
-
+            #voice_vars[part_id] = var
+            voice_vars[part_id] = {
+                "var": var,
+                "name": part_name
+            }
+            
     def get_selected_voices():
-        return [name for name, var in voice_vars.items() if var.get()]
+        return [
+            {
+                "id": part_id,
+                "name": data["name"]
+            }
+            for part_id, data in voice_vars.items()
+            if data["var"].get()
+        ]
 
     # ===============================
     # Área de registro
@@ -115,4 +174,10 @@ def build_coral_view_window():
         "set_voices": set_voices,
         "get_selected_voices": get_selected_voices,
         "back_btn": back_btn,
+        "generate_btn": generate_btn,
+        #"output_dir_var": output_dir_var,
+        #"browse_output_btn": browse_output_btn,
+        "folder_name_var": folder_name_var,
+        "base_path_var": base_path_var,
+        "browse_base_btn": browse_base_btn,
     }

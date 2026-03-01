@@ -5,6 +5,7 @@ y extraer información estructural coral.
 
 from music21 import converter
 from pathlib import Path
+from collections import Counter
 
 
 def analyze_coral_parts(xml_path: Path) -> dict:
@@ -15,7 +16,10 @@ def analyze_coral_parts(xml_path: Path) -> dict:
         {
             "title": str,
             "tempo": float,
-            "parts": [str, str, ...]
+            "parts": [
+                {"id": str, "name": str},
+                ...
+            ]
         }
     """
 
@@ -33,13 +37,41 @@ def analyze_coral_parts(xml_path: Path) -> dict:
 
     # Partes detectadas
     parts = []
+    raw_names = []
+
     for i, part in enumerate(score.parts, start=1):
-        name = part.partName if part.partName else f"Parte {i}"
-        parts.append(name)
+        raw_name = part.partName.strip() if part.partName else f"Parte {i}"
+        raw_names.append(raw_name)
+
+    # Contar ocurrencias
+    name_counts = Counter(raw_names)
+
+    # Generar nombres definitivos
+    name_counter = {}
+
+    for i, part in enumerate(score.parts, start=1):
+
+        part_id = part.id
+        raw_name = raw_names[i - 1]
+
+        if name_counts[raw_name] > 1:
+            # Hay duplicados → numerar todos
+            if raw_name in name_counter:
+                name_counter[raw_name] += 1
+            else:
+                name_counter[raw_name] = 1
+
+            display_name = f"{raw_name} {name_counter[raw_name]}"
+        else:
+            display_name = raw_name
+
+        parts.append({
+            "id": part_id,
+            "name": display_name
+        })
 
     return {
         "title": title,
         "tempo": tempo,
         "parts": parts,
     }
-

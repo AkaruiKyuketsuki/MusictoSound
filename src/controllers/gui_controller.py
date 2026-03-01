@@ -16,6 +16,7 @@ from views.start_view import build_start_window
 from views.coral_view import build_coral_view_window
 
 from services.coral_parser_service import analyze_coral_parts
+from services.coral_midi_service import export_selected_parts_to_midi
 # ==========================================================
 # Utilidades
 # ==========================================================
@@ -108,7 +109,14 @@ def run_coral_gui():
     log = widgets["log"]
     set_voices = widgets["set_voices"]
     view_score_btn = widgets["view_score_btn"]
-
+    generate_btn = widgets["generate_btn"]
+    get_selected_voices = widgets["get_selected_voices"]
+    #output_dir_var = widgets["output_dir_var"]
+    #browse_output_btn = widgets["browse_output_btn"]
+    folder_name_var = widgets["folder_name_var"]
+    base_path_var = widgets["base_path_var"]
+    browse_base_btn = widgets["browse_base_btn"]
+    
     log("Módulo generador coral listo.")
 
     # ------------------------------------------------------
@@ -196,12 +204,91 @@ def run_coral_gui():
         set_voices(result["parts"])
 
     # ------------------------------------------------------
+    # Generar MIDI
+    # ------------------------------------------------------
+    def generate_midi():
+
+        xml_path = xml_path_var.get().strip()
+
+        if not xml_path:
+            log("⚠ Selecciona un archivo XML.")
+            return
+
+        path = Path(xml_path)
+
+        if not path.is_file():
+            log(f"❌ El archivo no existe: {path}")
+            return
+
+        selected = get_selected_voices()
+
+        if not selected:
+            log("⚠ No hay voces seleccionadas.")
+            return
+
+        #output_dir = path.parent / "coral_output"
+        """
+        output_dir_str = output_dir_var.get().strip()
+
+        if output_dir_str:
+            output_dir = Path(output_dir_str)
+        else:
+            output_dir = path.parent / "coral_output"
+        """
+        folder_name = folder_name_var.get().strip()
+        base_path_str = base_path_var.get().strip()
+
+        if not folder_name:
+            log("⚠ El nombre de carpeta no puede estar vacío.")
+            return
+
+        # Si no se indica ubicación → usar carpeta del XML
+        if base_path_str:
+            base_path = Path(base_path_str)
+        else:
+            base_path = path.parent
+
+        output_dir = base_path / folder_name
+        
+        log("Generando archivos MIDI...")
+
+        try:
+            generated_files = export_selected_parts_to_midi(
+                path,
+                selected,
+                output_dir,
+            )
+
+            for file in generated_files:
+                log(f"✅ Generado: {file.name}")
+
+            log("Proceso completado correctamente.")
+
+        except Exception as e:
+            log(f"❌ Error al generar MIDI: {e}")
+
+    # ------------------------------------------------------
+    # Examinar ubicación de salida
+    # ------------------------------------------------------
+    def browse_base_directory():
+        from tkinter import filedialog
+
+        folder = filedialog.askdirectory()
+
+        if folder:
+            base_path_var.set(folder)
+            log(f"Ubicación base seleccionada: {folder}")
+
+    # ------------------------------------------------------
     # Asignar comandos
     # ------------------------------------------------------
     back_btn.config(command=go_back)
     browse_btn.config(command=browse_xml)
     analyze_btn.config(command=analyze)
     view_score_btn.config(command=on_view_score)
+    generate_btn.config(command=generate_midi)
+    #browse_output_btn.config(command=browse_output_dir)
+    browse_base_btn.config(command=browse_base_directory)
 
     root.mainloop()
 

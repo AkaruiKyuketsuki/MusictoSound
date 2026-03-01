@@ -27,7 +27,7 @@ def build_start_window():
     transcribe_btn = ttk.Button(frm, text="Transcribir partitura")
     transcribe_btn.pack(fill="x", pady=15, ipady=15)
 
-    reaper_btn = ttk.Button(frm, text="Procesar XML para Reaper")
+    reaper_btn = ttk.Button(frm, text="Procesar XML por pistas")
     reaper_btn.pack(fill="x", pady=15, ipady=15)
 
     return {
