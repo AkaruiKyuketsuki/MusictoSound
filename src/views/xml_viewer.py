@@ -54,9 +54,14 @@ def show_xml_score(original_pdf: Path | None, generated_pdf: Path):
     ttk.Button(
         frm,
         text="🎼 Abrir en visor del sistema",
-        command=lambda: _open_pdf(generated_pdf),
+        #command=lambda: _open_pdf(generated_pdf),
+        command=lambda: _run_and_close(lambda: _open_pdf(generated_pdf)),
         width=30,
     ).pack(pady=6)
+
+    def _run_and_close(action):
+        action()
+        win.destroy()
 
     def _open_in_app():
         try:
@@ -89,7 +94,8 @@ def show_xml_score(original_pdf: Path | None, generated_pdf: Path):
         ttk.Button(
             frm,
             text="Ver en la aplicación",
-            command=_open_in_app,
+            #command=_open_in_app,
+            command=lambda: _run_and_close(_open_in_app),
             width=30,
         ).pack(pady=6)
     else:
@@ -108,6 +114,7 @@ def show_xml_score(original_pdf: Path | None, generated_pdf: Path):
         ttk.Button(
             frm,
             text="💾 Descargar PDF",
-            command=_download_pdf,
+            #command=_download_pdf,
+            command=lambda: _run_and_close(_download_pdf),
             width=30,
         ).pack(pady=6)
