@@ -15,6 +15,7 @@ from views.xml_viewer import show_xml_score
 from views.start_view import build_start_window
 from views.coral_view import build_coral_view_window
 
+from services.coral_parser_service import analyze_coral_parts
 # ==========================================================
 # Utilidades
 # ==========================================================
@@ -93,23 +94,84 @@ def run_gui():
 
 
 # ==========================================================
-# Placeholder vista Coral (vacía por ahora)
+# Controlador de la vista Coral
 # ==========================================================
 def run_coral_gui():
 
     widgets = build_coral_view_window()
 
     root = widgets["root"]
+    xml_path_var = widgets["xml_path_var"]
+    browse_btn = widgets["browse_btn"]
+    analyze_btn = widgets["analyze_btn"]
     back_btn = widgets["back_btn"]
+    log = widgets["log"]
+    set_voices = widgets["set_voices"]
 
+    log("Módulo generador coral listo.")
+
+    # ------------------------------------------------------
+    # Volver
+    # ------------------------------------------------------
     def go_back():
         root.destroy()
         run_gui()
 
+    # ------------------------------------------------------
+    # Examinar XML
+    # ------------------------------------------------------
+    def browse_xml():
+        from tkinter import filedialog
+
+        path = filedialog.askopenfilename(
+            filetypes=[("MusicXML files", "*.xml *.mxl"), ("All files", "*.*")]
+        )
+
+        if path:
+            xml_path_var.set(path)
+            log(f"Archivo seleccionado: {path}")
+
+    # ------------------------------------------------------
+    # Analizar voces
+    # ------------------------------------------------------
+    def analyze():
+
+        xml_path = xml_path_var.get().strip()
+
+        if not xml_path:
+            log("⚠ Selecciona un archivo XML.")
+            return
+
+        path = Path(xml_path)
+
+        if not path.is_file():
+            log(f"❌ El archivo no existe: {path}")
+            return
+
+        log("Analizando archivo XML...")
+
+        try:
+            result = analyze_coral_parts(path)
+        except Exception as e:
+            log(f"❌ Error al analizar el XML: {e}")
+            return
+
+        log("Análisis completado correctamente.")
+        log(f"Título: {result['title']}")
+        log(f"Tempo detectado: {result['tempo']} BPM")
+
+        # Delegamos completamente en la vista
+        set_voices(result["parts"])
+
+    # ------------------------------------------------------
+    # Asignar comandos
+    # ------------------------------------------------------
     back_btn.config(command=go_back)
+    browse_btn.config(command=browse_xml)
+    analyze_btn.config(command=analyze)
 
     root.mainloop()
-
+    
 # ==========================================================
 # Controlador de la vista de transcripcion de la GUI
 # ==========================================================
