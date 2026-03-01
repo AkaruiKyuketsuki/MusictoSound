@@ -12,6 +12,9 @@ from services.conversion_service import convert_score
 from services.xml_render_service import render_xml_to_pdf
 from views.xml_viewer import show_xml_score
 
+from views.start_view import build_start_window
+from views.reaper_view import build_reaper_window
+
 # ==========================================================
 # Utilidades
 # ==========================================================
@@ -65,9 +68,52 @@ def _run_conversion(log, request: ConversionRequest, root, progress, start_btn):
         root.after(0, finish)
 
 # ==========================================================
-# Controlador principal GUI
+# Controlador principal GUI, con selección de modo
 # ==========================================================
 def run_gui():
+
+    widgets = build_start_window()
+
+    root = widgets["root"]
+    transcribe_btn = widgets["transcribe_btn"]
+    reaper_btn = widgets["reaper_btn"]
+
+    def open_transcription():
+        root.destroy()
+        run_transcription_gui()
+
+    def open_reaper():
+        root.destroy()
+        run_reaper_gui()
+
+    transcribe_btn.config(command=open_transcription)
+    reaper_btn.config(command=open_reaper)
+
+    root.mainloop()
+
+
+# ==========================================================
+# Placeholder vista Reaper (vacía por ahora)
+# ==========================================================
+def run_reaper_gui():
+
+    widgets = build_reaper_window()
+
+    root = widgets["root"]
+    back_btn = widgets["back_btn"]
+
+    def go_back():
+        root.destroy()
+        run_gui()
+
+    back_btn.config(command=go_back)
+
+    root.mainloop()
+
+# ==========================================================
+# Controlador de la vista de transcripcion de la GUI
+# ==========================================================
+def run_transcription_gui():
     widgets = build_window()
 
     root = widgets["root"]
@@ -79,6 +125,7 @@ def run_gui():
     open_btn = widgets["open_btn"]
     view_xml_btn = widgets["view_xml_btn"]
     progress = widgets["progress"]
+    back_btn = widgets["back_btn"]
 
     log("Interfaz gráfica lista.")
 
@@ -175,6 +222,13 @@ def run_gui():
 
 
     # ------------------------------------------------------
+    def go_back():
+        root.destroy()
+        run_gui()
+    # ------------------------------------------------------   
+
+
+    back_btn.config(command=go_back)
     start_btn.config(command=on_start)
     open_btn.config(command=on_open_output)
     view_xml_btn.config(command=on_view_xml)
