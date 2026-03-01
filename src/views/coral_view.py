@@ -33,11 +33,17 @@ def build_coral_view_window():
     browse_btn.pack(side="left")
 
     # ===============================
-    # Botón Analizar
+    # Botones de acción
     # ===============================
-    analyze_btn = ttk.Button(main_frame, text="Analizar voces")
-    analyze_btn.pack(pady=20, ipady=5)
+    buttons_frame = ttk.Frame(main_frame)
+    buttons_frame.pack(pady=20)
 
+    analyze_btn = ttk.Button(buttons_frame, text="Analizar voces")
+    analyze_btn.pack(side="left", padx=10, ipady=5)
+
+    view_score_btn = ttk.Button(buttons_frame, text="Visualizar partitura")
+    view_score_btn.pack(side="left", padx=10, ipady=5)
+    
     # ===============================
     # Frame para mostrar voces
     # ===============================
@@ -103,6 +109,7 @@ def build_coral_view_window():
         "log": log,
         "browse_btn": browse_btn,
         "analyze_btn": analyze_btn,
+        "view_score_btn": view_score_btn,
         "voices_frame": voices_frame,
         "voices_list_frame": voices_list_frame,
         "set_voices": set_voices,

@@ -107,6 +107,7 @@ def run_coral_gui():
     back_btn = widgets["back_btn"]
     log = widgets["log"]
     set_voices = widgets["set_voices"]
+    view_score_btn = widgets["view_score_btn"]
 
     log("Módulo generador coral listo.")
 
@@ -116,6 +117,37 @@ def run_coral_gui():
     def go_back():
         root.destroy()
         run_gui()
+
+    # ------------------------------------------------------
+    # Visualizar partitura
+    # ------------------------------------------------------
+    def on_view_score():
+
+        xml_path = xml_path_var.get().strip()
+
+        if not xml_path:
+            log("⚠ Selecciona un archivo XML.")
+            return
+
+        path = Path(xml_path)
+
+        if not path.is_file():
+            log(f"❌ El archivo no existe: {path}")
+            return
+
+        log("Generando partitura visual...")
+
+        try:
+            output_dir = path.parent
+            pdf_path = render_xml_to_pdf(path, output_dir)
+
+            log(f"✅ Partitura generada correctamente: {pdf_path.name}")
+
+            # Mostrar PDF generado
+            show_xml_score(None, pdf_path)
+
+        except Exception as e:
+            log(f"❌ Error al visualizar la partitura: {e}")
 
     # ------------------------------------------------------
     # Examinar XML
@@ -169,9 +201,10 @@ def run_coral_gui():
     back_btn.config(command=go_back)
     browse_btn.config(command=browse_xml)
     analyze_btn.config(command=analyze)
+    view_score_btn.config(command=on_view_score)
 
     root.mainloop()
-    
+
 # ==========================================================
 # Controlador de la vista de transcripcion de la GUI
 # ==========================================================
