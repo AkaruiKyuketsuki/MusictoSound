@@ -12,6 +12,11 @@ from services.conversion_service import convert_score
 from services.xml_render_service import render_xml_to_pdf
 from views.xml_viewer import show_xml_score
 
+from views.start_view import build_start_window
+from views.coral_view import build_coral_view_window
+
+from services.coral_parser_service import analyze_coral_parts
+from services.coral_midi_service import export_selected_parts_to_midi
 # ==========================================================
 # Utilidades
 # ==========================================================
@@ -71,9 +76,244 @@ def _run_conversion(log, request: ConversionRequest, root, progress, start_btn, 
         root.after(0, finish)
 
 # ==========================================================
-# Controlador principal GUI
+# Controlador principal GUI, con selección de modo
 # ==========================================================
 def run_gui():
+
+    widgets = build_start_window()
+
+    root = widgets["root"]
+    transcribe_btn = widgets["transcribe_btn"]
+    reaper_btn = widgets["reaper_btn"]
+
+    def open_transcription():
+        root.destroy()
+        run_transcription_gui()
+
+    def open_coral():
+        root.destroy()
+        run_coral_gui()
+
+    transcribe_btn.config(command=open_transcription)
+    reaper_btn.config(command=open_coral)
+
+    root.mainloop()
+
+
+# ==========================================================
+# Controlador de la vista Coral
+# ==========================================================
+def run_coral_gui():
+
+    widgets = build_coral_view_window()
+
+    root = widgets["root"]
+    xml_path_var = widgets["xml_path_var"]
+    browse_btn = widgets["browse_btn"]
+    analyze_btn = widgets["analyze_btn"]
+    back_btn = widgets["back_btn"]
+    log = widgets["log"]
+
+    set_voices = widgets["set_voices"]
+    view_score_btn = widgets["view_score_btn"]
+    generate_btn = widgets["generate_btn"]
+    get_selected_voices = widgets["get_selected_voices"]
+  
+    folder_name_var = widgets["folder_name_var"]
+    base_path_var = widgets["base_path_var"]
+    browse_base_btn = widgets["browse_base_btn"]
+    
+    log("Módulo generador coral listo.")
+
+    # ------------------------------------------------------
+    # Volver
+    # ------------------------------------------------------
+    def go_back():
+        root.destroy()
+        run_gui()
+
+    # ------------------------------------------------------
+    # Visualizar partitura
+    # ------------------------------------------------------
+    def on_view_score():
+
+        xml_path = xml_path_var.get().strip()
+
+        if not xml_path:
+            log("⚠ Selecciona un archivo XML.")
+            return
+
+        path = Path(xml_path)
+
+        if not path.is_file():
+            log(f"❌ El archivo no existe: {path}")
+            return
+
+        log("Generando partitura visual...")
+
+        try:
+            output_dir = path.parent
+            pdf_path = render_xml_to_pdf(path, output_dir)
+
+            log(f"✅ Partitura generada correctamente: {pdf_path.name}")
+
+            # Mostrar PDF generado
+            show_xml_score(None, pdf_path)
+
+        except Exception as e:
+            log(f"❌ Error al visualizar la partitura: {e}")
+
+    # ------------------------------------------------------
+    # Examinar XML
+    # ------------------------------------------------------
+    def browse_xml():
+        from tkinter import filedialog
+
+        path = filedialog.askopenfilename(
+            filetypes=[("MusicXML files", "*.xml *.mxl"), ("All files", "*.*")]
+        )
+
+        if path:
+            xml_path_var.set(path)
+
+            # 🔹 Limpiar voces anteriores
+            clear_detected_voices()
+
+            log(f"Archivo seleccionado: {path}")
+
+    # ------------------------------------------------------
+    # Analizar voces
+    # ------------------------------------------------------
+    def analyze():
+
+        xml_path = xml_path_var.get().strip()
+
+        if not xml_path:
+            log("⚠ Selecciona un archivo XML.")
+            return
+
+        path = Path(xml_path)
+
+        if not path.is_file():
+            log(f"❌ El archivo no existe: {path}")
+            return
+
+        log("Analizando archivo XML...")
+
+        try:
+            result = analyze_coral_parts(path)
+        except Exception as e:
+            log(f"❌ Error al analizar el XML: {e}")
+            return
+
+        log("Análisis completado correctamente.")
+        log(f"Título: {result['title']}")
+        log(f"Tempo detectado: {result['tempo']} BPM")
+
+        # Delegamos completamente en la vista
+        set_voices(result["parts"])
+
+    # ------------------------------------------------------
+    # Generar MIDI
+    # ------------------------------------------------------
+    def generate_midi():
+
+        xml_path = xml_path_var.get().strip()
+
+        if not xml_path:
+            log("⚠ Selecciona un archivo XML.")
+            return
+
+        path = Path(xml_path)
+
+        if not path.is_file():
+            log(f"❌ El archivo no existe: {path}")
+            return
+
+        selected = get_selected_voices()
+
+        if not selected:
+            log("⚠ No hay voces seleccionadas.")
+            return
+
+        #output_dir = path.parent / "coral_output"
+        """
+        output_dir_str = output_dir_var.get().strip()
+
+        if output_dir_str:
+            output_dir = Path(output_dir_str)
+        else:
+            output_dir = path.parent / "coral_output"
+        """
+        folder_name = folder_name_var.get().strip()
+        base_path_str = base_path_var.get().strip()
+
+        if not folder_name:
+            log("⚠ El nombre de carpeta no puede estar vacío.")
+            return
+
+        # Si no se indica ubicación → usar carpeta del XML
+        if base_path_str:
+            base_path = Path(base_path_str)
+        else:
+            base_path = path.parent
+
+        output_dir = base_path / folder_name
+        
+        log("Generando archivos MIDI...")
+
+        try:
+            generated_files = export_selected_parts_to_midi(
+                path,
+                selected,
+                output_dir,
+            )
+
+            for file in generated_files:
+                log(f"✅ Generado: {file.name}")
+
+            log("Proceso completado correctamente.")
+
+        except Exception as e:
+            log(f"❌ Error al generar MIDI: {e}")
+
+
+    # ------------------------------------------------------
+    # Limpiar voces detectadas
+    # ------------------------------------------------------
+    def clear_detected_voices():
+        set_voices([])  # reutilizamos la función existente
+        log("Voces limpiadas.")
+        
+    # ------------------------------------------------------
+    # Examinar ubicación de salida
+    # ------------------------------------------------------
+    def browse_base_directory():
+        from tkinter import filedialog
+
+        folder = filedialog.askdirectory()
+
+        if folder:
+            base_path_var.set(folder)
+            log(f"Ubicación base seleccionada: {folder}")
+
+    # ------------------------------------------------------
+    # Asignar comandos
+    # ------------------------------------------------------
+    back_btn.config(command=go_back)
+    browse_btn.config(command=browse_xml)
+    analyze_btn.config(command=analyze)
+    view_score_btn.config(command=on_view_score)
+    generate_btn.config(command=generate_midi)
+    #browse_output_btn.config(command=browse_output_dir)
+    browse_base_btn.config(command=browse_base_directory)
+
+    root.mainloop()
+
+# ==========================================================
+# Controlador de la vista de transcripcion de la GUI
+# ==========================================================
+def run_transcription_gui():
     widgets = build_window()
 
     root = widgets["root"]
@@ -86,6 +326,7 @@ def run_gui():
     view_xml_btn = widgets["view_xml_btn"]
     edit_btn = widgets["edit_btn"]
     progress = widgets["progress"]
+    back_btn = widgets["back_btn"]
     auto_open_var = widgets["auto_open_var"]
     view_in_app_var = widgets["view_in_app_var"]
     view_in_system_var = widgets["view_in_system_var"]
@@ -222,6 +463,13 @@ def run_gui():
             log(f"❌ No se pudo abrir el editor: {e}")
 
     # ------------------------------------------------------
+    def go_back():
+        root.destroy()
+        run_gui()
+    # ------------------------------------------------------   
+
+
+    back_btn.config(command=go_back)
     start_btn.config(command=on_start)
     open_btn.config(command=on_open_output)
     view_xml_btn.config(command=on_view_xml)

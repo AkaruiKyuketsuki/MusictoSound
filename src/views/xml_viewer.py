@@ -22,7 +22,7 @@ def _open_pdf(pdf_path: Path):
         subprocess.Popen(["xdg-open", str(pdf_path)])
 
 
-def show_xml_score(original_pdf: Path, generated_pdf: Path, mode: str = "ask"):
+def show_xml_score(original_pdf: Path | None, generated_pdf: Path): 
     """
     Muestra una ventana para visualizar la partitura generada desde MusicXML.
     """
@@ -80,9 +80,14 @@ def show_xml_score(original_pdf: Path, generated_pdf: Path, mode: str = "ask"):
     ttk.Button(
         frm,
         text="🎼 Abrir en visor del sistema",
-        command=lambda: _open_pdf(generated_pdf),
+        #command=lambda: _open_pdf(generated_pdf),
+        command=lambda: _run_and_close(lambda: _open_pdf(generated_pdf)),
         width=30,
     ).pack(pady=6)
+
+    def _run_and_close(action):
+        action()
+        win.destroy()
 
     def _open_in_app():
         try:
@@ -111,9 +116,31 @@ def show_xml_score(original_pdf: Path, generated_pdf: Path, mode: str = "ask"):
                 f"No se pudo mostrar la comparación: COMPRUEBE QUE HA AÑADIDO LA CARPETA DE ENTRADA\n{e}"
             )
 
-    ttk.Button(
-        frm,
-        text="Ver en la aplicación",
-        command=_open_in_app,
-        width=30,
-    ).pack(pady=6)
+    if original_pdf is not None:
+        ttk.Button(
+            frm,
+            text="Ver en la aplicación",
+            #command=_open_in_app,
+            command=lambda: _run_and_close(_open_in_app),
+            width=30,
+        ).pack(pady=6)
+    else:
+        from tkinter import filedialog
+        import shutil
+
+        def _download_pdf():
+            destination = filedialog.asksaveasfilename(
+                defaultextension=".pdf",
+                filetypes=[("PDF files", "*.pdf")],
+                initialfile=generated_pdf.name
+            )
+            if destination:
+                shutil.copy(generated_pdf, destination)
+
+        ttk.Button(
+            frm,
+            text="💾 Descargar PDF",
+            #command=_download_pdf,
+            command=lambda: _run_and_close(_download_pdf),
+            width=30,
+        ).pack(pady=6)
