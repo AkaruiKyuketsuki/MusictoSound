@@ -31,7 +31,7 @@ def build_coral_view_window():
 
     browse_btn = ttk.Button(file_frame, text="Examinar")
     browse_btn.pack(side="left")
-    
+
     # ======================================
     # Carpeta de salida (opcional)
     # ======================================
@@ -82,44 +82,61 @@ def build_coral_view_window():
 
     view_score_btn = ttk.Button(buttons_frame, text="Visualizar partitura")
     view_score_btn.pack(side="left", padx=10, ipady=5)
-    
-    # ===============================
-    # Frame para mostrar voces
-    # ===============================
-    """
-    voices_frame = ttk.LabelFrame(main_frame, text="Voces detectadas", padding=20)
-    voices_frame.pack(fill="both", expand=True, pady=20)
-    
-    voices_list_frame = ttk.Frame(voices_frame)
-    voices_list_frame.pack(fill="both", expand=True)
-    """
-    # ===============================
-    # Zona central (Voces + Mezcla)
-    # ===============================
-    content_frame = ttk.Frame(main_frame)
-    content_frame.pack(fill="both", expand=True, pady=20)
 
-    # -------- IZQUIERDA: Voces detectadas --------
+    # ==========================================================
+    # ZONA REDIMENSIONABLE (contenido superior + consola)
+    # ==========================================================
+    paned = ttk.PanedWindow(main_frame, orient="vertical")
+    paned.pack(fill="both", expand=True, pady=(10, 0))
+
+    # ===============================
+    # Frame superior (contenido)
+    # ===============================
+    top_frame = ttk.Frame(paned)
+    paned.add(top_frame, weight=4)
+
+    # ===============================
+    # Frame inferior (registro)
+    # ===============================
+    bottom_frame = ttk.Frame(paned)
+    paned.add(bottom_frame, weight=1)
+
+    def set_initial_pane_size():
+        root.update_idletasks()
+        total_height = paned.winfo_height()
+        console_height = 100  # altura inicial de la consola (puedes ajustar)
+        paned.sashpos(0, total_height - console_height)
+
+    root.after(100, set_initial_pane_size)
+
+    # ===============================
+    # Contenido principal (voces + mezcla)
+    # ===============================
+    content_frame = ttk.Frame(top_frame)
+    content_frame.pack(fill="both", expand=True)
+
+    # -------------------------------
+    # Voces detectadas
+    # -------------------------------
     voices_frame = ttk.LabelFrame(content_frame, text="Voces detectadas", padding=20)
     voices_frame.pack(side="left", fill="both", expand=True, padx=(0, 10))
 
     voices_list_frame = ttk.Frame(voices_frame)
     voices_list_frame.pack(fill="both", expand=True)
 
-    # -------- DERECHA: Mezcla --------
-    mixer_frame = ttk.LabelFrame(content_frame, text="Mezcla", padding=20)
-    mixer_frame.pack(side="left", fill="both", expand=True)
+    # -------------------------------
+    # Mezcla
+    # -------------------------------
+    mix_frame = ttk.LabelFrame(content_frame, text="Mezcla", padding=20)
+    mix_frame.pack(side="left", fill="both", expand=True)
 
-    mixer_list_frame = ttk.Frame(mixer_frame)
-    mixer_list_frame.pack(fill="both", expand=True)
-
-    # Diccionario para sliders
-    mixer_vars = {}
+    mix_list_frame = ttk.Frame(mix_frame)
+    mix_list_frame.pack(fill="both", expand=True)
 
     # ===============================
-    # Frame inferior de acciones
+    # Botones principales
     # ===============================
-    buttons_row = ttk.Frame(main_frame)
+    buttons_row = ttk.Frame(top_frame)
     buttons_row.pack(pady=15)
 
     generate_btn = ttk.Button(buttons_row, text="Generar MIDI")
@@ -131,35 +148,35 @@ def build_coral_view_window():
     back_btn = ttk.Button(buttons_row, text="Volver")
     back_btn.pack(side="left", padx=20, ipady=6)
 
-    # ======================================
+    # ===============================
     # Variables para checkbuttons de voces
-    # ======================================
-
+    # ===============================
     voice_vars = {}
+    mix_vars = {}
 
     def set_voices(parts: list[dict]):
-        # Limpiar voces
+        # Limpiar lista anterior
         for widget in voices_list_frame.winfo_children():
             widget.destroy()
-
-        # Limpiar mixer
-        for widget in mixer_list_frame.winfo_children():
+        for widget in mix_list_frame.winfo_children():
             widget.destroy()
 
         voice_vars.clear()
-        mixer_vars.clear()
+        mix_vars.clear()
 
         for part in parts:
             part_id = part["id"]
             part_name = part["name"]
 
-            # ---- Columna voces ----
             row_frame = ttk.Frame(voices_list_frame)
             row_frame.pack(fill="x", pady=2)
 
             var = tk.BooleanVar(value=True)
 
-            chk = ttk.Checkbutton(row_frame, variable=var)
+            chk = ttk.Checkbutton(
+                row_frame,
+                variable=var
+            )
             chk.pack(side="left")
 
             name_var = tk.StringVar(value=part_name)
@@ -167,7 +184,7 @@ def build_coral_view_window():
             entry = ttk.Entry(
                 row_frame,
                 textvariable=name_var,
-                width=35
+                width=40
             )
             entry.pack(side="left", padx=5, fill="x", expand=True)
 
@@ -176,28 +193,25 @@ def build_coral_view_window():
                 "name_var": name_var
             }
 
-            # ---- Columna mixer ----
-            mixer_row = ttk.Frame(mixer_list_frame)
-            mixer_row.pack(fill="x", pady=5)
+            # Crear slider de mezcla
+            mix_row = ttk.Frame(mix_list_frame)
+            mix_row.pack(fill="x", pady=2)
 
-            ttk.Label(mixer_row, text=part_name, width=20).pack(side="left")
+            ttk.Label(mix_row, text=part_name, width=15).pack(side="left")
 
             volume_var = tk.DoubleVar(value=1.0)
 
             slider = ttk.Scale(
-                mixer_row,
+                mix_row,
                 from_=0.0,
-                to=1.5,
-                variable=volume_var,
-                orient="horizontal"
+                to=1.0,
+                orient="horizontal",
+                variable=volume_var
             )
-            slider.pack(side="left", fill="x", expand=True, padx=5)
+            slider.pack(side="left", fill="x", expand=True, padx=10)
 
-            mixer_vars[part_id] = volume_var
+            mix_vars[part_id] = volume_var
 
-    # ============================================
-    # Función para obtener voces seleccionadas
-    # ============================================            
     def get_selected_voices():
         return [
             {
@@ -208,23 +222,26 @@ def build_coral_view_window():
             if data["var"].get()
         ]
 
-    # ============================================ 
-    # Función para obtener los valores de mezcla
-    # ============================================
-    def get_mixer_values():
+    def get_mix_levels():
         return {
-            part_id: volume_var.get()
-            for part_id, volume_var in mixer_vars.items()
+            part_id: var.get()
+            for part_id, var in mix_vars.items()
         }
 
     # ===============================
-    # Área de registro
+    # Registro
     # ===============================
-    ttk.Separator(main_frame).pack(fill="x", pady=10)
 
-    ttk.Label(main_frame, text="Registro:").pack(anchor="w")
+    # Pequeño indicador visual de arrastre
+    drag_indicator = ttk.Frame(bottom_frame)
+    drag_indicator.pack(fill="x", pady=(2, 4))
 
-    log_box = tk.Text(main_frame, height=12, state="disabled")
+    indicator_line = tk.Frame(drag_indicator, height=2, bg="#999999")
+    indicator_line.pack(fill="x", padx=200, pady=2)
+
+    ttk.Label(bottom_frame, text="Registro:").pack(anchor="w")
+
+    log_box = tk.Text(bottom_frame, height=8, state="disabled")
     log_box.pack(fill="both", expand=True, pady=5)
 
     def log(message: str):
@@ -244,12 +261,11 @@ def build_coral_view_window():
         "voices_list_frame": voices_list_frame,
         "set_voices": set_voices,
         "get_selected_voices": get_selected_voices,
+        "get_mix_levels": get_mix_levels,
         "back_btn": back_btn,
         "generate_btn": generate_btn,
+        "download_wav_btn": download_wav_btn,
         "folder_name_var": folder_name_var,
         "base_path_var": base_path_var,
         "browse_base_btn": browse_base_btn,
-        "mixer_list_frame": mixer_list_frame,
-        "get_mixer_values": get_mixer_values,
-        "download_wav_btn": download_wav_btn,
     }
