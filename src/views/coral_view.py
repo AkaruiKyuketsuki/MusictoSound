@@ -83,6 +83,12 @@ def build_coral_view_window():
     view_score_btn = ttk.Button(buttons_frame, text="Visualizar partitura")
     view_score_btn.pack(side="left", padx=10, ipady=5)
 
+    back_btn = ttk.Button(buttons_frame, text="Volver")
+    back_btn.pack(side="left", padx=10, ipady=5)
+
+    exit_btn = ttk.Button(buttons_frame, text="Salir", command=root.destroy)
+    exit_btn.pack(side="left", padx=10, ipady=5)
+
     # ==========================================================
     # ZONA REDIMENSIONABLE (contenido superior + consola)
     # ==========================================================
@@ -144,9 +150,6 @@ def build_coral_view_window():
 
     download_wav_btn = ttk.Button(buttons_row, text="Descargar WAV")
     download_wav_btn.pack(side="left", padx=20, ipady=6)
-
-    back_btn = ttk.Button(buttons_row, text="Volver")
-    back_btn.pack(side="left", padx=20, ipady=6)
 
     # ===============================
     # Variables para checkbuttons de voces
@@ -265,6 +268,7 @@ def build_coral_view_window():
         "get_selected_voices": get_selected_voices,
         "get_mix_levels": get_mix_levels,
         "back_btn": back_btn,
+        "exit_btn": exit_btn,
         "generate_btn": generate_btn,
         "download_wav_btn": download_wav_btn,
         "folder_name_var": folder_name_var,
