@@ -164,7 +164,33 @@ Se añadió una barra de progreso que actúa como temporizador visual durante el
 \subsection*{Añadidos botones para la navegación entre páginas de la partitura}
 Se implementaron controles específicos que permiten al usuario cambiar entre las distintas páginas de una partitura cuando esta se compone de múltiples hojas. Esta funcionalidad incrementa notablemente la usabilidad del visualizador, dotándolo de la capacidad de recorrer con facilidad todo el contenido musical, haciendo posible así una inspección detallada y cómoda de cada página de la partitura.
 
-\section{Avances del 2026-01-20}
+\section{Avances del 2026-01-21}
 
-\subsection*{Integración de ramas y consolidación del desarrollo}
-En esta fase del desarrollo, se realizó la integración de la rama principal del repositorio remoto con la rama local del proyecto. Esta operación permitió consolidar los avances más recientes y asegurar que el entorno de desarrollo se encontrase sincronizado con la última versión del código fuente disponible en el control de versiones. La fusión no solo facilita la continuidad del trabajo en el proyecto, sino que también minimiza la aparición de conflictos futuros al mantener una base de código homogénea. Este tipo de integraciones periódicas es esencial para coordinar el trabajo en proyectos colaborativos de ingeniería informática y asegurar la coherencia e integridad del sistema en desarrollo.
+\subsection*{Configuración avanzada para modos de visualización}
+Se añadieron dos nuevas opciones que permiten mantener siempre un modo específico de visualización, lo que dota al sistema de mayor flexibilidad y personalización. Esta decisión es importante para usuarios que prefieran trabajar constantemente en un entorno visual determinado, optimizando así la experiencia y adaptabilidad del software.
+
+\subsection*{Automatización y apertura automática tras la transcripción}
+Se incorporó la funcionalidad para abrir automáticamente el archivo resultante después de la transcripción musical, fomentando un flujo de trabajo más eficiente y reduciendo la carga operativa del usuario. A su vez, se creó un botón de edición que abre el archivo con la aplicación predeterminada del sistema, facilitando la modificación directa desde la interfaz sin pasos adicionales.
+
+\subsection*{Mecanismos de actualización automática en la memoria}
+Se implementaron acciones automáticas para la actualización de la memoria del proyecto, asegurando que los documentos y registros se mantengan al día sin intervención manual. Esto ayuda a mantener una documentación constante, evitando inconsistencias y pérdidas de información relevante durante el desarrollo.
+
+\subsection*{Herramientas de navegación y temporización en la conversión de partituras}
+Se añadió una barra con función de temporizador visible durante la conversión de partituras, que aunque es no determinista, cumple la función de mantener informado y entretenido al usuario durante procesos de espera. Por otro lado, se resolvieron problemas en el controlador para garantizar que la última partitura transcrita siempre se muestre correctamente. Además, se introdujeron botones que permiten al usuario navegar entre diferentes páginas de la partitura transcrita, mejorando la interacción y accesibilidad al contenido.
+
+\section{Avances del 2026-03-01}
+
+\subsection*{Optimización de la navegación en la interfaz}
+Se sustituyó el botón encargado de la acción de retroceso, mejorando la experiencia de usuario al proporcionar una navegación más intuitiva y coherente dentro de la aplicación. Este cambio implica también la revisión de los flujos de navegación para evitar errores y pérdidas de contexto durante el uso de la interfaz, aumentando así la usabilidad del sistema.
+
+\subsection*{Mejora en la generación y organización de archivos MIDI}
+Se implementó la generación automática de archivos MIDI con nombres únicos y su almacenamiento en carpetas de salida especificadas. Esta mejora contribuye a una gestión más eficiente de los archivos resultantes, facilitando su localización y evitando conflictos de sobrescritura, lo cual es crucial para manejar grandes cantidades de datos de salida durante la transcripción y procesamiento musical.
+
+\subsection*{Mejoras en ventanas y modos de visualización}
+Se añadió la funcionalidad de cierre en la ventana donde el usuario elige el modo de visualización, incremento que aporta mayor control y fluidez en la interacción. Además, se incorporó la visualización del contenido XML en el modo coral, incluyendo un análisis detallado de los pentagramas en esta vista. Se procedió también al cambio de denominación de la fase previamente conocida como 'reaper' a 'coral', reflejando mejor la naturaleza y funcionalidad de esta etapa del proceso.
+
+\subsection*{Implementación de retroceso y nuevos servicios en la interfaz}
+Se desarrolló la funcionalidad para retornar desde ventanas secundarias, asegurando que la navegación entre pantallas sea reversible y segura. Asimismo, se crearon nuevos módulos de servicios en Python (.py) para dar soporte a funcionalidades recientes, evidenciando una modularización creciente y coherente con buenas prácticas en ingeniería del software.
+
+\subsection*{Creación de la ventana inicial de selección}
+Se diseñó y desarrolló la ventana inicial que permite al usuario seleccionar opciones desde el comienzo de la experiencia, facilitando la configuración personalizada del proceso. Esta ventana inicial es clave para guiar al usuario de forma clara y efectiva, estableciendo el punto de entrada al sistema y mejorando la accesibilidad general.
