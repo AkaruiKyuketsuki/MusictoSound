@@ -197,7 +197,9 @@ def build_coral_view_window():
             mix_row = ttk.Frame(mix_list_frame)
             mix_row.pack(fill="x", pady=2)
 
-            ttk.Label(mix_row, text=part_name, width=15).pack(side="left")
+            #ttk.Label(mix_row, text=part_name, width=15).pack(side="left")
+            mix_label = ttk.Label(mix_row, textvariable=name_var, width=25)
+            mix_label.pack(side="left")
 
             volume_var = tk.DoubleVar(value=1.0)
 
