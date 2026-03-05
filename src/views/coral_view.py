@@ -177,12 +177,18 @@ def build_coral_view_window():
             row_frame = ttk.Frame(voices_list_frame)
             row_frame.pack(fill="x", pady=2)
 
+            """
             var = tk.BooleanVar(value=True)
 
             chk = ttk.Checkbutton(
                 row_frame,
                 variable=var
             )
+            """
+            var = tk.BooleanVar(value=True)
+
+            chk = ttk.Checkbutton(row_frame, variable=var)
+
             chk.pack(side="left")
 
             name_var = tk.StringVar(value=part_name)
@@ -204,9 +210,13 @@ def build_coral_view_window():
             mix_row.pack(fill="x", pady=2)
 
             #ttk.Label(mix_row, text=part_name, width=15).pack(side="left")
+            #mix_label = ttk.Label(mix_row, textvariable=name_var, width=25)
+            #mix_label.pack(side="left")
+
             mix_label = ttk.Label(mix_row, textvariable=name_var, width=25)
             mix_label.pack(side="left")
 
+            """
             volume_var = tk.DoubleVar(value=1.0)
 
             slider = ttk.Scale(
@@ -219,6 +229,57 @@ def build_coral_view_window():
             slider.pack(side="left", fill="x", expand=True, padx=10)
 
             mix_vars[part_id] = volume_var
+            """
+
+            # Volumen 0-100 con sincronización slider + spinbox
+            volume_var = tk.IntVar(value=100)
+
+            slider = ttk.Scale(
+                mix_row,
+                from_=0,
+                to=100,
+                orient="horizontal"
+            )
+            slider.pack(side="left", fill="x", expand=True, padx=10)
+
+            spin = ttk.Spinbox(
+                mix_row,
+                from_=0,
+                to=100,
+                width=5,
+                textvariable=volume_var
+            )
+            spin.pack(side="left", padx=5)
+
+            # sincronizar slider → variable
+            def on_slider(val, var=volume_var):
+                var.set(int(float(val)))
+
+            slider.config(command=on_slider)
+
+            # sincronizar variable → slider
+            def update_slider(*args, s=slider, var=volume_var):
+                s.set(var.get())
+
+            volume_var.trace_add("write", update_slider)
+
+            slider.set(100)
+
+            mix_vars[part_id] = volume_var
+            
+            def toggle_voice(v=var, vol=volume_var, s=slider, sp=spin, lbl=mix_label, name=name_var):
+                if v.get():
+                    vol.set(100)
+                    s.state(["!disabled"])
+                    sp.state(["!disabled"])
+                    lbl.configure(text=name.get(), foreground="black")
+                else:
+                    vol.set(0)
+                    s.state(["disabled"])
+                    sp.state(["disabled"])
+                    lbl.configure(text=f"{name.get()} (mute)", foreground="gray")
+                    
+            chk.config(command=toggle_voice)
 
     def get_selected_voices():
         return [
@@ -230,9 +291,17 @@ def build_coral_view_window():
             if data["var"].get()
         ]
 
+    """
     def get_mix_levels():
         return {
             part_id: var.get()
+            for part_id, var in mix_vars.items()
+        }
+    """
+
+    def get_mix_levels():
+        return {
+            part_id: var.get() / 100
             for part_id, var in mix_vars.items()
         }
 
