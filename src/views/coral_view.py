@@ -151,6 +151,9 @@ def build_coral_view_window():
     download_wav_btn = ttk.Button(buttons_row, text="Descargar WAV")
     download_wav_btn.pack(side="left", padx=20, ipady=6)
 
+    download_mix_btn = ttk.Button(buttons_row, text="Descargar mezcla")
+    download_mix_btn.pack(side="left", padx=20, ipady=6)
+
     # ===============================
     # Variables para checkbuttons de voces
     # ===============================
@@ -274,4 +277,5 @@ def build_coral_view_window():
         "folder_name_var": folder_name_var,
         "base_path_var": base_path_var,
         "browse_base_btn": browse_base_btn,
+        "download_mix_btn": download_mix_btn,
     }
