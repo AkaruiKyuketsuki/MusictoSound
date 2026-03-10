@@ -22,7 +22,7 @@ def _open_pdf(pdf_path: Path):
         subprocess.Popen(["xdg-open", str(pdf_path)])
 
 
-def show_xml_score(original_pdf: Path | None, generated_pdf: Path): 
+def show_xml_score(original_pdf: Path, generated_pdf: Path, mode=None):
     """
     Muestra una ventana para visualizar la partitura generada desde MusicXML.
     """

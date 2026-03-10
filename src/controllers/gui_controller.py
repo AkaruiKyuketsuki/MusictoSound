@@ -17,6 +17,8 @@ from views.coral_view import build_coral_view_window
 
 from services.coral_parser_service import analyze_coral_parts
 from services.coral_midi_service import export_selected_parts_to_midi
+
+from services.coral_midi_service import export_mix_to_midi
 # ==========================================================
 # Utilidades
 # ==========================================================
@@ -122,6 +124,10 @@ def run_coral_gui():
     folder_name_var = widgets["folder_name_var"]
     base_path_var = widgets["base_path_var"]
     browse_base_btn = widgets["browse_base_btn"]
+
+    download_wav_btn = widgets["download_wav_btn"]
+    get_mix_levels = widgets["get_mix_levels"]
+    download_mix_btn = widgets["download_mix_btn"]
     
     log("Módulo generador coral listo.")
 
@@ -284,7 +290,63 @@ def run_coral_gui():
     def clear_detected_voices():
         set_voices([])  # reutilizamos la función existente
         log("Voces limpiadas.")
-        
+
+    # ------------------------------------------------------
+    # Generar mezcla MIDI
+    # ------------------------------------------------------
+    def download_mix_midi():
+
+        xml_path = xml_path_var.get().strip()
+
+        if not xml_path:
+            log("⚠ Selecciona un archivo XML.")
+            return
+
+        path = Path(xml_path)
+
+        if not path.is_file():
+            log("❌ El archivo XML no existe.")
+            return
+
+        selected = get_selected_voices()
+
+        if not selected:
+            log("⚠ No hay voces seleccionadas.")
+            return
+
+        mix_levels = get_mix_levels()
+
+        folder_name = folder_name_var.get().strip()
+        base_path_str = base_path_var.get().strip()
+
+        if not folder_name:
+            log("⚠ El nombre de carpeta no puede estar vacío.")
+            return
+
+        if base_path_str:
+            base_path = Path(base_path_str)
+        else:
+            base_path = path.parent
+
+        output_dir = base_path / folder_name
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        log("Generando mezcla MIDI...")
+
+        try:
+
+            midi_path = export_mix_to_midi(
+                path,
+                selected,
+                mix_levels,
+                output_dir,
+            )
+
+            log(f"✅ Mezcla MIDI generada: {midi_path.name}")
+
+        except Exception as e:
+            log(f"❌ Error al generar mezcla MIDI: {e}")
+                        
     # ------------------------------------------------------
     # Examinar ubicación de salida
     # ------------------------------------------------------
@@ -305,8 +367,8 @@ def run_coral_gui():
     analyze_btn.config(command=analyze)
     view_score_btn.config(command=on_view_score)
     generate_btn.config(command=generate_midi)
-    #browse_output_btn.config(command=browse_output_dir)
     browse_base_btn.config(command=browse_base_directory)
+    download_mix_btn.config(command=download_mix_midi)
 
     root.mainloop()
 
