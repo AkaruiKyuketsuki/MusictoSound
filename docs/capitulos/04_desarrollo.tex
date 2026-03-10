@@ -172,13 +172,19 @@ Se añadieron dos nuevas opciones que permiten mantener siempre un modo específ
 \subsection*{Automatización y apertura automática tras la transcripción}
 Se incorporó la funcionalidad para abrir automáticamente el archivo resultante después de la transcripción musical, fomentando un flujo de trabajo más eficiente y reduciendo la carga operativa del usuario. A su vez, se creó un botón de edición que abre el archivo con la aplicación predeterminada del sistema, facilitando la modificación directa desde la interfaz sin pasos adicionales.
 
-\subsection*{Mecanismos de actualización automática en la memoria}
-Se implementaron acciones automáticas para la actualización de la memoria del proyecto, asegurando que los documentos y registros se mantengan al día sin intervención manual. Esto ayuda a mantener una documentación constante, evitando inconsistencias y pérdidas de información relevante durante el desarrollo.
+\subsection*{Opciones ampliadas para forzar modo de visualización y automatización en apertura post-transcripción}
+Se añadieron dos nuevas opciones que permiten al usuario configurar la aplicación para que siempre presente la visualización en un modo determinado, facilitando una experiencia personalizada y consistente. Paralelamente, se automatizó la apertura del archivo resultante tras completar una transcripción, lo que mejora la usabilidad al reducir la cantidad de pasos manuales necesarios para acceder a los datos generados.
+
+\subsection*{Implementación de botón de edición con apertura predeterminada del sistema}
+Se desarrolló un botón destinado a facilitar la edición, el cual abre el archivo seleccionado utilizando la aplicación predeterminada del sistema operativo. Este enfoque simplifica la integración con herramientas externas, ofrece flexibilidad al usuario y evita la necesidad de implementar editores complejos dentro del propio software.
 
 \subsection*{Herramientas de navegación y temporización en la conversión de partituras}
 Se añadió una barra con función de temporizador visible durante la conversión de partituras, que aunque es no determinista, cumple la función de mantener informado y entretenido al usuario durante procesos de espera. Por otro lado, se resolvieron problemas en el controlador para garantizar que la última partitura transcrita siempre se muestre correctamente. Además, se introdujeron botones que permiten al usuario navegar entre diferentes páginas de la partitura transcrita, mejorando la interacción y accesibilidad al contenido.
 
 \section{Avances del 2026-03-01}
+
+\subsection*{Creación de la ventana inicial de selección}
+Se diseñó y desarrolló la ventana inicial que permite al usuario seleccionar opciones desde el comienzo de la experiencia, facilitando la configuración personalizada del proceso. Esta ventana inicial es clave para guiar al usuario de forma clara y efectiva, estableciendo el punto de entrada al sistema y mejorando la accesibilidad general.
 
 \subsection*{Optimización de la navegación en la interfaz}
 Se sustituyó el botón encargado de la acción de retroceso, mejorando la experiencia de usuario al proporcionar una navegación más intuitiva y coherente dentro de la aplicación. Este cambio implica también la revisión de los flujos de navegación para evitar errores y pérdidas de contexto durante el uso de la interfaz, aumentando así la usabilidad del sistema.
@@ -192,10 +198,39 @@ Se añadió la funcionalidad de cierre en la ventana donde el usuario elige el m
 \subsection*{Implementación de retroceso y nuevos servicios en la interfaz}
 Se desarrolló la funcionalidad para retornar desde ventanas secundarias, asegurando que la navegación entre pantallas sea reversible y segura. Asimismo, se crearon nuevos módulos de servicios en Python (.py) para dar soporte a funcionalidades recientes, evidenciando una modularización creciente y coherente con buenas prácticas en ingeniería del software.
 
-\subsection*{Creación de la ventana inicial de selección}
-Se diseñó y desarrolló la ventana inicial que permite al usuario seleccionar opciones desde el comienzo de la experiencia, facilitando la configuración personalizada del proceso. Esta ventana inicial es clave para guiar al usuario de forma clara y efectiva, estableciendo el punto de entrada al sistema y mejorando la accesibilidad general.
+\subsection*{Desarrollo de vista inicial de selección con navegación optimizada}
+Se creó una ventana inicial que permite al usuario seleccionar entre diversas opciones o modos de visualización disponibles. Esta interfaz facilita la usabilidad al ofrecer un punto de partida claro y organizado. Además, se mejoró la navegación implementando la opción para retroceder desde las diferentes ventanas de manera fluida, optimizando la experiencia interactiva.
+
+\subsection*{Integración de generación de archivos MIDI con nombres únicos y organizados en carpetas de salida}
+Se logró implementar la funcionalidad para generar archivos MIDI con nombres distintos, evitando sobreescrituras y confusión en la gestión de los archivos. Los ficheros se almacenan en carpetas de salida predefinidas, favoreciendo la organización y acceso posterior a los resultados obtenidos a partir de la mezcla de pistas seleccionadas.
+
+\subsection*{Sustitución de botón de retroceso con mejora en la interfaz}
+Este cambio consistió en reemplazar el botón para volver a la pantalla anterior por una versión más intuitiva o eficiente, mejorando la navegación interna y alineándose con las necesidades de diseño y funcionalidad de la aplicación.
+
+\subsection*{Visualización y análisis de archivos XML en modo coral con desarrollo del panel asociado}
+Se añadió la capacidad para visualizar archivos XML musicales dentro del modo coral, integrando una vista detallada del contenido estructurado de las partituras. Además, se llevó a cabo el análisis de los pentagramas contenidos en estos archivos para la vista coral, permitiendo procesar la información musical de forma precisa y enriquecer la experiencia del usuario mediante un análisis profundo.
+
+\subsection*{Renombramiento de fases y creación de nuevos servicios}
+Se modificó la denominación de una etapa del proceso, pasando de "Reaper" a "Coral", para reflejar con mayor exactitud su función y contexto dentro del proyecto. Asimismo, se crearon archivos Python para soportar nuevos servicios relacionados con esta fase, evidenciando una evolución de la arquitectura del sistema hacia una modularidad y extensibilidad mejoradas.
+
+\subsection*{Adición de cierre en ventana de elección de modo de visualización}
+Para optimizar el flujo de uso, se incorporó la opción de cerrar la ventana donde el usuario selecciona el modo de visualización, otorgando mayor control sobre la interfaz y evitando bloqueos o restricciones innecesarias durante la interacción.
 
 \section{Avances del 2026-03-02}
 
-\subsection*{Integración de ramas principales del repositorio remoto}
-En esta etapa del desarrollo se realizó una operación de integración de la rama principal del repositorio remoto en la copia local del proyecto. Esta fusión representa un paso fundamental para mantener la coherencia del código fuente y garantizar que las últimas modificaciones, mejoras o correcciones estén presentes en el entorno de trabajo actual. Desde una perspectiva técnica, esta acción permite sincronizar los avances realizados por diferentes colaboradores o desde distintas ubicaciones, resolviendo posibles conflictos y unificando el historial de cambios. Esta práctica es esencial en proyectos colaborativos de Ingeniería Informática para asegurar que las bases del código se mantengan actualizadas y consistentes, minimizando riesgos de divergencias que puedan afectar el correcto funcionamiento o evolución del sistema.
+\subsection*{Incorporación del botón de salida y mejora en sincronización de nombres en mezcla}
+Se añadió un botón que permite al usuario salir de la aplicación o ventana actual, lo cual mejora la usabilidad y el control de la interfaz. De manera paralela, se implementó un sistema para sincronizar el cambio de nombre en las mezclas, garantizando la coherencia entre el etiquetado visible y los datos internos asociados, lo que evita confusiones y errores en la gestión de archivos.
+
+\subsection*{Incorporación de barra para manipular la consola y creación del panel de control en modo coral}
+Se introdujo una barra que permite al usuario mostrar u ocultar la consola de manera dinámica, optimizando el espacio disponible en pantalla y permitiendo una visualización más flexible según las necesidades del flujo de trabajo. Asimismo, se diseñó y creó un panel de control específico para el modo coral, orientado a facilitar la gestión y visualización de las partituras coralizadas.
+
+\subsection*{Corrección de bug en el visor durante el modo de transcripción y automatización de actualización de memoria}
+Se resolvió un error que afectaba al visor en el modo transcripción, mejorando la estabilidad y fiabilidad de esta funcionalidad. Además, se implementó un mecanismo automático para la actualización la memoria del proyecto, permitiendo mantener la información sincronizada sin requerir intervenciones manuales, lo que facilita el desarrollo continuo y la integridad de los datos.
+
+\section{Avances del 2026-03-05}
+
+\subsection*{Implementación de un control deslizante con valores numéricos y función de silenciado}
+Se añadió un control deslizante mejorado que permite al usuario ajustar parámetros mediante valores numéricos explícitos, además de incorporar una funcionalidad para silenciar la pista correspondiente. Esta mejora tiene como objetivo ofrecer mayor precisión y flexibilidad en la manipulación de los niveles de audio, facilitando el ajuste fino de cada pista dentro de la mezcla.
+
+\subsection*{Incorporación de botón para descargar mezclas seleccionadas en formato MIDI}
+Se desarrolló y añadió un botón que posibilita la descarga directa de la mezcla resultante de las pistas seleccionadas, exportándola en formato MIDI. Esta funcionalidad amplía las capacidades del sistema al ofrecer una salida estandarizada y ampliamente compatible, facilitando el uso de las mezclas generadas en otros entornos y aplicaciones musicales digitales.
