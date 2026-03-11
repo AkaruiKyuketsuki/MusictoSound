@@ -55,12 +55,14 @@ def export_mix_to_midi(
     xml_path: Path,
     selected_parts: list[dict],
     volumes: dict,
-    output_dir: Path,
+    #output_dir: Path,
+    output_path: Path,
 ) -> Path:
 
     score = converter.parse(xml_path)
 
-    output_dir.mkdir(parents=True, exist_ok=True)
+    #output_dir.mkdir(parents=True, exist_ok=True)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
 
     mix_score = stream.Score()
 
@@ -93,8 +95,12 @@ def export_mix_to_midi(
 
             mix_score.insert(0, part_copy)
 
+    """
     midi_path = output_dir / "mezcla.mid"
-
     mix_score.write("midi", midi_path)
-
     return midi_path
+    """
+
+    mix_score.write("midi", output_path)
+
+    return output_path

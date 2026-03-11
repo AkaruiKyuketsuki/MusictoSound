@@ -4,6 +4,7 @@ import os
 import subprocess
 import platform
 from pathlib import Path
+from tkinter import filedialog
 
 from views.gui_view import build_window
 from models.models import ConversionRequest, ConversionMode
@@ -334,13 +335,38 @@ def run_coral_gui():
         log("Generando mezcla MIDI...")
 
         try:
-
+            """
             midi_path = export_mix_to_midi(
                 path,
                 selected,
                 mix_levels,
                 output_dir,
             )
+            """
+
+            default_path = output_dir / "mezcla.mid"
+
+            save_path = filedialog.asksaveasfilename(
+                title="Guardar mezcla MIDI",
+                defaultextension=".mid",
+                initialfile="mezcla.mid",
+                initialdir=output_dir,
+                filetypes=[("MIDI files", "*.mid")]
+            )
+
+            if not save_path:
+                log("Operación cancelada.")
+                return
+
+            save_path = Path(save_path)
+
+            midi_path = export_mix_to_midi(
+                path,
+                selected,
+                mix_levels,
+                save_path,
+            )
+
 
             log(f"✅ Mezcla MIDI generada: {midi_path.name}")
 
