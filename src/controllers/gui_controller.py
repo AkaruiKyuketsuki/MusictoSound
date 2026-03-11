@@ -4,6 +4,7 @@ import os
 import subprocess
 import platform
 from pathlib import Path
+from tkinter import filedialog
 
 from views.gui_view import build_window
 from models.models import ConversionRequest, ConversionMode
@@ -30,7 +31,26 @@ def _open_with_default_app(path: Path):
     else:
         subprocess.Popen(["xdg-open", str(path)])
 
+# ==========================================================
+# Crear carpeta única coral_output, coral_output_2, etc.
+# ==========================================================
+def _create_unique_output_dir(base_path: Path, folder_name: str) -> Path:
 
+    candidate = base_path / folder_name
+
+    if not candidate.exists():
+        candidate.mkdir(parents=True)
+        return candidate
+
+    counter = 2
+    while True:
+        new_candidate = base_path / f"{folder_name}_{counter}"
+
+        if not new_candidate.exists():
+            new_candidate.mkdir(parents=True)
+            return new_candidate
+
+        counter += 1
 # ==========================================================
 # Worker (hilo de conversión)
 # ==========================================================
@@ -130,6 +150,8 @@ def run_coral_gui():
     download_mix_btn = widgets["download_mix_btn"]
     
     log("Módulo generador coral listo.")
+    current_output_dir = None
+    user_selected_base_path = False
 
     # ------------------------------------------------------
     # Volver
@@ -181,7 +203,23 @@ def run_coral_gui():
 
         if path:
             xml_path_var.set(path)
+            
+            nonlocal current_output_dir
+            current_output_dir = None
 
+            # Obtener carpeta del XML
+            xml_dir = Path(path).parent
+            nonlocal user_selected_base_path
+
+            # Solo cambiar ubicación automáticamente si el usuario no eligió una manualmente
+            if not user_selected_base_path:
+                base_path_var.set(str(xml_dir))
+
+            """
+            # Si el usuario no ha seleccionado ubicación, usar la del XML
+            if not base_path_var.get().strip():
+                base_path_var.set(str(xml_dir))
+            """
             # 🔹 Limpiar voces anteriores
             clear_detected_voices()
 
@@ -219,6 +257,23 @@ def run_coral_gui():
         # Delegamos completamente en la vista
         set_voices(result["parts"])
 
+        nonlocal current_output_dir
+        folder_name = folder_name_var.get().strip()
+        base_path_str = base_path_var.get().strip()
+
+        if base_path_str:
+            base_path = Path(base_path_str)
+        else:
+            base_path = path.parent
+            base_path_var.set(str(base_path))  # mostrar la ruta en la interfaz
+
+        current_output_dir = _create_unique_output_dir(base_path, folder_name)
+        
+        # Actualizar interfaz con el nombre real de la carpeta
+        folder_name_var.set(current_output_dir.name)
+
+        log(f"📁 Carpeta de salida creada: {current_output_dir}")
+
     # ------------------------------------------------------
     # Generar MIDI
     # ------------------------------------------------------
@@ -242,14 +297,6 @@ def run_coral_gui():
             log("⚠ No hay voces seleccionadas.")
             return
 
-        #output_dir = path.parent / "coral_output"
-        """
-        output_dir_str = output_dir_var.get().strip()
-
-        if output_dir_str:
-            output_dir = Path(output_dir_str)
-        else:
-            output_dir = path.parent / "coral_output"
         """
         folder_name = folder_name_var.get().strip()
         base_path_str = base_path_var.get().strip()
@@ -265,7 +312,13 @@ def run_coral_gui():
             base_path = path.parent
 
         output_dir = base_path / folder_name
-        
+        """
+        if current_output_dir is None:
+            log("⚠ Primero analiza la partitura.")
+            return
+
+        output_dir = current_output_dir
+
         log("Generando archivos MIDI...")
 
         try:
@@ -316,6 +369,7 @@ def run_coral_gui():
 
         mix_levels = get_mix_levels()
 
+        """
         folder_name = folder_name_var.get().strip()
         base_path_str = base_path_var.get().strip()
 
@@ -330,17 +384,49 @@ def run_coral_gui():
 
         output_dir = base_path / folder_name
         output_dir.mkdir(parents=True, exist_ok=True)
+        """
+
+        if current_output_dir is None:
+            log("⚠ Primero analiza la partitura.")
+            return
+
+        output_dir = current_output_dir
 
         log("Generando mezcla MIDI...")
 
         try:
-
+            """
             midi_path = export_mix_to_midi(
                 path,
                 selected,
                 mix_levels,
                 output_dir,
             )
+            """
+
+            default_path = output_dir / "mezcla.mid"
+
+            save_path = filedialog.asksaveasfilename(
+                title="Guardar mezcla MIDI",
+                defaultextension=".mid",
+                initialfile="mezcla.mid",
+                initialdir=output_dir,
+                filetypes=[("MIDI files", "*.mid")]
+            )
+
+            if not save_path:
+                log("Operación cancelada.")
+                return
+
+            save_path = Path(save_path)
+
+            midi_path = export_mix_to_midi(
+                path,
+                selected,
+                mix_levels,
+                save_path,
+            )
+
 
             log(f"✅ Mezcla MIDI generada: {midi_path.name}")
 
@@ -355,9 +441,19 @@ def run_coral_gui():
 
         folder = filedialog.askdirectory()
 
+        """
         if folder:
             base_path_var.set(folder)
             log(f"Ubicación base seleccionada: {folder}")
+        """
+
+        if folder:
+            base_path_var.set(folder)
+
+            nonlocal user_selected_base_path
+            user_selected_base_path = True
+
+            log(f"Ubicación base seleccionada: {folder}")            
 
     # ------------------------------------------------------
     # Asignar comandos
