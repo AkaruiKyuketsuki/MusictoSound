@@ -11,16 +11,6 @@ from collections import Counter
 def analyze_coral_parts(xml_path: Path) -> dict:
     """
     Analiza un archivo MusicXML y devuelve información coral básica.
-
-    Returns:
-        {
-            "title": str,
-            "tempo": float,
-            "parts": [
-                {"id": str, "name": str},
-                ...
-            ]
-        }
     """
 
     score = converter.parse(xml_path)

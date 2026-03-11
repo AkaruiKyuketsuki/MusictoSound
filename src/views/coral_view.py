@@ -237,27 +237,13 @@ def build_coral_view_window():
             slider.set(100)
 
             mix_vars[part_id] = volume_var
-            
-            """
-            def toggle_voice(v=var, vol=volume_var, s=slider, sp=spin, lbl=mix_label, name=name_var):
-                if v.get():
-                    vol.set(100)
-                    s.state(["!disabled"])
-                    sp.state(["!disabled"])
-                    lbl.configure(text=name.get(), foreground="black")
-                else:
-                    vol.set(0)
-                    s.state(["disabled"])
-                    sp.state(["disabled"])
-                    lbl.configure(text=f"{name.get()} (mute)", foreground="gray")
-            """
 
             def toggle_voice(v=var, vol=volume_var, s=slider, sp=spin, lbl=mix_label, name=name_var):
                 if v.get():
                     vol.set(100)
                     s.state(["!disabled"])
                     sp.state(["!disabled"])
-                    s.set(100)  # ← AÑADE ESTA LÍNEA
+                    s.set(100)
                     lbl.configure(text=name.get(), foreground="black")
                 else:
                     vol.set(0)
