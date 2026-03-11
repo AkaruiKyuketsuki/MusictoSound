@@ -33,11 +33,11 @@ def build_coral_view_window():
     browse_btn.pack(side="left")
 
     # ======================================
-    # Carpeta de salida (opcional)
+    # Carpeta de salida
     # ======================================
     ttk.Label(
         main_frame,
-        text="Carpeta de salida (opcional)",
+        text="Carpeta de salida",
         font=("Segoe UI", 10, "bold")
     ).pack(anchor="w", pady=(15, 5))
 
