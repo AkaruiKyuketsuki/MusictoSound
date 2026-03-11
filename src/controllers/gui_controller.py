@@ -15,11 +15,12 @@ from views.xml_viewer import show_xml_score
 
 from views.start_view import build_start_window
 from views.coral_view import build_coral_view_window
-
 from services.coral_parser_service import analyze_coral_parts
-from services.coral_midi_service import export_selected_parts_to_midi
 
+from services.coral_midi_service import export_selected_parts_to_midi
 from services.coral_midi_service import export_mix_to_midi
+
+from services.coral_audio_render_service import midi_to_wav
 # ==========================================================
 # Utilidades
 # ==========================================================
@@ -148,6 +149,7 @@ def run_coral_gui():
     download_wav_btn = widgets["download_wav_btn"]
     get_mix_levels = widgets["get_mix_levels"]
     download_mix_btn = widgets["download_mix_btn"]
+    download_mix_wav_btn = widgets["download_mix_wav_btn"]
     
     log("Módulo generador coral listo.")
     current_output_dir = None
@@ -215,11 +217,6 @@ def run_coral_gui():
             if not user_selected_base_path:
                 base_path_var.set(str(xml_dir))
 
-            """
-            # Si el usuario no ha seleccionado ubicación, usar la del XML
-            if not base_path_var.get().strip():
-                base_path_var.set(str(xml_dir))
-            """
             # 🔹 Limpiar voces anteriores
             clear_detected_voices()
 
@@ -297,22 +294,6 @@ def run_coral_gui():
             log("⚠ No hay voces seleccionadas.")
             return
 
-        """
-        folder_name = folder_name_var.get().strip()
-        base_path_str = base_path_var.get().strip()
-
-        if not folder_name:
-            log("⚠ El nombre de carpeta no puede estar vacío.")
-            return
-
-        # Si no se indica ubicación → usar carpeta del XML
-        if base_path_str:
-            base_path = Path(base_path_str)
-        else:
-            base_path = path.parent
-
-        output_dir = base_path / folder_name
-        """
         if current_output_dir is None:
             log("⚠ Primero analiza la partitura.")
             return
@@ -369,23 +350,6 @@ def run_coral_gui():
 
         mix_levels = get_mix_levels()
 
-        """
-        folder_name = folder_name_var.get().strip()
-        base_path_str = base_path_var.get().strip()
-
-        if not folder_name:
-            log("⚠ El nombre de carpeta no puede estar vacío.")
-            return
-
-        if base_path_str:
-            base_path = Path(base_path_str)
-        else:
-            base_path = path.parent
-
-        output_dir = base_path / folder_name
-        output_dir.mkdir(parents=True, exist_ok=True)
-        """
-
         if current_output_dir is None:
             log("⚠ Primero analiza la partitura.")
             return
@@ -395,14 +359,6 @@ def run_coral_gui():
         log("Generando mezcla MIDI...")
 
         try:
-            """
-            midi_path = export_mix_to_midi(
-                path,
-                selected,
-                mix_levels,
-                output_dir,
-            )
-            """
 
             default_path = output_dir / "mezcla.mid"
 
@@ -432,7 +388,66 @@ def run_coral_gui():
 
         except Exception as e:
             log(f"❌ Error al generar mezcla MIDI: {e}")
-                        
+
+
+    # ------------------------------------------------------
+    # Generar mezcla WAV
+    # ------------------------------------------------------
+    def download_mix_wav():
+
+        xml_path = xml_path_var.get().strip()
+
+        if not xml_path:
+            log("⚠ Selecciona un archivo XML.")
+            return
+
+        path = Path(xml_path)
+
+        selected = get_selected_voices()
+
+        if not selected:
+            log("⚠ No hay voces seleccionadas.")
+            return
+
+        mix_levels = get_mix_levels()
+
+        folder_name = folder_name_var.get().strip()
+        base_path_str = base_path_var.get().strip()
+
+        if base_path_str:
+            base_path = Path(base_path_str)
+        else:
+            base_path = path.parent
+
+        output_dir = base_path / folder_name
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        midi_path = output_dir / "mezcla_temp.mid"
+        wav_path = output_dir / "mezcla.wav"
+
+        log("Generando mezcla MIDI temporal...")
+
+        export_mix_to_midi(
+            path,
+            selected,
+            mix_levels,
+            midi_path
+        )
+
+        log("Convirtiendo MIDI a WAV con MuseScore...")
+
+        try:
+            midi_to_wav(midi_path, wav_path)
+
+            # borrar MIDI temporal
+            if midi_path.exists():
+                midi_path.unlink()
+                
+            log(f"✅ Mezcla WAV generada: {wav_path.name}")
+        except Exception as e:
+            log(f"❌ Error al generar WAV: {e}")
+
+
     # ------------------------------------------------------
     # Examinar ubicación de salida
     # ------------------------------------------------------
@@ -440,12 +455,6 @@ def run_coral_gui():
         from tkinter import filedialog
 
         folder = filedialog.askdirectory()
-
-        """
-        if folder:
-            base_path_var.set(folder)
-            log(f"Ubicación base seleccionada: {folder}")
-        """
 
         if folder:
             base_path_var.set(folder)
@@ -465,6 +474,7 @@ def run_coral_gui():
     generate_btn.config(command=generate_midi)
     browse_base_btn.config(command=browse_base_directory)
     download_mix_btn.config(command=download_mix_midi)
+    download_mix_wav_btn.config(command=download_mix_wav)
 
     root.mainloop()
 
