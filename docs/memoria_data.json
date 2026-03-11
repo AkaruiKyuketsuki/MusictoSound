@@ -1,7 +1,792 @@
 [
     {
+        "hash": "ee5bbc3abbf8ec621153705f1fa8df52d0c0027e",
+        "date": "2026-03-11",
+        "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
+    },
+    {
+        "hash": "916ed9064f4a26050d9097c30ba4c0fbd9268260",
+        "date": "2026-03-11",
+        "message": "Merge branch 'T3_audios_midi_a_wav'"
+    },
+    {
+        "hash": "a88d9b06a206e1aa778f6d7ce872395dce6177b6",
+        "date": "2026-03-11",
+        "message": "Eliminada la barra de progreso de la vista pero dejando la funcionalidad"
+    },
+    {
+        "hash": "c1976d871f1363d3afb2303a93aa27ad63b7a087",
+        "date": "2026-03-11",
+        "message": "a\u00c3\u00b1adido progreso de pistas wav detallado"
+    },
+    {
+        "hash": "699ec46e2abb4e4b526245b50ed1aa2a5ed2f7a8",
+        "date": "2026-03-11",
+        "message": "A\u00c3\u00b1adido progreso mas rapido en paralelo y prueba de barra con logs"
+    },
+    {
+        "hash": "3170101298434c8225d4b3674f22eb832056825e",
+        "date": "2026-03-11",
+        "message": "A\u00c3\u00b1adida paraleliacion a 2 worker de la conversion a wav usando musescore"
+    },
+    {
+        "hash": "97f807ad089d42ab4a74b73c87340e8443ade55c",
+        "date": "2026-03-11",
+        "message": "descarga completa de los archivos wav por separado"
+    },
+    {
+        "hash": "1dd07d7d665904459999ffbcc35971f359d243a6",
+        "date": "2026-03-11",
+        "message": "nombre en la mezcla wav, varioas mezclas en la misma carpeta"
+    },
+    {
+        "hash": "fa1e15bf38131b174b0018293bfc33020a9118ac",
+        "date": "2026-03-11",
+        "message": "Generada mezcla wav"
+    },
+    {
+        "hash": "29beb9dfe80e44bc9c6b92dc397c023c46bf10fc",
+        "date": "2026-03-11",
+        "message": "ci: auto update memoria"
+    },
+    {
         "hash": "44b60b08128dab6d099a5174c622af84a8465ebd",
         "date": "2026-03-11",
         "message": "."
+    },
+    {
+        "hash": "82f136918a265a21e75858f68936f7dbdae768e3",
+        "date": "2026-03-11",
+        "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
+    },
+    {
+        "hash": "96e6061f03155577be1b3f5ebbfe025d241152cb",
+        "date": "2026-03-11",
+        "message": "."
+    },
+    {
+        "hash": "d283c79962058abe30e22174c167e657e6d2ce17",
+        "date": "2026-03-11",
+        "message": "ci: auto update memoria"
+    },
+    {
+        "hash": "aea68cb195e512bb93640290606b241be0c910b1",
+        "date": "2026-03-11",
+        "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
+    },
+    {
+        "hash": "4ae3a9d030d315ee0ec20531594e0429d5a2d379",
+        "date": "2026-03-11",
+        "message": "Merge branch 'T3-mezclador_de_voces'"
+    },
+    {
+        "hash": "b84db1ba4fbbaf7e955849269960d62a00da240c",
+        "date": "2026-03-11",
+        "message": "La carpeta de salida ya no es opcional"
+    },
+    {
+        "hash": "0483be32230f012ca32db550108e46456d1b5a0a",
+        "date": "2026-03-11",
+        "message": "Arreglado el cambio de la carpeta de salida manual vs por defecto"
+    },
+    {
+        "hash": "db9c0fb8ae6a34d649a209e8bc65d7d6927d37f9",
+        "date": "2026-03-11",
+        "message": "Nombre de carpeta de output y ruta seleccionable"
+    },
+    {
+        "hash": "e345e4e3568ee6f4563523734a8981cee9fc4316",
+        "date": "2026-03-11",
+        "message": "A\u00c3\u00b1adido cambio opcionald e nombre para varias mezclas en la misma carpeta"
+    },
+    {
+        "hash": "91026d5cbf305b5855b7a2edb07d64c2732333c6",
+        "date": "2026-03-11",
+        "message": "Ya se descarga la mezcla con los volumenes del slider"
+    },
+    {
+        "hash": "b39c0669a810679f03db528303dd149f768b58dc",
+        "date": "2026-03-11",
+        "message": "Arreglado el slider que no sub\u00c3\u00ada en el panel de mezclas"
+    },
+    {
+        "hash": "c0042aeb4d49f70b8d62d80619ab2523f5715a56",
+        "date": "2026-03-10",
+        "message": "ci: auto update memoria"
+    },
+    {
+        "hash": "441c02ec833a218982d17cb1c6fdc90512f16cac",
+        "date": "2026-03-10",
+        "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
+    },
+    {
+        "hash": "234390023066e2bf7cb9f77119ccee5ef3bb79ea",
+        "date": "2026-03-10",
+        "message": "."
+    },
+    {
+        "hash": "a8e5ca6bad68029ecf08e3f4339863ba2cd2d3c2",
+        "date": "2026-03-10",
+        "message": "."
+    },
+    {
+        "hash": "57070fbf184389d4d41484e0a47c4c00ac3d2f02",
+        "date": "2026-03-10",
+        "message": "ci: auto update memoria"
+    },
+    {
+        "hash": "9925f690f27eca15a26d25735a2ccada62f03922",
+        "date": "2026-03-10",
+        "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
+    },
+    {
+        "hash": "ab308954b5deb3ada5c538f22069479e0b40ab9e",
+        "date": "2026-03-10",
+        "message": "Merge branch 'T3-audio_voz_destacada'"
+    },
+    {
+        "hash": "0c9c13830f18b3242e85c0d164afea32e5455625",
+        "date": "2026-03-05",
+        "message": "A\u00c3\u00b1adido slider nuevo con numeros y muteo"
+    },
+    {
+        "hash": "526b79a3b68b6b35de98da48a77f0c18f772a555",
+        "date": "2026-03-05",
+        "message": "A\u00c3\u00b1adido el boton para descargar la mezcla de las pistas selecionadas en formato midi"
+    },
+    {
+        "hash": "4f93a48bd76d1d6310dabf09d5c46cb9e6662ac1",
+        "date": "2026-03-02",
+        "message": "A\u00c3\u00b1adido el boton salir"
+    },
+    {
+        "hash": "a9d7b66de7c2b7ff2e35cf9ad671988e106d9959",
+        "date": "2026-03-02",
+        "message": "A\u00c3\u00b1adido cambio de nombre sincronizado en la mezcla"
+    },
+    {
+        "hash": "025c27d1dc56c95e3489548e74f6a7ef27f53377",
+        "date": "2026-03-02",
+        "message": "A\u00c3\u00b1adida barra para subir y bajar la consola"
+    },
+    {
+        "hash": "1335747f08b2e549ed2728b849d1646ba2665801",
+        "date": "2026-03-02",
+        "message": "Creado el panel de control en coral"
+    },
+    {
+        "hash": "ea931f23187255411f2192177179accc87a018a0",
+        "date": "2026-03-02",
+        "message": "arreglado el bug del viewer en modo transcripcion"
+    },
+    {
+        "hash": "cb0089e58fcb3eba74b8b30745202321e3e55c80",
+        "date": "2026-03-02",
+        "message": "ci: auto update memoria"
+    },
+    {
+        "hash": "108dad072f1567409e8ae117a5cca0c2fc50be47",
+        "date": "2026-03-02",
+        "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
+    },
+    {
+        "hash": "fddda867dac4462304cf0c09a24e9af38c80bcfd",
+        "date": "2026-03-02",
+        "message": "."
+    },
+    {
+        "hash": "aefe6576500a03056cf8c0bea8c2363be16632fa",
+        "date": "2026-03-01",
+        "message": "ci: auto update memoria"
+    },
+    {
+        "hash": "af0f2e26805a35b58bae662698ae168116a19390",
+        "date": "2026-03-01",
+        "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
+    },
+    {
+        "hash": "6d99b1673a946d235335cf27f952e0c2a20847b2",
+        "date": "2026-03-01",
+        "message": "Merge branch 'T3-vista_selecion_inicial'"
+    },
+    {
+        "hash": "7056a0e2cd6c79ec6443f6e6f9d8dd493519a4b7",
+        "date": "2026-03-01",
+        "message": "Merge branch 'T2-apertura_musescore'"
+    },
+    {
+        "hash": "ff3726a1c76876becd86526de1a9d909ae87051b",
+        "date": "2026-03-01",
+        "message": "sustituido el boton para ir hacia atras"
+    },
+    {
+        "hash": "b10ff7ecb137ba971f2557cd82430db8e7c65d80",
+        "date": "2026-03-01",
+        "message": "generacion de midis con nombres distintos y en carpeta de salida determinada"
+    },
+    {
+        "hash": "4daee0ace297ef84cac8f0bf9daa558391e8f1bb",
+        "date": "2026-03-01",
+        "message": "a\u00c3\u00b1adido el cierre en la ventana para elegir el modo de visualizacion"
+    },
+    {
+        "hash": "6f586e2e105e77552cb2e3808e9e18b26658351f",
+        "date": "2026-03-01",
+        "message": "A\u00c3\u00b1adida la visualizacion de xml en el modo coral"
+    },
+    {
+        "hash": "6b269a6f3558d881db82169bb00637155bd5c953",
+        "date": "2026-03-01",
+        "message": "Hecho en analisis de pentagramas del xml en la vista coral"
+    },
+    {
+        "hash": "c5dc9a6a24bc5762a856510f543f38564db71342",
+        "date": "2026-03-01",
+        "message": "cambio de nombre de la fase reaper a la fase coral"
+    },
+    {
+        "hash": "c90d19edb28c2f55823f0353f2f7a7e6447f30e7",
+        "date": "2026-03-01",
+        "message": "Hecha la vuelta atras desde las ventanas y creados los .py de los nuevos servicios"
+    },
+    {
+        "hash": "02d9870b07c0db4f678c0fcd1cf1c37661950ef8",
+        "date": "2026-03-01",
+        "message": "Hecha la ventana inicial de seleccion"
+    },
+    {
+        "hash": "d392e4092632cc01e617686bb3ebee266edeba9c",
+        "date": "2026-01-21",
+        "message": "A\u00c3\u00b1adidas dos opciones m\u00c3\u00a1s para poder hacer la visualizacion siempre en un modo determinado"
+    },
+    {
+        "hash": "7fb79a20074c13ce74ac66ec04a36bc4644dc43f",
+        "date": "2026-01-21",
+        "message": "A\u00c3\u00b1adida la apertura automatica del archivo despues de hacer la trascripcion"
+    },
+    {
+        "hash": "e785ba086a94b8dfaf0372c79e16e9dd4e1fd116",
+        "date": "2026-01-21",
+        "message": "creado el bot\u00c3\u00b3n de edicion con apertura por defecto del sistema"
+    },
+    {
+        "hash": "1e7f2524224a2a3140b6f9a6b054b93649d08aee",
+        "date": "2026-01-20",
+        "message": "ci: auto update memoria"
+    },
+    {
+        "hash": "669aa398885c02a6988c7dc90f796a6dd58c8bfa",
+        "date": "2026-01-20",
+        "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
+    },
+    {
+        "hash": "ab0bb99da13465f5e5249b68454b6e32bd890942",
+        "date": "2026-01-20",
+        "message": "actualizada la memoria"
+    },
+    {
+        "hash": "b6eff9233c5eee52fe2ed0372a3f7879c1a55beb",
+        "date": "2026-01-20",
+        "message": "ci: auto update memoria"
+    },
+    {
+        "hash": "bba250c8f56d0943f46218f47bc6b0792f5fe3e8",
+        "date": "2026-01-20",
+        "message": "Merge branch 'T2-transcripcion_completa_a_imagenes'"
+    },
+    {
+        "hash": "45859fbedaf38d2271b0bb54967618e2339af473",
+        "date": "2026-01-20",
+        "message": "A\u00c3\u00b1adida una barra de tipo \"temporizador\" mientras se hace la conversi\u00c3\u00b3n para entretener al usuario. La barra no se puede hacer determinista. Arreglado tambi\u00c3\u00a9n el controlador para que muestre la \u00c3\u00baltima partitura transcrita."
+    },
+    {
+        "hash": "8293de287f843d62a4be16023f48cbda44ffd6f6",
+        "date": "2026-01-20",
+        "message": "A\u00c3\u00b1adidos los botones para cambiar entre las diferentes p\u00c3\u00a1ginas de la partitura"
+    },
+    {
+        "hash": "c9877ee8a1f10ca38f949195aa8fd97b7e6f2b27",
+        "date": "2026-01-17",
+        "message": "ci: auto update memoria"
+    },
+    {
+        "hash": "c9278128ad76e0ca5e4332393476edf62afdc7fc",
+        "date": "2026-01-17",
+        "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
+    },
+    {
+        "hash": "33d299ec41c79de997709c6ac4cbb3b14deb2089",
+        "date": "2026-01-17",
+        "message": "Agregados los cambios de los dias 14, 15, 16 en la memoria"
+    },
+    {
+        "hash": "5f2261ef5892611cff474aa21c70e057bf974899",
+        "date": "2026-01-16",
+        "message": "ci: auto update memoria"
+    },
+    {
+        "hash": "6957f58b5214ba5e121c78644bea5ea4ddfb4ea9",
+        "date": "2026-01-16",
+        "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
+    },
+    {
+        "hash": "ca0563c294b482dd46aa32669fd7ce5ee259d1ab",
+        "date": "2026-01-16",
+        "message": "Merge branch 'T2-xml_interno'"
+    },
+    {
+        "hash": "28b065b36ef989fb595d434c83e7c505bc1d1d2d",
+        "date": "2026-01-16",
+        "message": "Arreglado el scroll en el modo comparacion"
+    },
+    {
+        "hash": "d6fe3c1f7b6e69d6c0b3859c7c493cff5c9f8d65",
+        "date": "2026-01-16",
+        "message": "Hecha la reduccion individual de la imagen roja en modo superposici\u00c3\u00b3n"
+    },
+    {
+        "hash": "db17d1bfc23b5d9cf6ed3a05df3af200ba5407fb",
+        "date": "2026-01-16",
+        "message": "Interacci\u00c3\u00b3n para mover la partitura nueva sobre la vieja usando el rat\u00c3\u00b3n"
+    },
+    {
+        "hash": "c08d303d15bc0cd846fe15420714d936ac72eae4",
+        "date": "2026-01-14",
+        "message": "overlay con tintes"
+    },
+    {
+        "hash": "346e9340eee823ef75c56a766ff7e0cb376e4610",
+        "date": "2026-01-14",
+        "message": "A\u00c3\u00b1adido zoom automatico"
+    },
+    {
+        "hash": "0b7685015816f9ad503f5a6b3bc7e4c60f159ae9",
+        "date": "2026-01-14",
+        "message": "A\u00c3\u00b1adida lav visualizacion por superposicion"
+    },
+    {
+        "hash": "3b24d9afadeafdecebb79015685e31b4cd76da47",
+        "date": "2026-01-14",
+        "message": "Hecho el visualizador de partiruras interno"
+    },
+    {
+        "hash": "e24c92a04f0adaece1a625da933a483b30d15956",
+        "date": "2025-12-14",
+        "message": "ci: auto update memoria"
+    },
+    {
+        "hash": "4a8f12938701652bcdf9e976b977bbc1eae7d49a",
+        "date": "2025-12-14",
+        "message": "resueltos los problemas con la memoria"
+    },
+    {
+        "hash": "697be12065e6cca2963573482e2246716e796c1c",
+        "date": "2025-12-14",
+        "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
+    },
+    {
+        "hash": "61114abac285d24a51fd7a8597408a223ab6c48b",
+        "date": "2025-12-14",
+        "message": "Merge branch 'T2-visualizacion_xml'"
+    },
+    {
+        "hash": "3f319f10941b5424424578489dc93c396e2f4ee2",
+        "date": "2025-12-14",
+        "message": "correccion de la memoria"
+    },
+    {
+        "hash": "afd0359f3056531f822e7b164e8dfeee838455ad",
+        "date": "2025-12-14",
+        "message": "ci: auto update memoria"
+    },
+    {
+        "hash": "d48294ab28b57fd774fc41f9869882705eb70957",
+        "date": "2025-12-14",
+        "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
+    },
+    {
+        "hash": "5ffb417842cea183a94ba5fd6d2c9abed7375cba",
+        "date": "2025-12-14",
+        "message": "Visualizacion del mxl"
+    },
+    {
+        "hash": "6534b1fbde6724cb1d65aeab8c28d45bb0b4dc08",
+        "date": "2025-12-14",
+        "message": "A\u00c3\u00b1adida la visualizacion del xml con el visualizador estandar"
+    },
+    {
+        "hash": "ff7cd0f894f4709d011434830e99af726d1a499e",
+        "date": "2025-12-13",
+        "message": "ci: auto update memoria"
+    },
+    {
+        "hash": "205aa67309e447316adbc3c68f778dcee25de8d5",
+        "date": "2025-12-13",
+        "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
+    },
+    {
+        "hash": "c439ab608846a97b660069e06a6565098a428879",
+        "date": "2025-12-13",
+        "message": "Merge branch 'T1-estructura_interfaz'"
+    },
+    {
+        "hash": "e1fa4f80a2bcf28a9b4db6fae43b5a09489c67ba",
+        "date": "2025-12-13",
+        "message": "Hecha la conexion entre la interfaz y los botones"
+    },
+    {
+        "hash": "4d8925605b02a5b2a58693a5d073e090cf43a8d9",
+        "date": "2025-12-13",
+        "message": "hecha la interfaz b\u00c3\u00a1sica con tkinter para la transcripcion"
+    },
+    {
+        "hash": "050513f536c0c51946f499bc668bffe45bb91a7a",
+        "date": "2025-12-11",
+        "message": "ci: auto update memoria"
+    },
+    {
+        "hash": "2a06b4b56a24dbfccbd50dbb527d7053427531fc",
+        "date": "2025-12-11",
+        "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
+    },
+    {
+        "hash": "0b8664a08b24861dc08742857d11035603073af1",
+        "date": "2025-12-11",
+        "message": "Merge branch 'restore-controller-model'"
+    },
+    {
+        "hash": "343f3bb18daa14988028bbb7940e7e7d88086ce6",
+        "date": "2025-12-11",
+        "message": "Cambios restaurados"
+    },
+    {
+        "hash": "4fbcb6a49493ac8e437d997b90fcf4b86b75abf9",
+        "date": "2025-12-11",
+        "message": "ci: auto update memoria"
+    },
+    {
+        "hash": "b68a8d5b2b7c880c9e04ced46064f619da1d7960",
+        "date": "2025-12-11",
+        "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
+    },
+    {
+        "hash": "6e976416058a28e43576a1a659e396a14ed8292d",
+        "date": "2025-12-11",
+        "message": "cambio a la rama correcta"
+    },
+    {
+        "hash": "15d5de8076436f7dd3f06dc907d4593f93e16da9",
+        "date": "2025-12-11",
+        "message": "ci: auto update memoria"
+    },
+    {
+        "hash": "0ce8d4246a9980d4eb540cfa024ad88569a45faf",
+        "date": "2025-12-11",
+        "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
+    },
+    {
+        "hash": "54175d4c693b5594da5c43e04f2985a1dc4e356a",
+        "date": "2025-12-11",
+        "message": "a\u00c3\u00b1adido el modelo vista controlador para la interfaz"
+    },
+    {
+        "hash": "f8cd32bb4a1fdfaecc0f63984123fc084b030e72",
+        "date": "2025-12-11",
+        "message": "ci: auto update memoria"
+    },
+    {
+        "hash": "dccb68856fdde26b2a61c0a39a39a725faf764e7",
+        "date": "2025-12-11",
+        "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
+    },
+    {
+        "hash": "96b916e681a7969b402dbe568800c33b423395fc",
+        "date": "2025-12-11",
+        "message": "Merge branch 'T1-lectura_pdf_xml'"
+    },
+    {
+        "hash": "028b60c30c948f8c1a7c559cb7d842b17a7bc2ce",
+        "date": "2025-12-11",
+        "message": "Hechos tanto el modo automatico como el modo manual para transcribir un pdf a xml desde el proyecto (subprocess a audiveris) todo por consola"
+    },
+    {
+        "hash": "87f601de3a0865507afe10fa8337a877c69c3f5b",
+        "date": "2025-12-10",
+        "message": "Se abre audiveris ejecutando el main con la opcion 2 (modo manual)"
+    },
+    {
+        "hash": "51e903e4cb3a6b50dfae4aede0398f6e6be8da20",
+        "date": "2025-12-10",
+        "message": "ci: auto update memoria"
+    },
+    {
+        "hash": "874ada3aaf7994baa2c76fe945949c321f7f7b81",
+        "date": "2025-12-10",
+        "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
+    },
+    {
+        "hash": "f86e255ea3f83454c06e8b80968c489aa84802d6",
+        "date": "2025-12-10",
+        "message": "Merge branch 'T0-correccion_errores'"
+    },
+    {
+        "hash": "8d9347553863347ac5a66a98817fcdcf5844cb86",
+        "date": "2025-12-10",
+        "message": "Finalizada la tarea 0 de creacion del proyecto"
+    },
+    {
+        "hash": "4fbd1dd3046d44dadfc5e811a54344f66640efb0",
+        "date": "2025-12-08",
+        "message": "ci: auto update memoria"
+    },
+    {
+        "hash": "d8fd18c93d1eccd1c9ee8e0eadb0415aac0ee9c5",
+        "date": "2025-12-08",
+        "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
+    },
+    {
+        "hash": "c7047b1e28c80a6bc407b3c919b88a7727ffe540",
+        "date": "2025-12-08",
+        "message": "."
+    },
+    {
+        "hash": "86c10fadc0a7dbda87c0d482ce8eff16ef8f916e",
+        "date": "2025-12-08",
+        "message": "Merge branch 'T0-estilo_memoria_pdf'"
+    },
+    {
+        "hash": "8101f21c3cadfdc011b490821a071e58bb8cd773",
+        "date": "2025-12-08",
+        "message": "ci: auto update memoria"
+    },
+    {
+        "hash": "7d45651d2c9bc76128aeeb24419fcc47251a8fb2",
+        "date": "2025-12-08",
+        "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
+    },
+    {
+        "hash": "d95459ef7fe329c9abf147bc1836096dfdfdc1ba",
+        "date": "2025-12-08",
+        "message": "."
+    },
+    {
+        "hash": "dfe02df2fdc1e251e178335d2a0fca6cb36c2c41",
+        "date": "2025-12-08",
+        "message": "correccion de errores"
+    },
+    {
+        "hash": "2ecedcb39cc5363d7f446eedc1fa360f4bff306d",
+        "date": "2025-12-08",
+        "message": "ci: auto update memoria"
+    },
+    {
+        "hash": "edde93b42219a3f3db5492020eab6b892c4737b2",
+        "date": "2025-12-08",
+        "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
+    },
+    {
+        "hash": "74ce8e5267dbad321d294f5ea9f7ac6cd697dd8a",
+        "date": "2025-12-08",
+        "message": "Merge branch 'T0-estilo_memoria_pdf'"
+    },
+    {
+        "hash": "4ed87160872fefed3ab8577af025afd938f5a048",
+        "date": "2025-12-08",
+        "message": "Finalizado el estilo de los capitulos y el formato de texto"
+    },
+    {
+        "hash": "5d88144bfa627885743223c8de1161024e6eabfd",
+        "date": "2025-12-08",
+        "message": "correccion de la conexion con la api en la nueva terminal"
+    },
+    {
+        "hash": "34a8deeb13320a87e57753db227b7e2ad58bc7f9",
+        "date": "2025-12-08",
+        "message": "prueba 4 de generacion de campitulos con titulo adecuado"
+    },
+    {
+        "hash": "a4d71c39d687725fbaade8af2366813ab72874a1",
+        "date": "2025-12-08",
+        "message": "ci: auto update memoria"
+    },
+    {
+        "hash": "2c0ac3afa81e779b9324aa1c03e69a2b194d2cf7",
+        "date": "2025-12-08",
+        "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
+    },
+    {
+        "hash": "53f6e3d7ecf8f69390be9c2053dc74c2e0f8edde",
+        "date": "2025-12-08",
+        "message": "Merge branch 'T0-estilo_memoria_pdf'"
+    },
+    {
+        "hash": "4b6c25e0e9eee7f461e547f30b0ad9ac7c238c9c",
+        "date": "2025-12-08",
+        "message": "prueba 3 para las secciones de los capitulos"
+    },
+    {
+        "hash": "6c213ec7a1b6b4d01dcf8d638c4489fa591f215b",
+        "date": "2025-12-08",
+        "message": "prueba 2 de capitolos internos"
+    },
+    {
+        "hash": "d2b9d7ecdc715db9865e1dd0019275879ac8101d",
+        "date": "2025-12-08",
+        "message": "prueba de cambio de capitulos para desarrollo del proyecto"
+    },
+    {
+        "hash": "304693083aed161694437539f3dda206f4d99cf1",
+        "date": "2025-12-08",
+        "message": "funcion de reedireccion en el indice sin los recuadros rojos"
+    },
+    {
+        "hash": "de673c5eaac02cff7b1c7133931efa6b6c5516ae",
+        "date": "2025-12-08",
+        "message": "Coregidos los errores de acentuac\u00c3\u00adon y las tipolog\u00c3\u00adas"
+    },
+    {
+        "hash": "5db24592883f6427cf9597e70e8b9ad78935c0fb",
+        "date": "2025-12-05",
+        "message": "Cambiado el t\u00c3\u00adtulo"
+    },
+    {
+        "hash": "32b3657724f06e3f0e29b2ee9655dc1b69ce85e0",
+        "date": "2025-12-05",
+        "message": "ci: auto update memoria"
+    },
+    {
+        "hash": "2b6f508379c9c880d9dad83bf63bc67189b5e86d",
+        "date": "2025-12-05",
+        "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
+    },
+    {
+        "hash": "38cb99a1b2999ff6b1ad83b08cd24320040f07b5",
+        "date": "2025-12-05",
+        "message": "Merge branch 'T0-visualizacion_latex'"
+    },
+    {
+        "hash": "59e706c686f41b30ad0c10ee5a6bf18b33e68034",
+        "date": "2025-12-05",
+        "message": "Generacion de memoria en pdf"
+    },
+    {
+        "hash": "90330c6e4721c164533208ef59f2079c6ce64c3a",
+        "date": "2025-12-05",
+        "message": "ci: auto update memoria"
+    },
+    {
+        "hash": "d7f94ff4dbab9c5bf4cca3e7fd70d566751cede5",
+        "date": "2025-12-05",
+        "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
+    },
+    {
+        "hash": "ed151afe37cc3b743aad5c20b5de88bd88c78805",
+        "date": "2025-12-05",
+        "message": "descargada extension latex"
+    },
+    {
+        "hash": "ea794ddb1e941a6579411f22c6bef4142d75fa07",
+        "date": "2025-12-05",
+        "message": "cambiada la estructura latex"
+    },
+    {
+        "hash": "99c8f305dc91ef964fddf0482a21a81059fbb99d",
+        "date": "2025-12-05",
+        "message": "ci: auto update memoria"
+    },
+    {
+        "hash": "36b818edada5e2150ebd4596d44d5e9e7717d9f5",
+        "date": "2025-12-05",
+        "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
+    },
+    {
+        "hash": "6a4853ddaf8b71c64853680e774a1e84b7b0d0e9",
+        "date": "2025-12-05",
+        "message": "Cambios en la estructura del latex e instalacion de visualizador"
+    },
+    {
+        "hash": "6ccb77e4adfc02906d7f723f230a25f30e5b06f5",
+        "date": "2025-12-04",
+        "message": "ci: auto update memoria"
+    },
+    {
+        "hash": "bbd966be8e86fe60b755662ede78bdceafbdf6be",
+        "date": "2025-12-04",
+        "message": "Terminado el enlazado con la API de OpenAI"
+    },
+    {
+        "hash": "4fc1daee787e169b86991289e6ea10aba2eae8f6",
+        "date": "2025-12-04",
+        "message": "ci: auto update memoria"
+    },
+    {
+        "hash": "69e7fa098c263a8642934c723053d25e288a4d83",
+        "date": "2025-12-04",
+        "message": "fix: full corrected generate_memoria with robust OpenAI handling"
+    },
+    {
+        "hash": "6cfa9e5caf7085ba28d600b0a5a8ed79ff607a9e",
+        "date": "2025-12-04",
+        "message": "fix: update OpenAI SDK content access for chat completions"
+    },
+    {
+        "hash": "c2e67132a008ab667d5920f0199d6ab9d85dd3ff",
+        "date": "2025-12-04",
+        "message": "test: first academic memory with API credit"
+    },
+    {
+        "hash": "8c38b078a51f852cb0ef7f8f6f4c4884302fa036",
+        "date": "2025-12-04",
+        "message": "test: force workflow after enabling actions"
+    },
+    {
+        "hash": "6b334e0b0eed3fb4ba0e267702a57c044f44fd83",
+        "date": "2025-12-04",
+        "message": "chore(ci): add workflow to auto-generate memory"
+    },
+    {
+        "hash": "496371ca30a6e788d380664d0d838b1e59c93fca",
+        "date": "2025-12-04",
+        "message": "test: trigger workflow para generar memoria autom\u00c3\u00a1tica"
+    },
+    {
+        "hash": "89fa9a19bb57acbf18073448674f16934fdda11d",
+        "date": "2025-12-04",
+        "message": "Merge branch 'T0-estructura_del_proyecto'"
+    },
+    {
+        "hash": "0c28270e1a47665f44bcd0f14344d2032da92f13",
+        "date": "2025-12-04",
+        "message": "a\u00c3\u00b1adida la nueva clave de git para en enlace"
+    },
+    {
+        "hash": "d1ad5fe1e473e07cddbc6a6c7b37715f5d08a384",
+        "date": "2025-12-04",
+        "message": "creado el script generador automatico de memoria"
+    },
+    {
+        "hash": "896bf115006397206186774d3b0dcc5f22f965f2",
+        "date": "2025-12-04",
+        "message": "A\u00c3\u00b1adido el registro de cambios internos y la estructura minima de la memoria"
+    },
+    {
+        "hash": "0e762173cd0c1cfb8d5c892806d8070f04b723fa",
+        "date": "2025-12-04",
+        "message": "creada la estructura tipo latex para docs"
+    },
+    {
+        "hash": "77b6b67ad950e6f4516b578a6c7f3190527e24a2",
+        "date": "2025-12-04",
+        "message": "creacion inicial de carpetas"
+    },
+    {
+        "hash": "dc6cb852ec2605597b8de3b1905c8a8fe7b0eaa1",
+        "date": "2025-10-01",
+        "message": "prueba hello world"
+    },
+    {
+        "hash": "047635b74d1747283b894f7edb4091cac5ec9de3",
+        "date": "2025-10-01",
+        "message": "Initial commit"
     }
 ]
