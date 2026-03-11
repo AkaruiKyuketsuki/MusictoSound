@@ -2,6 +2,7 @@
     {
         "hash": "aea68cb195e512bb93640290606b241be0c910b1",
         "date": "2026-03-11",
+<<<<<<< HEAD
         "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
     },
     {
@@ -47,6 +48,8 @@
     {
         "hash": "441c02ec833a218982d17cb1c6fdc90512f16cac",
         "date": "2026-03-10",
+=======
+>>>>>>> d283c79962058abe30e22174c167e657e6d2ce17
         "message": "Merge branch 'main' of https://github.com/AkaruiKyuketsuki/MusictoSound"
     },
     {
