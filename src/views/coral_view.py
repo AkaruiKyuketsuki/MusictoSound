@@ -157,6 +157,8 @@ def build_coral_view_window():
     download_mix_wav_btn = ttk.Button(buttons_row, text="Descargar mezcla WAV")
     download_mix_wav_btn.pack(side="left", padx=20, ipady=6)
 
+    # La barra se controla desde el controller (gui_controller.py)
+    # Solo se muestra si se llama a progress.pack(), en este caso he decidido no mostrarla
     progress = ttk.Progressbar(
         top_frame,
         orient="horizontal",

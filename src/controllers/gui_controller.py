@@ -456,7 +456,7 @@ def run_coral_gui():
             # 2 convertir cada MIDI a WAV
             log("🎧 Convirtiendo archivos a WAV (procesamiento paralelo)...")
 
-            progress.pack(fill="x", padx=50, pady=5)
+            #progress.pack(fill="x", padx=50, pady=5)
             futures = []
 
             with ThreadPoolExecutor(max_workers=2) as executor:
@@ -488,7 +488,7 @@ def run_coral_gui():
                     #root.update_idletasks()
                     root.update()
 
-            progress.pack_forget()            
+            #progress.pack_forget()            
             log("Proceso completado correctamente.")
             
         except Exception as e:
