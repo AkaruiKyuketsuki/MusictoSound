@@ -445,13 +445,18 @@ def run_coral_gui():
             # configurar barra de progreso
             total = len(midi_files)
             log(f"🎼 {total} voces seleccionadas para generar WAV.")
-            
+
+            progress["value"] = 0
+            progress["maximum"] = total
+            progress.update()
+
             progress["value"] = 0
             progress["maximum"] = total
 
             # 2 convertir cada MIDI a WAV
             log("🎧 Convirtiendo archivos a WAV (procesamiento paralelo)...")
 
+            progress.pack(fill="x", padx=50, pady=5)
             futures = []
 
             with ThreadPoolExecutor(max_workers=2) as executor:
@@ -465,15 +470,6 @@ def run_coral_gui():
                     future = executor.submit(_convert_midi_to_wav, midi_path, wav_path)
                     futures.append((future, wav_path))
 
-                """
-                for future, wav_path in futures:
-                    try:
-                        future.result()
-                        log(f"✅ Generado: {wav_path.name}")
-                    except Exception as e:
-                        log(f"❌ Error en {wav_path.name}: {e}")
-                
-                """
                 completed = 0
                 for future in as_completed([f[0] for f in futures]):
 
@@ -482,14 +478,17 @@ def run_coral_gui():
                     try:
                         future.result()
                         log(f"✅ Generado: {wav_path.name}")
-                        progress["value"] = 0
+                        #progress["value"] = 0
                     except Exception as e:
                         log(f"❌ Error en {wav_path.name}: {e}")
 
                     completed += 1
+                    log(f"🎧 Progreso: {completed}/{total}")
                     progress["value"] = completed
-                    root.update_idletasks()
-                        
+                    #root.update_idletasks()
+                    root.update()
+
+            progress.pack_forget()            
             log("Proceso completado correctamente.")
             
         except Exception as e:

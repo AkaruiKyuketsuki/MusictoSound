@@ -145,14 +145,6 @@ def build_coral_view_window():
     buttons_row = ttk.Frame(top_frame)
     buttons_row.pack(pady=15)
 
-    progress = ttk.Progressbar(
-        top_frame,
-        orient="horizontal",
-        length=400,
-        mode="determinate"
-    )
-    progress.pack(pady=5)
-
     generate_btn = ttk.Button(buttons_row, text="Generar MIDI")
     generate_btn.pack(side="left", padx=20, ipady=6)
 
@@ -164,6 +156,14 @@ def build_coral_view_window():
 
     download_mix_wav_btn = ttk.Button(buttons_row, text="Descargar mezcla WAV")
     download_mix_wav_btn.pack(side="left", padx=20, ipady=6)
+
+    progress = ttk.Progressbar(
+        top_frame,
+        orient="horizontal",
+        mode="determinate"
+    )
+    progress.pack(fill="x", padx=50, pady=5)
+    progress.pack_forget()
 
     # ===============================
     # Variables para checkbuttons de voces
