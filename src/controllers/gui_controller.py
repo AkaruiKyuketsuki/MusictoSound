@@ -153,6 +153,8 @@ def run_coral_gui():
     get_mix_levels = widgets["get_mix_levels"]
     download_mix_btn = widgets["download_mix_btn"]
     download_mix_wav_btn = widgets["download_mix_wav_btn"]
+
+    progress = widgets["progress"]
     
     log("Módulo generador coral listo.")
     current_output_dir = None
@@ -440,17 +442,14 @@ def run_coral_gui():
                 temp_dir
             )
 
+            # configurar barra de progreso
+            total = len(midi_files)
+            log(f"🎼 {total} voces seleccionadas para generar WAV.")
+            
+            progress["value"] = 0
+            progress["maximum"] = total
+
             # 2 convertir cada MIDI a WAV
-            """
-            for midi_path in midi_files:
-
-                wav_path = output_dir / (midi_path.stem + ".wav")
-                log(f"🎧 Convirtiendo {midi_path.name} → WAV")
-
-                midi_to_wav(midi_path, wav_path)
-                log(f"✅ Generado: {wav_path.name}")
-            """
-
             log("🎧 Convirtiendo archivos a WAV (procesamiento paralelo)...")
 
             futures = []
@@ -466,12 +465,30 @@ def run_coral_gui():
                     future = executor.submit(_convert_midi_to_wav, midi_path, wav_path)
                     futures.append((future, wav_path))
 
+                """
                 for future, wav_path in futures:
                     try:
                         future.result()
                         log(f"✅ Generado: {wav_path.name}")
                     except Exception as e:
                         log(f"❌ Error en {wav_path.name}: {e}")
+                
+                """
+                completed = 0
+                for future in as_completed([f[0] for f in futures]):
+
+                    wav_path = next(w for f, w in futures if f == future)
+
+                    try:
+                        future.result()
+                        log(f"✅ Generado: {wav_path.name}")
+                        progress["value"] = 0
+                    except Exception as e:
+                        log(f"❌ Error en {wav_path.name}: {e}")
+
+                    completed += 1
+                    progress["value"] = completed
+                    root.update_idletasks()
                         
             log("Proceso completado correctamente.")
             
