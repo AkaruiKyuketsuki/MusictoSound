@@ -393,6 +393,7 @@ def run_coral_gui():
     # ------------------------------------------------------
     # Generar mezcla WAV
     # ------------------------------------------------------
+    """
     def download_mix_wav():
 
         xml_path = xml_path_var.get().strip()
@@ -447,7 +448,77 @@ def run_coral_gui():
         except Exception as e:
             log(f"❌ Error al generar WAV: {e}")
 
+    """
+    def download_mix_wav():
 
+        xml_path = xml_path_var.get().strip()
+
+        if not xml_path:
+            log("⚠ Selecciona un archivo XML.")
+            return
+
+        path = Path(xml_path)
+
+        selected = get_selected_voices()
+
+        if not selected:
+            log("⚠ No hay voces seleccionadas.")
+            return
+
+        mix_levels = get_mix_levels()
+
+        folder_name = folder_name_var.get().strip()
+        base_path_str = base_path_var.get().strip()
+
+        if base_path_str:
+            base_path = Path(base_path_str)
+        else:
+            base_path = path.parent
+
+        output_dir = base_path / folder_name
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        # 🔹 diálogo para elegir nombre del WAV
+        save_path = filedialog.asksaveasfilename(
+            title="Guardar mezcla WAV",
+            defaultextension=".wav",
+            initialfile="mezcla.wav",
+            initialdir=output_dir,
+            filetypes=[("WAV files", "*.wav")]
+        )
+
+        if not save_path:
+            log("Operación cancelada.")
+            return
+
+        wav_path = Path(save_path)
+
+        # MIDI temporal
+        midi_path = output_dir / "mezcla_temp.mid"
+
+        log("Generando mezcla MIDI temporal...")
+
+        export_mix_to_midi(
+            path,
+            selected,
+            mix_levels,
+            midi_path
+        )
+
+        log("Convirtiendo MIDI a WAV con MuseScore...")
+
+        try:
+            midi_to_wav(midi_path, wav_path)
+
+            # borrar archivo temporal
+            if midi_path.exists():
+                midi_path.unlink()
+                log("🧹 Archivo MIDI temporal eliminado.")
+
+            log(f"✅ Mezcla WAV generada: {wav_path.name}")
+
+        except Exception as e:
+            log(f"❌ Error al generar WAV: {e}")
     # ------------------------------------------------------
     # Examinar ubicación de salida
     # ------------------------------------------------------
