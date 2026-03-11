@@ -151,6 +151,7 @@ def run_coral_gui():
     
     log("Módulo generador coral listo.")
     current_output_dir = None
+    user_selected_base_path = False
 
     # ------------------------------------------------------
     # Volver
@@ -208,12 +209,17 @@ def run_coral_gui():
 
             # Obtener carpeta del XML
             xml_dir = Path(path).parent
+            nonlocal user_selected_base_path
 
+            # Solo cambiar ubicación automáticamente si el usuario no eligió una manualmente
+            if not user_selected_base_path:
+                base_path_var.set(str(xml_dir))
+
+            """
             # Si el usuario no ha seleccionado ubicación, usar la del XML
             if not base_path_var.get().strip():
                 base_path_var.set(str(xml_dir))
-
-
+            """
             # 🔹 Limpiar voces anteriores
             clear_detected_voices()
 
@@ -435,9 +441,19 @@ def run_coral_gui():
 
         folder = filedialog.askdirectory()
 
+        """
         if folder:
             base_path_var.set(folder)
             log(f"Ubicación base seleccionada: {folder}")
+        """
+
+        if folder:
+            base_path_var.set(folder)
+
+            nonlocal user_selected_base_path
+            user_selected_base_path = True
+
+            log(f"Ubicación base seleccionada: {folder}")            
 
     # ------------------------------------------------------
     # Asignar comandos
