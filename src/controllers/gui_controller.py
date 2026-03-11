@@ -23,6 +23,7 @@ from services.coral_midi_service import export_selected_parts_to_midi
 from services.coral_midi_service import export_mix_to_midi
 
 from services.coral_audio_render_service import midi_to_wav
+from concurrent.futures import ThreadPoolExecutor, as_completed
 # ==========================================================
 # Utilidades
 # ==========================================================
@@ -394,67 +395,10 @@ def run_coral_gui():
     # ------------------------------------------------------
     # Generar WAV
     # ------------------------------------------------------
-    """
-    def generate_wav():
 
-        xml_path = xml_path_var.get().strip()
-
-        if not xml_path:
-            log("⚠ Selecciona un archivo XML.")
-            return
-
-        path = Path(xml_path)
-
-        if not path.is_file():
-            log(f"❌ El archivo no existe: {path}")
-            return
-
-        selected = get_selected_voices()
-
-        if not selected:
-            log("⚠ No hay voces seleccionadas.")
-            return
-
-        if current_output_dir is None:
-            log("⚠ Primero analiza la partitura.")
-            return
-
-        output_dir = current_output_dir
-
-        log("Generando WAV de las voces seleccionadas...")
-
-        try:
-
-            # 1️⃣ generar MIDI por voz
-            midi_files = export_selected_parts_to_midi(
-                path,
-                selected,
-                output_dir
-            )
-
-            # convertir cada MIDI a WAV
-            for midi_path in midi_files:
-
-                # crear nombre temporal
-                temp_midi = midi_path.with_name(midi_path.stem + "_temp.mid")
-
-                midi_path.rename(temp_midi)
-
-                wav_path = midi_path.with_suffix(".wav")
-
-                log(f"🎧 Convirtiendo {midi_path.name} → WAV")
-
-                midi_to_wav(temp_midi, wav_path)
-
-                if temp_midi.exists():
-                    temp_midi.unlink()
-                log(f"✅ Generado: {wav_path.name}")
-
-            log("Proceso completado correctamente.")
-                            
-        except Exception as e:
-            log(f"❌ Error al generar WAV: {e}")
-    """
+    def _convert_midi_to_wav(midi_path, wav_path):
+        midi_to_wav(midi_path, wav_path)
+        return wav_path
 
     def generate_wav():
 
@@ -489,26 +433,48 @@ def run_coral_gui():
 
         try:
 
-            # 1️⃣ generar MIDI temporales
+            # 1 generar MIDI temporales
             midi_files = export_selected_parts_to_midi(
                 path,
                 selected,
                 temp_dir
             )
 
-            # 2️⃣ convertir cada MIDI a WAV
+            # 2 convertir cada MIDI a WAV
+            """
             for midi_path in midi_files:
 
                 wav_path = output_dir / (midi_path.stem + ".wav")
-
                 log(f"🎧 Convirtiendo {midi_path.name} → WAV")
 
                 midi_to_wav(midi_path, wav_path)
-
                 log(f"✅ Generado: {wav_path.name}")
+            """
 
+            log("🎧 Convirtiendo archivos a WAV (procesamiento paralelo)...")
+
+            futures = []
+
+            with ThreadPoolExecutor(max_workers=2) as executor:
+
+                for midi_path in midi_files:
+
+                    wav_path = output_dir / (midi_path.stem + ".wav")
+
+                    log(f"🎧 Programando conversión: {midi_path.name}")
+
+                    future = executor.submit(_convert_midi_to_wav, midi_path, wav_path)
+                    futures.append((future, wav_path))
+
+                for future, wav_path in futures:
+                    try:
+                        future.result()
+                        log(f"✅ Generado: {wav_path.name}")
+                    except Exception as e:
+                        log(f"❌ Error en {wav_path.name}: {e}")
+                        
             log("Proceso completado correctamente.")
-
+            
         except Exception as e:
             log(f"❌ Error al generar WAV: {e}")
 
@@ -516,8 +482,6 @@ def run_coral_gui():
             # eliminar carpeta temporal completa
             if temp_dir.exists():
                 shutil.rmtree(temp_dir)
-                log("🧹 Archivos temporales eliminados.")
-
 
     # ------------------------------------------------------
     # Generar mezcla WAV
