@@ -71,12 +71,32 @@ def build_coral_view_window():
     browse_base_btn = ttk.Button(output_frame, text="Examinar")
     browse_base_btn.pack(side="left", padx=5)
 
+
     # ===============================
     # Botones de acción
     # ===============================
+    
     buttons_frame = ttk.Frame(main_frame)
-    buttons_frame.pack(pady=20)
+    buttons_frame.pack(fill="x", pady=20)
 
+    left_frame = ttk.Frame(buttons_frame)
+    left_frame.pack(side="left")
+
+    center_frame = ttk.Frame(buttons_frame)
+    center_frame.pack(side="left", expand=True)
+
+    right_frame = ttk.Frame(buttons_frame)
+    right_frame.pack(side="right")
+
+    # =======================================
+    # Frame de tempo 
+    # =======================================
+
+    tempo_frame = ttk.LabelFrame(left_frame, text="Tempo", padding=10)
+    tempo_frame.pack()
+
+    # =======================================
+    
     analyze_btn = ttk.Button(buttons_frame, text="Analizar voces")
     analyze_btn.pack(side="left", padx=10, ipady=5)
 
@@ -88,12 +108,69 @@ def build_coral_view_window():
 
     exit_btn = ttk.Button(buttons_frame, text="Salir", command=root.destroy)
     exit_btn.pack(side="left", padx=10, ipady=5)
-
+    
     # ==========================================================
     # ZONA REDIMENSIONABLE (contenido superior + consola)
     # ==========================================================
     paned = ttk.PanedWindow(main_frame, orient="vertical")
     paned.pack(fill="both", expand=True, pady=(10, 0))
+
+    # tempo original
+    original_tempo_var = tk.IntVar(value=120)
+
+    original_row = ttk.Frame(tempo_frame)
+    original_row.pack(anchor="w", pady=2)
+
+    ttk.Label(original_row, text="Original: ").pack(side="left")
+    ttk.Label(original_row, textvariable=original_tempo_var).pack(side="left")
+    ttk.Label(original_row, text=" BPM").pack(side="left")
+
+
+    # ajuste
+    tempo_adjust_var = tk.IntVar(value=0)
+
+    adjust_row = ttk.Frame(tempo_frame)
+    adjust_row.pack(anchor="w", pady=2)
+
+    ttk.Label(adjust_row, text="Ajuste: ").pack(side="left")
+
+    tempo_spin = ttk.Spinbox(
+        adjust_row,
+        from_=-60,
+        to=60,
+        width=5,
+        textvariable=tempo_adjust_var
+    )
+
+    tempo_spin.pack(side="left")
+
+    ttk.Label(adjust_row, text=" BPM").pack(side="left")
+
+
+    # tempo final
+    final_tempo_var = tk.IntVar(value=120)
+
+    final_row = ttk.Frame(tempo_frame)
+    final_row.pack(anchor="w", pady=2)
+
+    ttk.Label(final_row, text="Final: ").pack(side="left")
+    ttk.Label(final_row, textvariable=final_tempo_var).pack(side="left")
+    ttk.Label(final_row, text=" BPM").pack(side="left")
+
+    def update_final_tempo(*args):
+
+        original = original_tempo_var.get()
+        adjust = tempo_adjust_var.get()
+
+        final = original + adjust
+
+        if final < 20:
+            final = 20
+
+        final_tempo_var.set(final)
+
+
+    tempo_adjust_var.trace_add("write", update_final_tempo)
 
     # ===============================
     # Frame superior (contenido)
@@ -282,6 +359,14 @@ def build_coral_view_window():
             for part_id, var in mix_vars.items()
         }
 
+    def get_final_tempo():
+        return final_tempo_var.get()
+
+
+    def set_original_tempo(bpm: int):
+        original_tempo_var.set(int(bpm))
+        update_final_tempo()
+        
     # ===============================
     # Registro
     # ===============================
@@ -326,4 +411,6 @@ def build_coral_view_window():
         "download_mix_btn": download_mix_btn,
         "download_mix_wav_btn": download_mix_wav_btn,
         "progress": progress,
+        "get_final_tempo": get_final_tempo,
+        "set_original_tempo": set_original_tempo,
     }
