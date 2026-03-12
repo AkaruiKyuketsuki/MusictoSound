@@ -319,6 +319,7 @@ def build_coral_view_window():
 
     ttk.Label(tempo_row2, text=" BPM").pack(side="left")
 
+    """
     def update_final_tempo(*args):
 
         original = original_tempo_var.get()
@@ -330,7 +331,22 @@ def build_coral_view_window():
             final = 20
 
         final_tempo_var.set(final)
+    """
+    def update_final_tempo(*args):
 
+        original = original_tempo_var.get()
+
+        try:
+            adjust = int(tempo_adjust_var.get())
+        except (tk.TclError, ValueError):
+            return
+
+        final = original + adjust
+
+        if final < 20:
+            final = 20
+
+        final_tempo_var.set(final)
 
     tempo_adjust_var.trace_add("write", update_final_tempo)
 
