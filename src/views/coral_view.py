@@ -75,7 +75,7 @@ def build_coral_view_window():
     # ===============================
     # Botones de acción
     # ===============================
-    
+
     buttons_frame = ttk.Frame(main_frame)
     buttons_frame.pack(fill="x", pady=20)
 
@@ -93,15 +93,18 @@ def build_coral_view_window():
     # =======================================
 
     tempo_frame = ttk.LabelFrame(left_frame, text="Tempo", padding=10)
-    tempo_frame.pack()
+    tempo_frame.pack(side="left")
 
     # =======================================
-    
+    """
     analyze_btn = ttk.Button(buttons_frame, text="Analizar voces")
     analyze_btn.pack(side="left", padx=10, ipady=5)
+    """
+    analyze_btn = ttk.Button(left_frame, text="Analizar voces")
+    analyze_btn.pack(side="left", padx=(15,0), ipady=5)
 
-    view_score_btn = ttk.Button(buttons_frame, text="Visualizar partitura")
-    view_score_btn.pack(side="left", padx=10, ipady=5)
+    view_score_btn = ttk.Button(left_frame, text="Visualizar partitura")
+    view_score_btn.pack(side="left", padx=(15,0), ipady=5)
 
     back_btn = ttk.Button(buttons_frame, text="Volver")
     back_btn.pack(side="left", padx=10, ipady=5)
