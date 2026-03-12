@@ -17,9 +17,62 @@ def build_coral_view_window():
     ).pack(pady=(0, 30))
 
     # ===============================
+    # Panel colapsable de archivo y salida
+    # ===============================
+    file_container = ttk.Frame(main_frame)
+    file_container.pack(fill="x")
+
+    file_header = ttk.Frame(file_container)
+    file_header.pack(fill="x")
+
+    file_body = ttk.Frame(file_container)
+    file_body.pack(fill="x")
+
+    file_collapsed = tk.BooleanVar(value=False)
+
+    file_toggle_btn = ttk.Button(
+        file_header,
+        text="▼ Archivo y salida",
+        width=25
+    )
+
+    file_toggle_btn.pack(anchor="w", pady=(0,5))
+
+    def toggle_file_panel():
+
+        if file_collapsed.get():
+
+            file_body.pack(fill="x")
+            file_toggle_btn.config(text="▼ Archivo y salida")
+            file_collapsed.set(False)
+
+        else:
+
+            file_body.pack_forget()
+            file_toggle_btn.config(text="▶ Archivo y salida")
+            file_collapsed.set(True)
+
+
+    def collapse_file_panel():
+
+        if not file_collapsed.get():
+
+            file_body.pack_forget()
+
+            file_toggle_btn.config(text="▶ Archivo y salida")
+
+            file_collapsed.set(True)
+
+    file_toggle_btn.config(command=toggle_file_panel)
+
+    # ===============================
     # Selector de archivo XML
     # ===============================
+    """
     file_frame = ttk.Frame(main_frame)
+    file_frame.pack(fill="x", pady=10)
+    """
+    file_frame = ttk.Frame(file_body)
     file_frame.pack(fill="x", pady=10)
 
     ttk.Label(file_frame, text="Archivo XML:", width=15).pack(side="left")
@@ -35,17 +88,20 @@ def build_coral_view_window():
     # ======================================
     # Carpeta de salida
     # ======================================
+    """
     ttk.Label(
         main_frame,
         text="Carpeta de salida",
         font=("Segoe UI", 10, "bold")
     ).pack(anchor="w", pady=(15, 5))
-
-    output_frame = ttk.Frame(main_frame)
+    """
+    #output_frame = ttk.Frame(main_frame)
+    output_frame = ttk.Frame(file_body)
     output_frame.pack(fill="x", pady=5)
 
     # Nombre de carpeta
-    ttk.Label(output_frame, text="Nombre:", width=10).pack(side="left")
+    #ttk.Label(output_frame, text="Nombre: ", width=10).pack(side="left")
+    ttk.Label(output_frame, text="Nombre (carpeta de salida):", width=22).pack(side="left")
 
     folder_name_var = tk.StringVar(value="coral_output")
 
@@ -462,4 +518,5 @@ def build_coral_view_window():
         "get_final_tempo": get_final_tempo,
         "set_original_tempo": set_original_tempo,
         "collapse_controls": collapse_controls,
+        "collapse_file_panel": collapse_file_panel,
     }
