@@ -71,12 +71,60 @@ def build_coral_view_window():
     browse_base_btn = ttk.Button(output_frame, text="Examinar")
     browse_base_btn.pack(side="left", padx=5)
 
+    
+    # ===============================
+    # Panel colapsable de controles
+    # ===============================
+
+    controls_container = ttk.Frame(main_frame)
+    controls_container.pack(fill="x")
+
+    controls_header = ttk.Frame(controls_container)
+    controls_header.pack(fill="x")
+
+    controls_body = ttk.Frame(controls_container)
+    controls_body.pack(fill="x")
+
+    collapsed = tk.BooleanVar(value=False)
+
+    toggle_btn = ttk.Button(
+        controls_header,
+        text="▼ Controles",
+        width=20
+    )
+
+    toggle_btn.pack(anchor="w", pady=(0,5))
+    
+    def toggle_controls():
+
+        if collapsed.get():
+            controls_body.pack(fill="x")
+            toggle_btn.config(text="▼ Controles")
+            collapsed.set(False)
+
+        else:
+            controls_body.pack_forget()
+            toggle_btn.config(text="▶ Controles")
+            collapsed.set(True)
+
+    def collapse_controls():
+
+        if not collapsed.get():
+            controls_body.pack_forget()
+
+            toggle_btn.config(
+                text="▶ Controles: Tempo, Analizar voces, Visualizar partitura, Volver, Salir"
+            )
+
+            collapsed.set(True)
+            
+    toggle_btn.config(command=toggle_controls)
 
     # ===============================
     # Botones de acción
     # ===============================
 
-    buttons_frame = ttk.Frame(main_frame)
+    buttons_frame = ttk.Frame(controls_body)
     buttons_frame.pack(fill="x", pady=20)
 
     left_frame = ttk.Frame(buttons_frame)
@@ -96,10 +144,7 @@ def build_coral_view_window():
     tempo_frame.pack(side="left")
 
     # =======================================
-    """
-    analyze_btn = ttk.Button(buttons_frame, text="Analizar voces")
-    analyze_btn.pack(side="left", padx=10, ipady=5)
-    """
+
     analyze_btn = ttk.Button(left_frame, text="Analizar voces")
     analyze_btn.pack(side="left", padx=(15,0), ipady=5)
 
@@ -416,4 +461,5 @@ def build_coral_view_window():
         "progress": progress,
         "get_final_tempo": get_final_tempo,
         "set_original_tempo": set_original_tempo,
+        "collapse_controls": collapse_controls,
     }

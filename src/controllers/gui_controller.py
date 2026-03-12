@@ -155,6 +155,7 @@ def run_coral_gui():
     download_mix_wav_btn = widgets["download_mix_wav_btn"]
 
     progress = widgets["progress"]
+    collapse_controls = widgets["collapse_controls"]
     
     log("Módulo generador coral listo.")
     current_output_dir = None
@@ -275,6 +276,7 @@ def run_coral_gui():
         folder_name_var.set(current_output_dir.name)
 
         log(f"📁 Carpeta de salida creada: {current_output_dir}")
+        collapse_controls()
 
     # ------------------------------------------------------
     # Generar MIDI
