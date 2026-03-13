@@ -212,10 +212,32 @@ def run_coral_gui():
             filetypes=[("MusicXML files", "*.xml *.mxl"), ("All files", "*.*")]
         )
 
+        """
         if path:
             xml_path_var.set(path)
             
             nonlocal current_output_dir
+            current_output_dir = None
+        """
+        if path:
+            xml_path_var.set(path)
+
+            nonlocal current_output_dir
+
+            # 🧹 limpiar carpeta vacía anterior
+            if current_output_dir and current_output_dir.exists():
+
+                try:
+                    if (
+                        current_output_dir.name.startswith("coral_output")
+                        and not any(current_output_dir.iterdir())
+                    ):
+                        current_output_dir.rmdir()
+                        log(f"🧹 Carpeta vacía eliminada: {current_output_dir.name}")
+
+                except Exception as e:
+                    log(f"⚠ No se pudo limpiar carpeta temporal: {e}")
+
             current_output_dir = None
 
             # Obtener carpeta del XML
