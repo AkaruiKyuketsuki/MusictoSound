@@ -155,7 +155,11 @@ def run_coral_gui():
     download_mix_wav_btn = widgets["download_mix_wav_btn"]
 
     progress = widgets["progress"]
-    
+    collapse_controls = widgets["collapse_controls"]
+    collapse_file_panel = widgets["collapse_file_panel"]
+    get_final_tempo = widgets["get_final_tempo"]
+    set_original_tempo = widgets["set_original_tempo"]
+
     log("Módulo generador coral listo.")
     current_output_dir = None
     user_selected_base_path = False
@@ -256,7 +260,7 @@ def run_coral_gui():
         log(f"Título: {result['title']}")
         log(f"Tempo detectado: {result['tempo']} BPM")
 
-        # Delegamos completamente en la vista
+        set_original_tempo(result["tempo"])
         set_voices(result["parts"])
 
         nonlocal current_output_dir
@@ -275,6 +279,8 @@ def run_coral_gui():
         folder_name_var.set(current_output_dir.name)
 
         log(f"📁 Carpeta de salida creada: {current_output_dir}")
+        collapse_file_panel()
+        #collapse_controls()
 
     # ------------------------------------------------------
     # Generar MIDI
@@ -308,14 +314,18 @@ def run_coral_gui():
         log("Generando archivos MIDI...")
 
         try:
+            tempo = get_final_tempo()
+
             generated_files = export_selected_parts_to_midi(
                 path,
                 selected,
                 output_dir,
+                tempo_bpm=tempo,
             )
 
             for file in generated_files:
                 log(f"✅ Generado: {file.name}")
+                log(f"Tempo final aplicado: {tempo} BPM")
 
             log("Proceso completado correctamente.")
 
@@ -381,15 +391,19 @@ def run_coral_gui():
 
             save_path = Path(save_path)
 
+            tempo = get_final_tempo()
+
             midi_path = export_mix_to_midi(
                 path,
                 selected,
                 mix_levels,
                 save_path,
+                tempo_bpm=tempo
             )
 
 
             log(f"✅ Mezcla MIDI generada: {midi_path.name}")
+            log(f"Tempo final aplicado: {tempo} BPM")
 
         except Exception as e:
             log(f"❌ Error al generar mezcla MIDI: {e}")
@@ -436,10 +450,13 @@ def run_coral_gui():
         try:
 
             # 1 generar MIDI temporales
+            tempo = get_final_tempo()
+
             midi_files = export_selected_parts_to_midi(
                 path,
                 selected,
-                temp_dir
+                temp_dir,
+                tempo_bpm=tempo
             )
 
             # configurar barra de progreso
@@ -485,7 +502,6 @@ def run_coral_gui():
                     completed += 1
                     log(f"🎧 Progreso: {completed}/{total}")
                     progress["value"] = completed
-                    #root.update_idletasks()
                     root.update()
 
             #progress.pack_forget()            
@@ -551,11 +567,14 @@ def run_coral_gui():
 
         log("Generando mezcla MIDI temporal...")
 
+        tempo = get_final_tempo()
+
         export_mix_to_midi(
             path,
             selected,
             mix_levels,
-            midi_path
+            midi_path,
+            tempo_bpm=tempo
         )
 
         log("Convirtiendo MIDI a WAV con MuseScore...")

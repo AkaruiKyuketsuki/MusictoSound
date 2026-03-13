@@ -5,22 +5,45 @@ a partir de partes individuales.
 from music21 import converter
 from pathlib import Path
 from music21 import stream
+from music21 import tempo
 import copy
 
+def apply_tempo(score, bpm: int):
+    """
+    Aplica un tempo global al score y a cada parte.
+    """
 
-"""
-Genera un archivo MIDI por cada parte seleccionada.
+    tempo_mark = tempo.MetronomeMark(number=bpm)
 
-Returns:
-    Lista de rutas de archivos MIDI generados.
+    # eliminar tempos existentes
+    for el in score.recurse().getElementsByClass(tempo.MetronomeMark):
+        if el.activeSite:
+            el.activeSite.remove(el)
+
+    # insertar en score
+    score.insert(0, tempo_mark)
+
+    # insertar en cada parte
+    for part in score.parts:
+        part.insert(0, tempo.MetronomeMark(number=bpm))
+
+    return score
+
+""" 
+Genera un archivo MIDI por cada parte seleccionada. 
+Returns: archivos MIDI generados. 
 """
 def export_selected_parts_to_midi(
     xml_path: Path,
     selected_parts: list[dict],
     output_dir: Path,
+    tempo_bpm: int | None = None,
 ) -> list[Path]:
 
     score = converter.parse(xml_path)
+    
+    if tempo_bpm:
+        score = apply_tempo(score, tempo_bpm)
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -55,13 +78,15 @@ def export_mix_to_midi(
     xml_path: Path,
     selected_parts: list[dict],
     volumes: dict,
-    #output_dir: Path,
     output_path: Path,
+    tempo_bpm: int | None = None,
 ) -> Path:
 
     score = converter.parse(xml_path)
 
-    #output_dir.mkdir(parents=True, exist_ok=True)
+    if tempo_bpm:
+        score = apply_tempo(score, tempo_bpm)
+
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     mix_score = stream.Score()
@@ -94,12 +119,6 @@ def export_mix_to_midi(
                     n.volume.velocity = new_velocity
 
             mix_score.insert(0, part_copy)
-
-    """
-    midi_path = output_dir / "mezcla.mid"
-    mix_score.write("midi", midi_path)
-    return midi_path
-    """
 
     mix_score.write("midi", output_path)
 

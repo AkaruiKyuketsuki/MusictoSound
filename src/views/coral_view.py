@@ -17,9 +17,62 @@ def build_coral_view_window():
     ).pack(pady=(0, 30))
 
     # ===============================
+    # Panel colapsable de archivo y salida
+    # ===============================
+    file_container = ttk.Frame(main_frame)
+    file_container.pack(fill="x")
+
+    file_header = ttk.Frame(file_container)
+    file_header.pack(fill="x")
+
+    file_body = ttk.Frame(file_container)
+    file_body.pack(fill="x")
+
+    file_collapsed = tk.BooleanVar(value=False)
+
+    file_toggle_btn = ttk.Button(
+        file_header,
+        text="▼ Archivo y salida",
+        width=25
+    )
+
+    file_toggle_btn.pack(anchor="w", pady=(0,5))
+
+    def toggle_file_panel():
+
+        if file_collapsed.get():
+
+            file_body.pack(fill="x")
+            file_toggle_btn.config(text="▼ Archivo y salida")
+            file_collapsed.set(False)
+
+        else:
+
+            file_body.pack_forget()
+            file_toggle_btn.config(text="▶ Archivo y salida")
+            file_collapsed.set(True)
+
+
+    def collapse_file_panel():
+
+        if not file_collapsed.get():
+
+            file_body.pack_forget()
+
+            file_toggle_btn.config(text="▶ Archivo y salida")
+
+            file_collapsed.set(True)
+
+    file_toggle_btn.config(command=toggle_file_panel)
+
+    # ===============================
     # Selector de archivo XML
     # ===============================
+    """
     file_frame = ttk.Frame(main_frame)
+    file_frame.pack(fill="x", pady=10)
+    """
+    file_frame = ttk.Frame(file_body)
     file_frame.pack(fill="x", pady=10)
 
     ttk.Label(file_frame, text="Archivo XML:", width=15).pack(side="left")
@@ -35,17 +88,20 @@ def build_coral_view_window():
     # ======================================
     # Carpeta de salida
     # ======================================
+    """
     ttk.Label(
         main_frame,
         text="Carpeta de salida",
         font=("Segoe UI", 10, "bold")
     ).pack(anchor="w", pady=(15, 5))
-
-    output_frame = ttk.Frame(main_frame)
+    """
+    #output_frame = ttk.Frame(main_frame)
+    output_frame = ttk.Frame(file_body)
     output_frame.pack(fill="x", pady=5)
 
     # Nombre de carpeta
-    ttk.Label(output_frame, text="Nombre:", width=10).pack(side="left")
+    #ttk.Label(output_frame, text="Nombre: ", width=10).pack(side="left")
+    ttk.Label(output_frame, text="Nombre (carpeta de salida):", width=25).pack(side="left")
 
     folder_name_var = tk.StringVar(value="coral_output")
 
@@ -71,29 +127,228 @@ def build_coral_view_window():
     browse_base_btn = ttk.Button(output_frame, text="Examinar")
     browse_base_btn.pack(side="left", padx=5)
 
+    
+    # ===============================
+    # Panel colapsable de controles
+    # ===============================
+
+    controls_container = ttk.Frame(main_frame)
+    controls_container.pack(fill="x")
+
+    controls_header = ttk.Frame(controls_container)
+    controls_header.pack(fill="x")
+
+    controls_body = ttk.Frame(controls_container)
+    controls_body.pack(fill="x")
+
+    collapsed = tk.BooleanVar(value=False)
+
+    toggle_btn = ttk.Button(
+        controls_header,
+        text="▼ Controles",
+        width=20
+    )
+
+    toggle_btn.pack(anchor="w", pady=(0,5))
+    
+    def toggle_controls():
+
+        if collapsed.get():
+            controls_body.pack(fill="x")
+            toggle_btn.config(text="▼ Controles")
+            collapsed.set(False)
+
+        else:
+            controls_body.pack_forget()
+            toggle_btn.config(text="▶ Controles")
+            collapsed.set(True)
+
+    def collapse_controls():
+
+        if not collapsed.get():
+            controls_body.pack_forget()
+
+            toggle_btn.config(
+                text="▶ Controles: Tempo, Analizar voces, Visualizar partitura, Volver, Salir"
+            )
+
+            collapsed.set(True)
+            
+    toggle_btn.config(command=toggle_controls)
+
     # ===============================
     # Botones de acción
     # ===============================
-    buttons_frame = ttk.Frame(main_frame)
-    buttons_frame.pack(pady=20)
 
-    analyze_btn = ttk.Button(buttons_frame, text="Analizar voces")
-    analyze_btn.pack(side="left", padx=10, ipady=5)
+    buttons_frame = ttk.Frame(controls_body)
+    buttons_frame.pack(fill="x", pady=20)
 
-    view_score_btn = ttk.Button(buttons_frame, text="Visualizar partitura")
-    view_score_btn.pack(side="left", padx=10, ipady=5)
+    left_frame = ttk.Frame(buttons_frame)
+    left_frame.pack(side="left")
+
+    center_frame = ttk.Frame(buttons_frame)
+    center_frame.pack(side="left", expand=True)
+
+    right_frame = ttk.Frame(buttons_frame)
+    right_frame.pack(side="right")
+
+    # =======================================
+    # Frame de tempo 
+    # =======================================
+
+    #tempo_frame = ttk.LabelFrame(left_frame, text="Tempo", padding=10)
+    tempo_frame = ttk.LabelFrame(left_frame, text="Tempo", padding=(10,5))
+    tempo_frame.pack(side="left")
+
+    # =======================================
+
+    analyze_btn = ttk.Button(left_frame, text="Analizar voces")
+    analyze_btn.pack(side="left", padx=(15,0), ipady=5)
+
+    view_score_btn = ttk.Button(left_frame, text="Visualizar partitura")
+    view_score_btn.pack(side="left", padx=(15,0), ipady=5)
 
     back_btn = ttk.Button(buttons_frame, text="Volver")
     back_btn.pack(side="left", padx=10, ipady=5)
 
     exit_btn = ttk.Button(buttons_frame, text="Salir", command=root.destroy)
     exit_btn.pack(side="left", padx=10, ipady=5)
-
+    
     # ==========================================================
     # ZONA REDIMENSIONABLE (contenido superior + consola)
     # ==========================================================
     paned = ttk.PanedWindow(main_frame, orient="vertical")
     paned.pack(fill="both", expand=True, pady=(10, 0))
+
+    # tempo original
+    """
+    original_tempo_var = tk.IntVar(value=120)
+
+    original_row = ttk.Frame(tempo_frame)
+    original_row.pack(anchor="w", pady=2)
+
+    ttk.Label(original_row, text="Original: ").pack(side="left")
+    ttk.Label(original_row, textvariable=original_tempo_var).pack(side="left")
+    ttk.Label(original_row, text=" BPM").pack(side="left")
+    """
+
+    """
+    # ajuste
+    tempo_adjust_var = tk.IntVar(value=0)
+
+    adjust_row = ttk.Frame(tempo_frame)
+    adjust_row.pack(anchor="w", pady=2)
+
+    ttk.Label(adjust_row, text="Ajuste: ").pack(side="left")
+
+    tempo_spin = ttk.Spinbox(
+        adjust_row,
+        from_=-60,
+        to=60,
+        width=5,
+        textvariable=tempo_adjust_var
+    )
+
+    tempo_spin.pack(side="left")
+
+    ttk.Label(adjust_row, text=" BPM").pack(side="left")
+
+
+    # tempo final
+    final_tempo_var = tk.IntVar(value=120)
+
+    final_row = ttk.Frame(tempo_frame)
+    final_row.pack(anchor="w", pady=2)
+
+    ttk.Label(final_row, text="Final: ").pack(side="left")
+    ttk.Label(final_row, textvariable=final_tempo_var).pack(side="left")
+    ttk.Label(final_row, text=" BPM").pack(side="left")
+    """
+    # tempo original
+    """
+    original_tempo_var = tk.IntVar(value=120)
+
+    original_row = ttk.Frame(tempo_frame)
+    original_row.pack(anchor="w", pady=2)
+
+    ttk.Label(original_row, text="Original: ").pack(side="left")
+    ttk.Label(original_row, textvariable=original_tempo_var).pack(side="left")
+    ttk.Label(original_row, text=" BPM").pack(side="left")
+    """
+    # ===============================
+    # Tempo variables
+    # ===============================
+
+    original_tempo_var = tk.IntVar(value=120)
+    final_tempo_var = tk.IntVar(value=120)
+    tempo_adjust_var = tk.IntVar(value=0)
+
+    # -------------------------------
+    # Fila 1: Original + Final
+    # -------------------------------
+
+    tempo_row1 = ttk.Frame(tempo_frame)
+    tempo_row1.pack(anchor="w", pady=2)
+
+    ttk.Label(tempo_row1, text="Original:").pack(side="left")
+    ttk.Label(tempo_row1, textvariable=original_tempo_var).pack(side="left")
+    ttk.Label(tempo_row1, text=" BPM").pack(side="left", padx=(0,15))
+
+    ttk.Label(tempo_row1, text="Final:").pack(side="left")
+    ttk.Label(tempo_row1, textvariable=final_tempo_var).pack(side="left")
+    ttk.Label(tempo_row1, text=" BPM").pack(side="left")
+
+    # -------------------------------
+    # Fila 2: Ajuste
+    # -------------------------------
+
+    tempo_row2 = ttk.Frame(tempo_frame)
+    tempo_row2.pack(anchor="w", pady=2)
+
+    ttk.Label(tempo_row2, text="Ajuste:").pack(side="left")
+
+    tempo_spin = ttk.Spinbox(
+        tempo_row2,
+        from_=-60,
+        to=60,
+        width=5,
+        textvariable=tempo_adjust_var
+    )
+
+    tempo_spin.pack(side="left")
+
+    ttk.Label(tempo_row2, text=" BPM").pack(side="left")
+
+    """
+    def update_final_tempo(*args):
+
+        original = original_tempo_var.get()
+        adjust = tempo_adjust_var.get()
+
+        final = original + adjust
+
+        if final < 20:
+            final = 20
+
+        final_tempo_var.set(final)
+    """
+    def update_final_tempo(*args):
+
+        original = original_tempo_var.get()
+
+        try:
+            adjust = int(tempo_adjust_var.get())
+        except (tk.TclError, ValueError):
+            return
+
+        final = original + adjust
+
+        if final < 20:
+            final = 20
+
+        final_tempo_var.set(final)
+
+    tempo_adjust_var.trace_add("write", update_final_tempo)
 
     # ===============================
     # Frame superior (contenido)
@@ -282,6 +537,14 @@ def build_coral_view_window():
             for part_id, var in mix_vars.items()
         }
 
+    def get_final_tempo():
+        return final_tempo_var.get()
+
+
+    def set_original_tempo(bpm: int):
+        original_tempo_var.set(int(bpm))
+        update_final_tempo()
+        
     # ===============================
     # Registro
     # ===============================
@@ -326,4 +589,8 @@ def build_coral_view_window():
         "download_mix_btn": download_mix_btn,
         "download_mix_wav_btn": download_mix_wav_btn,
         "progress": progress,
+        "get_final_tempo": get_final_tempo,
+        "set_original_tempo": set_original_tempo,
+        "collapse_controls": collapse_controls,
+        "collapse_file_panel": collapse_file_panel,
     }
