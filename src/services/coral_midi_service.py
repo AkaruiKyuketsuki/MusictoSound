@@ -66,7 +66,10 @@ def export_selected_parts_to_midi(
                 .replace("\\", "_")
             )
 
-            midi_path = output_dir / f"{safe_name}.mid"
+            if tempo_bpm:
+                midi_path = output_dir / f"{safe_name}_{tempo_bpm}bpm.mid"
+            else:
+                midi_path = output_dir / f"{safe_name}.mid"
 
             part.write("midi", midi_path)
 
