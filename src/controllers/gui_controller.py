@@ -403,6 +403,7 @@ def run_coral_gui():
 
 
             log(f"✅ Mezcla MIDI generada: {midi_path.name}")
+            log(f"Tempo final aplicado: {tempo} BPM")
 
         except Exception as e:
             log(f"❌ Error al generar mezcla MIDI: {e}")
@@ -501,7 +502,6 @@ def run_coral_gui():
                     completed += 1
                     log(f"🎧 Progreso: {completed}/{total}")
                     progress["value"] = completed
-                    #root.update_idletasks()
                     root.update()
 
             #progress.pack_forget()            
