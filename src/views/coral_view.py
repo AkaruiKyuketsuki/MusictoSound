@@ -440,7 +440,9 @@ def build_coral_view_window():
                 to=100,
                 orient="horizontal"
             )
-            slider.pack(side="left", fill="x", expand=True, padx=10)
+            
+            #slider.pack(side="left", fill="x", expand=True, padx=10)
+            slider.pack(side="left", fill="x", expand=True, padx=(10,5))
 
             spin = ttk.Spinbox(
                 mix_row,
@@ -449,7 +451,9 @@ def build_coral_view_window():
                 width=5,
                 textvariable=volume_var
             )
+
             spin.pack(side="left", padx=5)
+            ttk.Label(mix_row, text="Vol").pack(side="left", padx=(0,10))
 
 
             # ===============================
@@ -467,6 +471,7 @@ def build_coral_view_window():
             )
 
             pitch_spin.pack(side="left", padx=(10,5))
+            ttk.Label(mix_row, text="Pitch").pack(side="left", padx=(0,10))
 
             pitch_vars[part_id] = pitch_var
 
