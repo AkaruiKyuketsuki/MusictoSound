@@ -68,10 +68,7 @@ def build_coral_view_window():
     # ===============================
     # Selector de archivo XML
     # ===============================
-    """
-    file_frame = ttk.Frame(main_frame)
-    file_frame.pack(fill="x", pady=10)
-    """
+
     file_frame = ttk.Frame(file_body)
     file_frame.pack(fill="x", pady=10)
 
@@ -95,12 +92,10 @@ def build_coral_view_window():
         font=("Segoe UI", 10, "bold")
     ).pack(anchor="w", pady=(15, 5))
     """
-    #output_frame = ttk.Frame(main_frame)
     output_frame = ttk.Frame(file_body)
     output_frame.pack(fill="x", pady=5)
 
     # Nombre de carpeta
-    #ttk.Label(output_frame, text="Nombre: ", width=10).pack(side="left")
     ttk.Label(output_frame, text="Nombre (carpeta de salida):", width=25).pack(side="left")
 
     folder_name_var = tk.StringVar(value="coral_output")
@@ -193,12 +188,14 @@ def build_coral_view_window():
     right_frame.pack(side="right")
 
     # =======================================
-    # Frame de tempo 
+    # Frame de tempo y transposición
     # =======================================
 
-    #tempo_frame = ttk.LabelFrame(left_frame, text="Tempo", padding=10)
     tempo_frame = ttk.LabelFrame(left_frame, text="Tempo", padding=(10,5))
     tempo_frame.pack(side="left")
+
+    transpose_frame = ttk.LabelFrame(left_frame, text="Transposición", padding=(10,5))
+    transpose_frame.pack(side="left", padx=(15,0))
 
     # =======================================
 
@@ -220,61 +217,6 @@ def build_coral_view_window():
     paned = ttk.PanedWindow(main_frame, orient="vertical")
     paned.pack(fill="both", expand=True, pady=(10, 0))
 
-    # tempo original
-    """
-    original_tempo_var = tk.IntVar(value=120)
-
-    original_row = ttk.Frame(tempo_frame)
-    original_row.pack(anchor="w", pady=2)
-
-    ttk.Label(original_row, text="Original: ").pack(side="left")
-    ttk.Label(original_row, textvariable=original_tempo_var).pack(side="left")
-    ttk.Label(original_row, text=" BPM").pack(side="left")
-    """
-
-    """
-    # ajuste
-    tempo_adjust_var = tk.IntVar(value=0)
-
-    adjust_row = ttk.Frame(tempo_frame)
-    adjust_row.pack(anchor="w", pady=2)
-
-    ttk.Label(adjust_row, text="Ajuste: ").pack(side="left")
-
-    tempo_spin = ttk.Spinbox(
-        adjust_row,
-        from_=-60,
-        to=60,
-        width=5,
-        textvariable=tempo_adjust_var
-    )
-
-    tempo_spin.pack(side="left")
-
-    ttk.Label(adjust_row, text=" BPM").pack(side="left")
-
-
-    # tempo final
-    final_tempo_var = tk.IntVar(value=120)
-
-    final_row = ttk.Frame(tempo_frame)
-    final_row.pack(anchor="w", pady=2)
-
-    ttk.Label(final_row, text="Final: ").pack(side="left")
-    ttk.Label(final_row, textvariable=final_tempo_var).pack(side="left")
-    ttk.Label(final_row, text=" BPM").pack(side="left")
-    """
-    # tempo original
-    """
-    original_tempo_var = tk.IntVar(value=120)
-
-    original_row = ttk.Frame(tempo_frame)
-    original_row.pack(anchor="w", pady=2)
-
-    ttk.Label(original_row, text="Original: ").pack(side="left")
-    ttk.Label(original_row, textvariable=original_tempo_var).pack(side="left")
-    ttk.Label(original_row, text=" BPM").pack(side="left")
-    """
     # ===============================
     # Tempo variables
     # ===============================
@@ -283,10 +225,7 @@ def build_coral_view_window():
     final_tempo_var = tk.IntVar(value=120)
     tempo_adjust_var = tk.IntVar(value=0)
 
-    # -------------------------------
     # Fila 1: Original + Final
-    # -------------------------------
-
     tempo_row1 = ttk.Frame(tempo_frame)
     tempo_row1.pack(anchor="w", pady=2)
 
@@ -298,10 +237,7 @@ def build_coral_view_window():
     ttk.Label(tempo_row1, textvariable=final_tempo_var).pack(side="left")
     ttk.Label(tempo_row1, text=" BPM").pack(side="left")
 
-    # -------------------------------
     # Fila 2: Ajuste
-    # -------------------------------
-
     tempo_row2 = ttk.Frame(tempo_frame)
     tempo_row2.pack(anchor="w", pady=2)
 
@@ -319,19 +255,6 @@ def build_coral_view_window():
 
     ttk.Label(tempo_row2, text=" BPM").pack(side="left")
 
-    """
-    def update_final_tempo(*args):
-
-        original = original_tempo_var.get()
-        adjust = tempo_adjust_var.get()
-
-        final = original + adjust
-
-        if final < 20:
-            final = 20
-
-        final_tempo_var.set(final)
-    """
     def update_final_tempo(*args):
 
         original = original_tempo_var.get()
@@ -349,6 +272,42 @@ def build_coral_view_window():
         final_tempo_var.set(final)
 
     tempo_adjust_var.trace_add("write", update_final_tempo)
+
+    # ===============================
+    # Transposición global
+    # ===============================
+
+    global_transpose_var = tk.IntVar(value=0)
+    initial_key_var = tk.StringVar(value="Do mayor")
+    final_key_var = tk.StringVar(value="Do mayor")
+    
+    # Fila 1: Tonalidad inicial/final
+    key_row1 = ttk.Frame(transpose_frame)
+    key_row1.pack(anchor="w", pady=2)
+
+    ttk.Label(key_row1, text="Inicial:").pack(side="left")
+    ttk.Label(key_row1, textvariable=initial_key_var).pack(side="left")
+
+    ttk.Label(key_row1, text="   Final:").pack(side="left", padx=(10,0))
+    ttk.Label(key_row1, textvariable=final_key_var).pack(side="left")
+
+    # Fila 2: Ajuste
+    key_row2 = ttk.Frame(transpose_frame)
+    key_row2.pack(anchor="w", pady=2)
+
+    ttk.Label(key_row2, text="Ajuste:").pack(side="left")
+
+    transpose_spin = ttk.Spinbox(
+        key_row2,
+        from_=-12,
+        to=12,
+        width=5,
+        textvariable=global_transpose_var
+    )
+
+    transpose_spin.pack(side="left")
+
+    ttk.Label(key_row2, text=" semitonos").pack(side="left")
 
     # ===============================
     # Frame superior (contenido)
