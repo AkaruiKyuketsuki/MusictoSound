@@ -386,6 +386,7 @@ def build_coral_view_window():
     # ===============================
     voice_vars = {}
     mix_vars = {}
+    pitch_vars = {}
 
     def set_voices(parts: list[dict]):
         # Limpiar lista anterior
@@ -396,6 +397,7 @@ def build_coral_view_window():
 
         voice_vars.clear()
         mix_vars.clear()
+        pitch_vars.clear()
 
         for part in parts:
             part_id = part["id"]
@@ -449,6 +451,30 @@ def build_coral_view_window():
             )
             spin.pack(side="left", padx=5)
 
+
+            # ===============================
+            # Pitch por pista
+            # ===============================
+
+            pitch_var = tk.IntVar(value=0)
+
+            pitch_spin = ttk.Spinbox(
+                mix_row,
+                from_=-12,
+                to=12,
+                width=5,
+                textvariable=pitch_var
+            )
+
+            pitch_spin.pack(side="left", padx=(10,5))
+
+            pitch_vars[part_id] = pitch_var
+
+            # =============================
+            # Sincronización slider + spinbox
+            # =============================
+
+            
             # sincronizar slider → variable
             def on_slider(val, var=volume_var):
                 var.set(int(float(val)))
@@ -465,11 +491,12 @@ def build_coral_view_window():
 
             mix_vars[part_id] = volume_var
 
-            def toggle_voice(v=var, vol=volume_var, s=slider, sp=spin, lbl=mix_label, name=name_var):
+            def toggle_voice(v=var, vol=volume_var, s=slider, sp=spin, ps=pitch_spin, lbl=mix_label, name=name_var):
                 if v.get():
                     vol.set(100)
                     s.state(["!disabled"])
                     sp.state(["!disabled"])
+                    ps.state(["!disabled"])
                     s.set(100)
                     lbl.configure(text=name.get(), foreground="black")
                 else:
@@ -496,6 +523,13 @@ def build_coral_view_window():
             for part_id, var in mix_vars.items()
         }
 
+
+    def get_pitch_levels():
+        return {
+            part_id: var.get()
+            for part_id, var in pitch_vars.items()
+        }
+        
     def get_final_tempo():
         return final_tempo_var.get()
 
@@ -552,4 +586,5 @@ def build_coral_view_window():
         "set_original_tempo": set_original_tempo,
         "collapse_controls": collapse_controls,
         "collapse_file_panel": collapse_file_panel,
+        "get_pitch_levels": get_pitch_levels,
     }
