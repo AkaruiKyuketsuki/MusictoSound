@@ -24,6 +24,9 @@ from services.coral_midi_service import export_mix_to_midi
 
 from services.coral_audio_render_service import midi_to_wav
 from concurrent.futures import ThreadPoolExecutor, as_completed
+
+from views.reaper_export_view import show_reaper_export_dialog
+
 # ==========================================================
 # Utilidades
 # ==========================================================
@@ -165,6 +168,8 @@ def run_coral_gui():
     set_initial_key = widgets["set_initial_key"]
     reset_adjustments = widgets["reset_adjustments"]
     get_final_key = widgets["get_final_key"]
+
+    export_reaper_btn = widgets["export_reaper_btn"]
 
     log("Módulo generador coral listo.")
     current_output_dir = None
@@ -637,6 +642,24 @@ def run_coral_gui():
 
         except Exception as e:
             log(f"❌ Error al generar WAV: {e}")
+    
+    
+    # ------------------------------------------------------
+    # Exportar a Reaper
+    # ------------------------------------------------------
+    def export_to_reaper():
+
+        options = show_reaper_export_dialog(root)
+
+        if options is None:
+            log("Exportación a Reaper cancelada.")
+            return
+
+        log("Opciones de exportación seleccionadas:")
+
+        for key, value in options.items():
+            log(f"  {key}: {value}")
+    
     # ------------------------------------------------------
     # Examinar ubicación de salida
     # ------------------------------------------------------
@@ -665,6 +688,7 @@ def run_coral_gui():
     download_mix_btn.config(command=download_mix_midi)
     download_mix_wav_btn.config(command=download_mix_wav)
     download_wav_btn.config(command=generate_wav)
+    export_reaper_btn.config(command=export_to_reaper)
 
     root.mainloop()
 

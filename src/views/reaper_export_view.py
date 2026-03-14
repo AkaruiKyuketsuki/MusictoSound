@@ -1,0 +1,125 @@
+# src/views/reaper_export_view.py
+import tkinter as tk
+from tkinter import ttk
+
+
+def show_reaper_export_dialog(parent):
+    """
+    Muestra un diálogo para seleccionar opciones de exportación a Reaper.
+    Devuelve un diccionario con las opciones seleccionadas o None si se cancela.
+    """
+
+    result = {"value": None}
+
+    win = tk.Toplevel(parent)
+    win.title("Exportar a Reaper")
+    win.geometry("420x320")
+    win.resizable(False, False)
+
+    frm = ttk.Frame(win, padding=12)
+    frm.pack(fill="both", expand=True)
+
+    ttk.Label(
+        frm,
+        text="Opciones de exportación a Reaper",
+        font=("Segoe UI", 11, "bold")
+    ).pack(pady=(10, 15))
+
+    # ======================================================
+    # Formato de exportación
+    # ======================================================
+
+    format_frame = ttk.LabelFrame(frm, text="Formato", padding=10)
+    format_frame.pack(fill="x", pady=5)
+
+    format_var = tk.StringVar(value="midi_wav")
+
+    ttk.Radiobutton(
+        format_frame,
+        text="MIDI",
+        variable=format_var,
+        value="midi"
+    ).pack(anchor="w")
+
+    ttk.Radiobutton(
+        format_frame,
+        text="WAV",
+        variable=format_var,
+        value="wav"
+    ).pack(anchor="w")
+
+    ttk.Radiobutton(
+        format_frame,
+        text="MIDI + WAV",
+        variable=format_var,
+        value="midi_wav"
+    ).pack(anchor="w")
+
+    # ======================================================
+    # Opciones adicionales
+    # ======================================================
+
+    options_frame = ttk.LabelFrame(frm, text="Opciones", padding=10)
+    options_frame.pack(fill="x", pady=10)
+
+    tempo_var = tk.BooleanVar(value=True)
+    transpose_var = tk.BooleanVar(value=True)
+    lyrics_var = tk.BooleanVar(value=True)
+
+    ttk.Checkbutton(
+        options_frame,
+        text="Aplicar tempo final",
+        variable=tempo_var
+    ).pack(anchor="w")
+
+    ttk.Checkbutton(
+        options_frame,
+        text="Aplicar transposición global",
+        variable=transpose_var
+    ).pack(anchor="w")
+
+    ttk.Checkbutton(
+        options_frame,
+        text="Incluir letra",
+        variable=lyrics_var
+    ).pack(anchor="w")
+
+    # ======================================================
+    # Botones
+    # ======================================================
+
+    buttons = ttk.Frame(frm)
+    buttons.pack(pady=15)
+
+    def on_export():
+
+        result["value"] = {
+            "format": format_var.get(),
+            "apply_tempo": tempo_var.get(),
+            "apply_transpose": transpose_var.get(),
+            "include_lyrics": lyrics_var.get(),
+        }
+
+        win.destroy()
+
+    def on_cancel():
+        win.destroy()
+
+    ttk.Button(
+        buttons,
+        text="Exportar",
+        command=on_export,
+        width=15
+    ).pack(side="left", padx=10)
+
+    ttk.Button(
+        buttons,
+        text="Cancelar",
+        command=on_cancel,
+        width=15
+    ).pack(side="left", padx=10)
+
+    win.grab_set()
+    parent.wait_window(win)
+
+    return result["value"]
