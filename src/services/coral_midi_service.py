@@ -38,9 +38,17 @@ def export_selected_parts_to_midi(
     selected_parts: list[dict],
     output_dir: Path,
     tempo_bpm: int | None = None,
+    transpose: int = 0,
+    pitch_levels: dict | None = None,
+    final_key: str | None = None,
+    
 ) -> list[Path]:
 
     score = converter.parse(xml_path)
+
+    # aplicar transposición global
+    if transpose != 0:
+        score = score.transpose(transpose)
     
     if tempo_bpm:
         score = apply_tempo(score, tempo_bpm)
@@ -66,9 +74,37 @@ def export_selected_parts_to_midi(
                 .replace("\\", "_")
             )
 
-            midi_path = output_dir / f"{safe_name}.mid"
+            """
+            if tempo_bpm:
+                midi_path = output_dir / f"{safe_name}_{tempo_bpm}bpm.mid"
+            else:
+                midi_path = output_dir / f"{safe_name}.mid"
 
-            part.write("midi", midi_path)
+            """
+
+            key_suffix = ""
+            if final_key:
+                key_suffix = "_" + final_key.replace(" ", "")
+
+            if tempo_bpm:
+                midi_path = output_dir / f"{safe_name}_{tempo_bpm}bpm{key_suffix}.mid"
+            else:
+                midi_path = output_dir / f"{safe_name}{key_suffix}.mid"
+
+       
+
+       
+            part_copy = copy.deepcopy(part)
+
+            if pitch_levels:
+                pitch_shift = pitch_levels.get(part.id, 0)
+
+                if pitch_shift != 0:
+                    part_copy = part_copy.transpose(pitch_shift)
+
+            part_copy.write("midi", midi_path)
+
+
 
             generated_files.append(midi_path)
 
@@ -80,9 +116,15 @@ def export_mix_to_midi(
     volumes: dict,
     output_path: Path,
     tempo_bpm: int | None = None,
+    transpose: int = 0,
+    pitch_levels: dict | None = None,
 ) -> Path:
 
     score = converter.parse(xml_path)
+
+    # aplicar transposición global
+    if transpose != 0:
+        score = score.transpose(transpose)
 
     if tempo_bpm:
         score = apply_tempo(score, tempo_bpm)
@@ -99,6 +141,12 @@ def export_mix_to_midi(
 
             # copiar la parte para no modificar el score original
             part_copy = copy.deepcopy(part)
+
+            if pitch_levels:
+                pitch_shift = pitch_levels.get(part.id, 0)
+
+                if pitch_shift != 0:
+                    part_copy = part_copy.transpose(pitch_shift)
 
             volume = volumes.get(part.id, 1.0)
 

@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, filedialog
+from music21 import key
 
 
 def build_coral_view_window():
@@ -68,10 +69,7 @@ def build_coral_view_window():
     # ===============================
     # Selector de archivo XML
     # ===============================
-    """
-    file_frame = ttk.Frame(main_frame)
-    file_frame.pack(fill="x", pady=10)
-    """
+
     file_frame = ttk.Frame(file_body)
     file_frame.pack(fill="x", pady=10)
 
@@ -88,19 +86,11 @@ def build_coral_view_window():
     # ======================================
     # Carpeta de salida
     # ======================================
-    """
-    ttk.Label(
-        main_frame,
-        text="Carpeta de salida",
-        font=("Segoe UI", 10, "bold")
-    ).pack(anchor="w", pady=(15, 5))
-    """
-    #output_frame = ttk.Frame(main_frame)
+    
     output_frame = ttk.Frame(file_body)
     output_frame.pack(fill="x", pady=5)
 
     # Nombre de carpeta
-    #ttk.Label(output_frame, text="Nombre: ", width=10).pack(side="left")
     ttk.Label(output_frame, text="Nombre (carpeta de salida):", width=25).pack(side="left")
 
     folder_name_var = tk.StringVar(value="coral_output")
@@ -193,12 +183,14 @@ def build_coral_view_window():
     right_frame.pack(side="right")
 
     # =======================================
-    # Frame de tempo 
+    # Frame de tempo y transposición
     # =======================================
 
-    #tempo_frame = ttk.LabelFrame(left_frame, text="Tempo", padding=10)
     tempo_frame = ttk.LabelFrame(left_frame, text="Tempo", padding=(10,5))
     tempo_frame.pack(side="left")
+
+    transpose_frame = ttk.LabelFrame(left_frame, text="Transposición", padding=(10,5))
+    transpose_frame.pack(side="left", padx=(15,0))
 
     # =======================================
 
@@ -220,61 +212,6 @@ def build_coral_view_window():
     paned = ttk.PanedWindow(main_frame, orient="vertical")
     paned.pack(fill="both", expand=True, pady=(10, 0))
 
-    # tempo original
-    """
-    original_tempo_var = tk.IntVar(value=120)
-
-    original_row = ttk.Frame(tempo_frame)
-    original_row.pack(anchor="w", pady=2)
-
-    ttk.Label(original_row, text="Original: ").pack(side="left")
-    ttk.Label(original_row, textvariable=original_tempo_var).pack(side="left")
-    ttk.Label(original_row, text=" BPM").pack(side="left")
-    """
-
-    """
-    # ajuste
-    tempo_adjust_var = tk.IntVar(value=0)
-
-    adjust_row = ttk.Frame(tempo_frame)
-    adjust_row.pack(anchor="w", pady=2)
-
-    ttk.Label(adjust_row, text="Ajuste: ").pack(side="left")
-
-    tempo_spin = ttk.Spinbox(
-        adjust_row,
-        from_=-60,
-        to=60,
-        width=5,
-        textvariable=tempo_adjust_var
-    )
-
-    tempo_spin.pack(side="left")
-
-    ttk.Label(adjust_row, text=" BPM").pack(side="left")
-
-
-    # tempo final
-    final_tempo_var = tk.IntVar(value=120)
-
-    final_row = ttk.Frame(tempo_frame)
-    final_row.pack(anchor="w", pady=2)
-
-    ttk.Label(final_row, text="Final: ").pack(side="left")
-    ttk.Label(final_row, textvariable=final_tempo_var).pack(side="left")
-    ttk.Label(final_row, text=" BPM").pack(side="left")
-    """
-    # tempo original
-    """
-    original_tempo_var = tk.IntVar(value=120)
-
-    original_row = ttk.Frame(tempo_frame)
-    original_row.pack(anchor="w", pady=2)
-
-    ttk.Label(original_row, text="Original: ").pack(side="left")
-    ttk.Label(original_row, textvariable=original_tempo_var).pack(side="left")
-    ttk.Label(original_row, text=" BPM").pack(side="left")
-    """
     # ===============================
     # Tempo variables
     # ===============================
@@ -283,10 +220,7 @@ def build_coral_view_window():
     final_tempo_var = tk.IntVar(value=120)
     tempo_adjust_var = tk.IntVar(value=0)
 
-    # -------------------------------
     # Fila 1: Original + Final
-    # -------------------------------
-
     tempo_row1 = ttk.Frame(tempo_frame)
     tempo_row1.pack(anchor="w", pady=2)
 
@@ -298,10 +232,7 @@ def build_coral_view_window():
     ttk.Label(tempo_row1, textvariable=final_tempo_var).pack(side="left")
     ttk.Label(tempo_row1, text=" BPM").pack(side="left")
 
-    # -------------------------------
     # Fila 2: Ajuste
-    # -------------------------------
-
     tempo_row2 = ttk.Frame(tempo_frame)
     tempo_row2.pack(anchor="w", pady=2)
 
@@ -319,19 +250,6 @@ def build_coral_view_window():
 
     ttk.Label(tempo_row2, text=" BPM").pack(side="left")
 
-    """
-    def update_final_tempo(*args):
-
-        original = original_tempo_var.get()
-        adjust = tempo_adjust_var.get()
-
-        final = original + adjust
-
-        if final < 20:
-            final = 20
-
-        final_tempo_var.set(final)
-    """
     def update_final_tempo(*args):
 
         original = original_tempo_var.get()
@@ -350,6 +268,91 @@ def build_coral_view_window():
 
     tempo_adjust_var.trace_add("write", update_final_tempo)
 
+    # ===============================
+    # Transposición global
+    # ===============================
+
+    global_transpose_var = tk.IntVar(value=0)
+    initial_key_var = tk.StringVar(value="C major")
+    final_key_var = tk.StringVar(value="C major")
+
+    def set_initial_key(key_name: str):
+        initial_key_var.set(key_name)
+        final_key_var.set(key_name)
+    
+    # Fila 1: Tonalidad inicial/final
+    key_row1 = ttk.Frame(transpose_frame)
+    key_row1.pack(anchor="w", pady=2)
+
+    ttk.Label(key_row1, text="Inicial:").pack(side="left")
+    ttk.Label(key_row1, textvariable=initial_key_var).pack(side="left")
+
+    ttk.Label(key_row1, text="   Final:").pack(side="left", padx=(10,0))
+    ttk.Label(key_row1, textvariable=final_key_var).pack(side="left")
+
+    # Fila 2: Ajuste
+    key_row2 = ttk.Frame(transpose_frame)
+    key_row2.pack(anchor="w", pady=2)
+
+    ttk.Label(key_row2, text="Ajuste:").pack(side="left")
+
+    transpose_spin = ttk.Spinbox(
+        key_row2,
+        from_=-12,
+        to=12,
+        width=5,
+        textvariable=global_transpose_var
+    )
+
+    transpose_spin.pack(side="left")
+
+    ttk.Label(key_row2, text=" semitonos").pack(side="left")
+
+    # Al cambiar la transposición, actualizar la tonalidad final
+    """
+    def update_final_key(*args):
+
+        try:
+            transpose = int(global_transpose_var.get())
+        except:
+            return
+
+        try:
+            current_key = key.Key(initial_key_var.get())
+            new_key = current_key.transpose(transpose)
+
+            final_key_var.set(f"{new_key.tonic.name} {new_key.mode}")
+        except:
+            pass
+
+    """
+
+    def update_final_key(*args):
+        try:
+            transpose = int(global_transpose_var.get())
+        except:
+            return
+
+        try:
+            key_text = initial_key_var.get()  # "A major"
+
+            tonic, mode = key_text.split()
+
+            current_key = key.Key(tonic, mode)
+            new_key = current_key.transpose(transpose)
+
+            #final_key_var.set(f"{new_key.tonic.name} {new_key.mode}")
+            tonic = new_key.tonic.name.replace("-", "b")
+            final_key_var.set(f"{tonic} {new_key.mode}")
+
+        except Exception as e:
+            print("Error transposing key:", e)
+            
+    global_transpose_var.trace_add("write", update_final_key)
+
+    def reset_adjustments():
+        global_transpose_var.set(0)
+        tempo_adjust_var.set(0)
     # ===============================
     # Frame superior (contenido)
     # ===============================
@@ -427,6 +430,7 @@ def build_coral_view_window():
     # ===============================
     voice_vars = {}
     mix_vars = {}
+    pitch_vars = {}
 
     def set_voices(parts: list[dict]):
         # Limpiar lista anterior
@@ -437,6 +441,7 @@ def build_coral_view_window():
 
         voice_vars.clear()
         mix_vars.clear()
+        pitch_vars.clear()
 
         for part in parts:
             part_id = part["id"]
@@ -479,7 +484,9 @@ def build_coral_view_window():
                 to=100,
                 orient="horizontal"
             )
-            slider.pack(side="left", fill="x", expand=True, padx=10)
+            
+            #slider.pack(side="left", fill="x", expand=True, padx=10)
+            slider.pack(side="left", fill="x", expand=True, padx=(10,5))
 
             spin = ttk.Spinbox(
                 mix_row,
@@ -488,8 +495,35 @@ def build_coral_view_window():
                 width=5,
                 textvariable=volume_var
             )
-            spin.pack(side="left", padx=5)
 
+            spin.pack(side="left", padx=5)
+            ttk.Label(mix_row, text="Vol").pack(side="left", padx=(0,10))
+
+
+            # ===============================
+            # Pitch por pista
+            # ===============================
+
+            pitch_var = tk.IntVar(value=0)
+
+            pitch_spin = ttk.Spinbox(
+                mix_row,
+                from_=-12,
+                to=12,
+                width=5,
+                textvariable=pitch_var
+            )
+
+            pitch_spin.pack(side="left", padx=(10,5))
+            ttk.Label(mix_row, text="Pitch").pack(side="left", padx=(0,10))
+
+            pitch_vars[part_id] = pitch_var
+
+            # =============================
+            # Sincronización slider + spinbox
+            # =============================
+
+            
             # sincronizar slider → variable
             def on_slider(val, var=volume_var):
                 var.set(int(float(val)))
@@ -506,17 +540,20 @@ def build_coral_view_window():
 
             mix_vars[part_id] = volume_var
 
-            def toggle_voice(v=var, vol=volume_var, s=slider, sp=spin, lbl=mix_label, name=name_var):
+            def toggle_voice(v=var, vol=volume_var, s=slider, sp=spin, ps=pitch_spin, lbl=mix_label, name=name_var):
                 if v.get():
                     vol.set(100)
                     s.state(["!disabled"])
                     sp.state(["!disabled"])
+                    ps.state(["!disabled"])
                     s.set(100)
+                    pitch_var.set(0)
                     lbl.configure(text=name.get(), foreground="black")
                 else:
                     vol.set(0)
                     s.state(["disabled"])
                     sp.state(["disabled"])
+                    ps.state(["disabled"])
                     lbl.configure(text=f"{name.get()} (mute)", foreground="gray")
 
             chk.config(command=toggle_voice)
@@ -537,9 +574,21 @@ def build_coral_view_window():
             for part_id, var in mix_vars.items()
         }
 
+
+    def get_pitch_levels():
+        return {
+            part_id: var.get()
+            for part_id, var in pitch_vars.items()
+        }
+        
     def get_final_tempo():
         return final_tempo_var.get()
 
+    def get_global_transpose():
+        return global_transpose_var.get()
+
+    def get_final_key():
+        return final_key_var.get()
 
     def set_original_tempo(bpm: int):
         original_tempo_var.set(int(bpm))
@@ -593,4 +642,9 @@ def build_coral_view_window():
         "set_original_tempo": set_original_tempo,
         "collapse_controls": collapse_controls,
         "collapse_file_panel": collapse_file_panel,
+        "get_pitch_levels": get_pitch_levels,
+        "get_global_transpose": get_global_transpose,
+        "set_initial_key": set_initial_key,
+        "reset_adjustments": reset_adjustments,
+        "get_final_key": get_final_key,
     }

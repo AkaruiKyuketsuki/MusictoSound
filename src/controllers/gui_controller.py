@@ -160,6 +160,12 @@ def run_coral_gui():
     get_final_tempo = widgets["get_final_tempo"]
     set_original_tempo = widgets["set_original_tempo"]
 
+    get_pitch_levels = widgets["get_pitch_levels"]
+    get_global_transpose = widgets["get_global_transpose"]
+    set_initial_key = widgets["set_initial_key"]
+    reset_adjustments = widgets["reset_adjustments"]
+    get_final_key = widgets["get_final_key"]
+
     log("Módulo generador coral listo.")
     current_output_dir = None
     user_selected_base_path = False
@@ -214,8 +220,23 @@ def run_coral_gui():
 
         if path:
             xml_path_var.set(path)
-            
+
             nonlocal current_output_dir
+
+            # 🧹 limpiar carpeta vacía anterior
+            if current_output_dir and current_output_dir.exists():
+
+                try:
+                    if (
+                        current_output_dir.name.startswith("coral_output")
+                        and not any(current_output_dir.iterdir())
+                    ):
+                        current_output_dir.rmdir()
+                        log(f"🧹 Carpeta vacía eliminada: {current_output_dir.name}")
+
+                except Exception as e:
+                    log(f"⚠ No se pudo limpiar carpeta temporal: {e}")
+
             current_output_dir = None
 
             # Obtener carpeta del XML
@@ -226,8 +247,9 @@ def run_coral_gui():
             if not user_selected_base_path:
                 base_path_var.set(str(xml_dir))
 
-            # 🔹 Limpiar voces anteriores
+            # Limpiar voces anteriores y ajustes
             clear_detected_voices()
+            reset_adjustments()
 
             log(f"Archivo seleccionado: {path}")
 
@@ -259,9 +281,13 @@ def run_coral_gui():
         log("Análisis completado correctamente.")
         log(f"Título: {result['title']}")
         log(f"Tempo detectado: {result['tempo']} BPM")
+        log(f"Tonalidad detectada: {result['key']}")
 
         set_original_tempo(result["tempo"])
+        set_initial_key(result["key"])
         set_voices(result["parts"])
+
+        reset_adjustments()
 
         nonlocal current_output_dir
         folder_name = folder_name_var.get().strip()
@@ -315,12 +341,18 @@ def run_coral_gui():
 
         try:
             tempo = get_final_tempo()
+            transpose = get_global_transpose()
+            pitch_levels = get_pitch_levels()
+            final_key = get_final_key()
 
             generated_files = export_selected_parts_to_midi(
                 path,
                 selected,
                 output_dir,
                 tempo_bpm=tempo,
+                transpose=transpose,
+                pitch_levels=pitch_levels,
+                final_key=final_key
             )
 
             for file in generated_files:
@@ -392,13 +424,17 @@ def run_coral_gui():
             save_path = Path(save_path)
 
             tempo = get_final_tempo()
+            transpose = get_global_transpose()
+            pitch_levels = get_pitch_levels()
 
             midi_path = export_mix_to_midi(
                 path,
                 selected,
                 mix_levels,
                 save_path,
-                tempo_bpm=tempo
+                tempo_bpm=tempo,
+                transpose=transpose,
+                pitch_levels=pitch_levels
             )
 
 
@@ -451,12 +487,18 @@ def run_coral_gui():
 
             # 1 generar MIDI temporales
             tempo = get_final_tempo()
+            transpose = get_global_transpose()
+            pitch_levels = get_pitch_levels()
+            final_key = get_final_key()
 
             midi_files = export_selected_parts_to_midi(
                 path,
                 selected,
                 temp_dir,
-                tempo_bpm=tempo
+                tempo_bpm=tempo,
+                transpose=transpose,
+                pitch_levels=pitch_levels,
+                 final_key=final_key
             )
 
             # configurar barra de progreso
@@ -568,13 +610,17 @@ def run_coral_gui():
         log("Generando mezcla MIDI temporal...")
 
         tempo = get_final_tempo()
+        transpose = get_global_transpose()
+        pitch_levels = get_pitch_levels()
 
         export_mix_to_midi(
             path,
             selected,
             mix_levels,
             midi_path,
-            tempo_bpm=tempo
+            tempo_bpm=tempo,
+            transpose=transpose,
+            pitch_levels=pitch_levels
         )
 
         log("Convirtiendo MIDI a WAV con MuseScore...")

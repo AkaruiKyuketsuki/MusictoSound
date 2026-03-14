@@ -6,6 +6,7 @@ y extraer información estructural coral.
 from music21 import converter
 from pathlib import Path
 from collections import Counter
+from music21 import key
 
 
 def analyze_coral_parts(xml_path: Path) -> dict:
@@ -14,6 +15,13 @@ def analyze_coral_parts(xml_path: Path) -> dict:
     """
 
     score = converter.parse(xml_path)
+
+    # Detectar tonalidad
+    try:
+        detected_key = score.analyze("key")
+        key_name = f"{detected_key.tonic.name} {detected_key.mode}"
+    except Exception:
+        key_name = "Desconocida"
 
     # Título (si existe)
     title = score.metadata.title if score.metadata and score.metadata.title else "Sin título"
@@ -64,4 +72,5 @@ def analyze_coral_parts(xml_path: Path) -> dict:
         "title": title,
         "tempo": tempo,
         "parts": parts,
+        "key": key_name
     }
