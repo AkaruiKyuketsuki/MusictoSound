@@ -86,13 +86,7 @@ def build_coral_view_window():
     # ======================================
     # Carpeta de salida
     # ======================================
-    """
-    ttk.Label(
-        main_frame,
-        text="Carpeta de salida",
-        font=("Segoe UI", 10, "bold")
-    ).pack(anchor="w", pady=(15, 5))
-    """
+    
     output_frame = ttk.Frame(file_body)
     output_frame.pack(fill="x", pady=5)
 
@@ -356,6 +350,9 @@ def build_coral_view_window():
             
     global_transpose_var.trace_add("write", update_final_key)
 
+    def reset_adjustments():
+        global_transpose_var.set(0)
+        tempo_adjust_var.set(0)
     # ===============================
     # Frame superior (contenido)
     # ===============================
@@ -645,4 +642,5 @@ def build_coral_view_window():
         "get_pitch_levels": get_pitch_levels,
         "get_global_transpose": get_global_transpose,
         "set_initial_key": set_initial_key,
+        "reset_adjustments": reset_adjustments,
     }

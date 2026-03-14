@@ -163,6 +163,7 @@ def run_coral_gui():
     get_pitch_levels = widgets["get_pitch_levels"]
     get_global_transpose = widgets["get_global_transpose"]
     set_initial_key = widgets["set_initial_key"]
+    reset_adjustments = widgets["reset_adjustments"]
 
     log("Módulo generador coral listo.")
     current_output_dir = None
@@ -216,13 +217,6 @@ def run_coral_gui():
             filetypes=[("MusicXML files", "*.xml *.mxl"), ("All files", "*.*")]
         )
 
-        """
-        if path:
-            xml_path_var.set(path)
-            
-            nonlocal current_output_dir
-            current_output_dir = None
-        """
         if path:
             xml_path_var.set(path)
 
@@ -252,8 +246,9 @@ def run_coral_gui():
             if not user_selected_base_path:
                 base_path_var.set(str(xml_dir))
 
-            # 🔹 Limpiar voces anteriores
+            # Limpiar voces anteriores y ajustes
             clear_detected_voices()
+            reset_adjustments()
 
             log(f"Archivo seleccionado: {path}")
 
@@ -285,10 +280,13 @@ def run_coral_gui():
         log("Análisis completado correctamente.")
         log(f"Título: {result['title']}")
         log(f"Tempo detectado: {result['tempo']} BPM")
+        log(f"Tonalidad detectada: {result['key']}")
 
         set_original_tempo(result["tempo"])
         set_initial_key(result["key"])
         set_voices(result["parts"])
+
+        reset_adjustments()
 
         nonlocal current_output_dir
         folder_name = folder_name_var.get().strip()
