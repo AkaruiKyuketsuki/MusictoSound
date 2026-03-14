@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, filedialog
+from music21 import key
 
 
 def build_coral_view_window():
@@ -278,8 +279,12 @@ def build_coral_view_window():
     # ===============================
 
     global_transpose_var = tk.IntVar(value=0)
-    initial_key_var = tk.StringVar(value="Do mayor")
-    final_key_var = tk.StringVar(value="Do mayor")
+    initial_key_var = tk.StringVar(value="C major")
+    final_key_var = tk.StringVar(value="C major")
+
+    def set_initial_key(key_name: str):
+        initial_key_var.set(key_name)
+        final_key_var.set(key_name)
     
     # Fila 1: Tonalidad inicial/final
     key_row1 = ttk.Frame(transpose_frame)
@@ -308,6 +313,24 @@ def build_coral_view_window():
     transpose_spin.pack(side="left")
 
     ttk.Label(key_row2, text=" semitonos").pack(side="left")
+
+    # Al cambiar la transposición, actualizar la tonalidad final
+    def update_final_key(*args):
+
+        try:
+            transpose = int(global_transpose_var.get())
+        except:
+            return
+
+        try:
+            current_key = key.Key(initial_key_var.get())
+            new_key = current_key.transpose(transpose)
+
+            final_key_var.set(f"{new_key.tonic.name} {new_key.mode}")
+        except:
+            pass
+
+    global_transpose_var.trace_add("write", update_final_key)
 
     # ===============================
     # Frame superior (contenido)
@@ -597,4 +620,5 @@ def build_coral_view_window():
         "collapse_file_panel": collapse_file_panel,
         "get_pitch_levels": get_pitch_levels,
         "get_global_transpose": get_global_transpose,
+        "set_initial_key": set_initial_key,
     }

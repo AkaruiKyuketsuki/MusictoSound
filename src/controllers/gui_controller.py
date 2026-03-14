@@ -162,6 +162,7 @@ def run_coral_gui():
 
     get_pitch_levels = widgets["get_pitch_levels"]
     get_global_transpose = widgets["get_global_transpose"]
+    set_initial_key = widgets["set_initial_key"]
 
     log("Módulo generador coral listo.")
     current_output_dir = None
@@ -286,6 +287,7 @@ def run_coral_gui():
         log(f"Tempo detectado: {result['tempo']} BPM")
 
         set_original_tempo(result["tempo"])
+        set_initial_key(result["key"])
         set_voices(result["parts"])
 
         nonlocal current_output_dir
