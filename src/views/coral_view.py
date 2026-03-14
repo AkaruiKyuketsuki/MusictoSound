@@ -503,11 +503,13 @@ def build_coral_view_window():
                     sp.state(["!disabled"])
                     ps.state(["!disabled"])
                     s.set(100)
+                    pitch_var.set(0)
                     lbl.configure(text=name.get(), foreground="black")
                 else:
                     vol.set(0)
                     s.state(["disabled"])
                     sp.state(["disabled"])
+                    ps.state(["disabled"])
                     lbl.configure(text=f"{name.get()} (mute)", foreground="gray")
 
             chk.config(command=toggle_voice)
@@ -538,6 +540,8 @@ def build_coral_view_window():
     def get_final_tempo():
         return final_tempo_var.get()
 
+    def get_global_transpose():
+        return global_transpose_var.get()
 
     def set_original_tempo(bpm: int):
         original_tempo_var.set(int(bpm))
@@ -592,4 +596,5 @@ def build_coral_view_window():
         "collapse_controls": collapse_controls,
         "collapse_file_panel": collapse_file_panel,
         "get_pitch_levels": get_pitch_levels,
+        "get_global_transpose": get_global_transpose,
     }

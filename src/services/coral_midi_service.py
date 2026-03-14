@@ -38,9 +38,14 @@ def export_selected_parts_to_midi(
     selected_parts: list[dict],
     output_dir: Path,
     tempo_bpm: int | None = None,
+    transpose: int = 0,
 ) -> list[Path]:
 
     score = converter.parse(xml_path)
+
+    # aplicar transposición global
+    if transpose != 0:
+        score = score.transpose(transpose)
     
     if tempo_bpm:
         score = apply_tempo(score, tempo_bpm)
@@ -83,9 +88,14 @@ def export_mix_to_midi(
     volumes: dict,
     output_path: Path,
     tempo_bpm: int | None = None,
+    transpose: int = 0,
 ) -> Path:
 
     score = converter.parse(xml_path)
+
+    # aplicar transposición global
+    if transpose != 0:
+        score = score.transpose(transpose)
 
     if tempo_bpm:
         score = apply_tempo(score, tempo_bpm)

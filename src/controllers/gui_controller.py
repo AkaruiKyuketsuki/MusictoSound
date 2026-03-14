@@ -160,6 +160,9 @@ def run_coral_gui():
     get_final_tempo = widgets["get_final_tempo"]
     set_original_tempo = widgets["set_original_tempo"]
 
+    get_pitch_levels = widgets["get_pitch_levels"]
+    get_global_transpose = widgets["get_global_transpose"]
+
     log("Módulo generador coral listo.")
     current_output_dir = None
     user_selected_base_path = False
@@ -337,12 +340,14 @@ def run_coral_gui():
 
         try:
             tempo = get_final_tempo()
+            transpose = get_global_transpose()
 
             generated_files = export_selected_parts_to_midi(
                 path,
                 selected,
                 output_dir,
                 tempo_bpm=tempo,
+                transpose=transpose
             )
 
             for file in generated_files:
@@ -414,13 +419,15 @@ def run_coral_gui():
             save_path = Path(save_path)
 
             tempo = get_final_tempo()
+            transpose = get_global_transpose()
 
             midi_path = export_mix_to_midi(
                 path,
                 selected,
                 mix_levels,
                 save_path,
-                tempo_bpm=tempo
+                tempo_bpm=tempo,
+                transpose=transpose
             )
 
 
@@ -590,13 +597,15 @@ def run_coral_gui():
         log("Generando mezcla MIDI temporal...")
 
         tempo = get_final_tempo()
+        transpose = get_global_transpose()
 
         export_mix_to_midi(
             path,
             selected,
             mix_levels,
             midi_path,
-            tempo_bpm=tempo
+            tempo_bpm=tempo,
+            transpose=transpose
         )
 
         log("Convirtiendo MIDI a WAV con MuseScore...")
