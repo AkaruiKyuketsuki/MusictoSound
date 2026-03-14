@@ -347,7 +347,9 @@ def build_coral_view_window():
             current_key = key.Key(tonic, mode)
             new_key = current_key.transpose(transpose)
 
-            final_key_var.set(f"{new_key.tonic.name} {new_key.mode}")
+            #final_key_var.set(f"{new_key.tonic.name} {new_key.mode}")
+            tonic = new_key.tonic.name.replace("-", "b")
+            final_key_var.set(f"{tonic} {new_key.mode}")
 
         except Exception as e:
             print("Error transposing key:", e)
