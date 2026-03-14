@@ -482,12 +482,14 @@ def run_coral_gui():
 
             # 1 generar MIDI temporales
             tempo = get_final_tempo()
+            transpose = get_global_transpose()
 
             midi_files = export_selected_parts_to_midi(
                 path,
                 selected,
                 temp_dir,
-                tempo_bpm=tempo
+                tempo_bpm=tempo,
+                transpose=transpose
             )
 
             # configurar barra de progreso
