@@ -587,6 +587,9 @@ def build_coral_view_window():
     def get_global_transpose():
         return global_transpose_var.get()
 
+    def get_final_key():
+        return final_key_var.get()
+
     def set_original_tempo(bpm: int):
         original_tempo_var.set(int(bpm))
         update_final_tempo()
@@ -643,4 +646,5 @@ def build_coral_view_window():
         "get_global_transpose": get_global_transpose,
         "set_initial_key": set_initial_key,
         "reset_adjustments": reset_adjustments,
+        "get_final_key": get_final_key,
     }

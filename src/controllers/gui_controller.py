@@ -164,6 +164,7 @@ def run_coral_gui():
     get_global_transpose = widgets["get_global_transpose"]
     set_initial_key = widgets["set_initial_key"]
     reset_adjustments = widgets["reset_adjustments"]
+    get_final_key = widgets["get_final_key"]
 
     log("Módulo generador coral listo.")
     current_output_dir = None
@@ -342,6 +343,7 @@ def run_coral_gui():
             tempo = get_final_tempo()
             transpose = get_global_transpose()
             pitch_levels = get_pitch_levels()
+            final_key = get_final_key()
 
             generated_files = export_selected_parts_to_midi(
                 path,
@@ -349,7 +351,8 @@ def run_coral_gui():
                 output_dir,
                 tempo_bpm=tempo,
                 transpose=transpose,
-                pitch_levels=pitch_levels
+                pitch_levels=pitch_levels,
+                final_key=final_key
             )
 
             for file in generated_files:
@@ -486,6 +489,7 @@ def run_coral_gui():
             tempo = get_final_tempo()
             transpose = get_global_transpose()
             pitch_levels = get_pitch_levels()
+            final_key = get_final_key()
 
             midi_files = export_selected_parts_to_midi(
                 path,
@@ -493,7 +497,8 @@ def run_coral_gui():
                 temp_dir,
                 tempo_bpm=tempo,
                 transpose=transpose,
-                pitch_levels=pitch_levels
+                pitch_levels=pitch_levels,
+                 final_key=final_key
             )
 
             # configurar barra de progreso

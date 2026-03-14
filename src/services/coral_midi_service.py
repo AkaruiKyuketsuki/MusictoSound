@@ -40,6 +40,7 @@ def export_selected_parts_to_midi(
     tempo_bpm: int | None = None,
     transpose: int = 0,
     pitch_levels: dict | None = None,
+    final_key: str | None = None,
     
 ) -> list[Path]:
 
@@ -73,13 +74,26 @@ def export_selected_parts_to_midi(
                 .replace("\\", "_")
             )
 
+            """
             if tempo_bpm:
                 midi_path = output_dir / f"{safe_name}_{tempo_bpm}bpm.mid"
             else:
                 midi_path = output_dir / f"{safe_name}.mid"
 
-            #part.write("midi", midi_path)
+            """
 
+            key_suffix = ""
+            if final_key:
+                key_suffix = "_" + final_key.replace(" ", "")
+
+            if tempo_bpm:
+                midi_path = output_dir / f"{safe_name}_{tempo_bpm}bpm{key_suffix}.mid"
+            else:
+                midi_path = output_dir / f"{safe_name}{key_suffix}.mid"
+
+       
+
+       
             part_copy = copy.deepcopy(part)
 
             if pitch_levels:
@@ -133,10 +147,6 @@ def export_mix_to_midi(
 
                 if pitch_shift != 0:
                     part_copy = part_copy.transpose(pitch_shift)
-
-
-
-
 
             volume = volumes.get(part.id, 1.0)
 
