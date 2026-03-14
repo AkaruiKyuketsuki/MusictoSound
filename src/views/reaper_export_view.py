@@ -14,6 +14,26 @@ def show_reaper_export_dialog(parent):
     win = tk.Toplevel(parent)
     win.title("Exportar a Reaper")
     win.geometry("420x320")
+
+
+    # Centrar ventana si la principal está maximizada
+    parent.update_idletasks()
+
+    parent_width = parent.winfo_width()
+    parent_height = parent.winfo_height()
+
+    parent_x = parent.winfo_rootx()
+    parent_y = parent.winfo_rooty()
+
+    win_width = 420
+    win_height = 320
+
+    x = parent_x + (parent_width // 2) - (win_width // 2)
+    y = parent_y + (parent_height // 2) - (win_height // 2)
+
+    win.geometry(f"{win_width}x{win_height}+{x}+{y}")
+
+
     win.resizable(False, False)
 
     frm = ttk.Frame(win, padding=12)
