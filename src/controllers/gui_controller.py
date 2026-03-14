@@ -341,13 +341,15 @@ def run_coral_gui():
         try:
             tempo = get_final_tempo()
             transpose = get_global_transpose()
+            pitch_levels = get_pitch_levels()
 
             generated_files = export_selected_parts_to_midi(
                 path,
                 selected,
                 output_dir,
                 tempo_bpm=tempo,
-                transpose=transpose
+                transpose=transpose,
+                pitch_levels=pitch_levels
             )
 
             for file in generated_files:
@@ -420,6 +422,7 @@ def run_coral_gui():
 
             tempo = get_final_tempo()
             transpose = get_global_transpose()
+            pitch_levels = get_pitch_levels()
 
             midi_path = export_mix_to_midi(
                 path,
@@ -427,7 +430,8 @@ def run_coral_gui():
                 mix_levels,
                 save_path,
                 tempo_bpm=tempo,
-                transpose=transpose
+                transpose=transpose,
+                pitch_levels=pitch_levels
             )
 
 
@@ -481,13 +485,15 @@ def run_coral_gui():
             # 1 generar MIDI temporales
             tempo = get_final_tempo()
             transpose = get_global_transpose()
+            pitch_levels = get_pitch_levels()
 
             midi_files = export_selected_parts_to_midi(
                 path,
                 selected,
                 temp_dir,
                 tempo_bpm=tempo,
-                transpose=transpose
+                transpose=transpose,
+                pitch_levels=pitch_levels
             )
 
             # configurar barra de progreso
@@ -600,6 +606,7 @@ def run_coral_gui():
 
         tempo = get_final_tempo()
         transpose = get_global_transpose()
+        pitch_levels = get_pitch_levels()
 
         export_mix_to_midi(
             path,
@@ -607,7 +614,8 @@ def run_coral_gui():
             mix_levels,
             midi_path,
             tempo_bpm=tempo,
-            transpose=transpose
+            transpose=transpose,
+            pitch_levels=pitch_levels
         )
 
         log("Convirtiendo MIDI a WAV con MuseScore...")

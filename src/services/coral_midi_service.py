@@ -39,6 +39,8 @@ def export_selected_parts_to_midi(
     output_dir: Path,
     tempo_bpm: int | None = None,
     transpose: int = 0,
+    pitch_levels: dict | None = None,
+    
 ) -> list[Path]:
 
     score = converter.parse(xml_path)
@@ -76,7 +78,19 @@ def export_selected_parts_to_midi(
             else:
                 midi_path = output_dir / f"{safe_name}.mid"
 
-            part.write("midi", midi_path)
+            #part.write("midi", midi_path)
+
+            part_copy = copy.deepcopy(part)
+
+            if pitch_levels:
+                pitch_shift = pitch_levels.get(part.id, 0)
+
+                if pitch_shift != 0:
+                    part_copy = part_copy.transpose(pitch_shift)
+
+            part_copy.write("midi", midi_path)
+
+
 
             generated_files.append(midi_path)
 
@@ -89,6 +103,7 @@ def export_mix_to_midi(
     output_path: Path,
     tempo_bpm: int | None = None,
     transpose: int = 0,
+    pitch_levels: dict | None = None,
 ) -> Path:
 
     score = converter.parse(xml_path)
@@ -112,6 +127,16 @@ def export_mix_to_midi(
 
             # copiar la parte para no modificar el score original
             part_copy = copy.deepcopy(part)
+
+            if pitch_levels:
+                pitch_shift = pitch_levels.get(part.id, 0)
+
+                if pitch_shift != 0:
+                    part_copy = part_copy.transpose(pitch_shift)
+
+
+
+
 
             volume = volumes.get(part.id, 1.0)
 
