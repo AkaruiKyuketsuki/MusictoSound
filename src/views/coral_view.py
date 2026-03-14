@@ -315,6 +315,7 @@ def build_coral_view_window():
     ttk.Label(key_row2, text=" semitonos").pack(side="left")
 
     # Al cambiar la transposición, actualizar la tonalidad final
+    """
     def update_final_key(*args):
 
         try:
@@ -330,6 +331,27 @@ def build_coral_view_window():
         except:
             pass
 
+    """
+
+    def update_final_key(*args):
+        try:
+            transpose = int(global_transpose_var.get())
+        except:
+            return
+
+        try:
+            key_text = initial_key_var.get()  # "A major"
+
+            tonic, mode = key_text.split()
+
+            current_key = key.Key(tonic, mode)
+            new_key = current_key.transpose(transpose)
+
+            final_key_var.set(f"{new_key.tonic.name} {new_key.mode}")
+
+        except Exception as e:
+            print("Error transposing key:", e)
+            
     global_transpose_var.trace_add("write", update_final_key)
 
     # ===============================
