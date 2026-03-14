@@ -415,6 +415,9 @@ def build_coral_view_window():
     download_mix_wav_btn = ttk.Button(buttons_row, text="Descargar mezcla WAV")
     download_mix_wav_btn.pack(side="left", padx=20, ipady=6)
 
+    export_reaper_btn = ttk.Button(buttons_row, text="Exportar a Reaper")
+    export_reaper_btn.pack(side="left", padx=20, ipady=6)
+
     # La barra se controla desde el controller (gui_controller.py)
     # Solo se muestra si se llama a progress.pack(), en este caso he decidido no mostrarla
     progress = ttk.Progressbar(
@@ -647,4 +650,5 @@ def build_coral_view_window():
         "set_initial_key": set_initial_key,
         "reset_adjustments": reset_adjustments,
         "get_final_key": get_final_key,
+        "export_reaper_btn": export_reaper_btn,
     }
