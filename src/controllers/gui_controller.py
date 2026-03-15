@@ -709,12 +709,10 @@ def run_coral_gui():
 
             # Aplicar opciones del diálogo
             if not options["apply_tempo"]:
-                #tempo = None
-                pass
+                tempo = None
 
             if not options["apply_transpose"]:
-                #transpose = 0
-                pass
+                transpose = 0
 
             project_path = export_to_reaper_project(
                 root=root,

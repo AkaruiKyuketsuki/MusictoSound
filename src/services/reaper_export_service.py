@@ -105,69 +105,6 @@ def generate_wavs_for_reaper(
 
     return temp_dir, wav_files
 
-"""
-def create_reaper_project(
-    project_path: Path,
-    wav_files: list[Path],
-):
-
-    #Crea un proyecto .RPP con una carpeta 'CORO' que contiene
-    #todas las pistas de audio generadas.
-
-    lines = []
-
-    lines.append('<REAPER_PROJECT 0.1 "7.x">')
-    lines.append("  TEMPO 120")
-
-    # ===============================
-    # Carpeta CORO
-    # ===============================
-
-    lines.append("  <TRACK")
-    lines.append('    NAME "CORO"')
-    lines.append("    FOLDERDEPTH 1")
-    lines.append("  >")
-    lines.append("  >")
-
-    # ===============================
-    # Pistas de audio
-    # ===============================
-
-    for wav in wav_files:
-
-        name = wav.stem
-
-        # eliminar parte de tempo / tonalidad
-        parts = name.split("_")
-        track_name = " ".join(parts[:2]) if len(parts) >= 2 else parts[0]
-
-        lines.append("  <TRACK")
-        lines.append(f'    NAME "{track_name}"')
-        lines.append("  >")
-
-        lines.append("    <ITEM")
-        lines.append("      POSITION 0")
-        lines.append("      LENGTH 60")
-        lines.append("    >")
-
-        lines.append(f'      FILE "{wav}"')
-
-        lines.append("    >")
-        lines.append("  >")
-
-    # cerrar carpeta
-    lines.append("  <TRACK")
-    lines.append("    FOLDERDEPTH -1")
-    lines.append("  >")
-
-    lines.append(">")
-
-    project_text = "\n".join(lines)
-
-    project_path.write_text(project_text, encoding="utf-8")
-
-    return project_path
-"""
 
 def create_reaper_project(project_path: Path, wav_files: list[Path]):
 
