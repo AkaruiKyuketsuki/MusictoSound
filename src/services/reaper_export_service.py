@@ -11,6 +11,33 @@ import subprocess
 import platform
 from tkinter import filedialog
 
+import wave
+
+def get_wav_duration(wav_path: Path):
+
+    import struct
+
+    with open(wav_path, "rb") as f:
+        f.seek(24)
+        sample_rate = struct.unpack("<I", f.read(4))[0]
+
+        f.seek(40)
+        data_size = struct.unpack("<I", f.read(4))[0]
+
+        f.seek(34)
+        bits_per_sample = struct.unpack("<H", f.read(2))[0]
+
+        f.seek(22)
+        channels = struct.unpack("<H", f.read(2))[0]
+
+    bytes_per_sample = bits_per_sample / 8
+    total_samples = data_size / (bytes_per_sample * channels)
+
+    duration = total_samples / sample_rate
+
+    return duration
+
+
 def generate_wavs_for_reaper(
     xml_path: Path,
     selected_parts: list,
@@ -165,9 +192,11 @@ def create_reaper_project(project_path: Path, wav_files: list[Path]):
 
         lines.append("<ITEM")
         lines.append("POSITION 0")
-        lines.append("LENGTH 10")
+        duration = get_wav_duration(wav)
+        lines.append(f"LENGTH {duration:.6f}")
+        lines.append("LOOP 0")
 
-        #lines.append("<SOURCE WAV")
+
         lines.append("<SOURCE WAVE")
         lines.append(f'FILE "{wav_path}"')
         lines.append(">")
