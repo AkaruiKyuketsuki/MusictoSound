@@ -26,6 +26,7 @@ from services.coral_audio_render_service import midi_to_wav
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from views.reaper_export_view import show_reaper_export_dialog
+from services.reaper_export_service import export_to_reaper_project
 
 # ==========================================================
 # Utilidades
@@ -647,6 +648,7 @@ def run_coral_gui():
     # ------------------------------------------------------
     # Exportar a Reaper
     # ------------------------------------------------------
+    """
     def export_to_reaper():
 
         options = show_reaper_export_dialog(root)
@@ -659,7 +661,72 @@ def run_coral_gui():
 
         for key, value in options.items():
             log(f"  {key}: {value}")
-    
+    """
+
+    # ------------------------------------------------------
+    # Exportar a Reaper
+    # ------------------------------------------------------
+    def export_to_reaper():
+
+        options = show_reaper_export_dialog(root)
+
+        if options is None:
+            log("Exportación a Reaper cancelada.")
+            return
+
+        xml_path = xml_path_var.get().strip()
+
+        if not xml_path:
+            log("⚠ Selecciona un archivo XML.")
+            return
+
+        path = Path(xml_path)
+
+        if not path.is_file():
+            log("❌ El archivo XML no existe.")
+            return
+
+        selected = get_selected_voices()
+
+        if not selected:
+            log("⚠ No hay voces seleccionadas.")
+            return
+
+        log("Preparando exportación a Reaper...")
+
+        try:
+
+            # Obtener valores actuales de la interfaz
+            tempo = get_final_tempo()
+            transpose = get_global_transpose()
+            pitch_levels = get_pitch_levels()
+            final_key = get_final_key()
+
+            # Aplicar opciones del diálogo
+            if not options["apply_tempo"]:
+                tempo = None
+
+            if not options["apply_transpose"]:
+                transpose = 0
+
+            project_path = export_to_reaper_project(
+                root=root,
+                xml_path=path,
+                selected_parts=selected,
+                tempo=tempo,
+                transpose=transpose,
+                pitch_levels=pitch_levels,
+                final_key=final_key
+            )
+
+            if project_path:
+                log(f"🎛 Proyecto Reaper creado: {project_path.name}")
+            else:
+                log("Exportación cancelada.")
+
+        except Exception as e:
+            log(f"❌ Error al exportar a Reaper: {e}")
+
     # ------------------------------------------------------
     # Examinar ubicación de salida
     # ------------------------------------------------------
