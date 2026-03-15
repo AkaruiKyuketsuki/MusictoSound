@@ -674,6 +674,11 @@ def run_coral_gui():
             log("Exportación a Reaper cancelada.")
             return
 
+        log("Opciones de exportación seleccionadas:")
+
+        for key, value in options.items():
+            log(f"  {key}: {value}")
+
         xml_path = xml_path_var.get().strip()
 
         if not xml_path:
@@ -704,10 +709,12 @@ def run_coral_gui():
 
             # Aplicar opciones del diálogo
             if not options["apply_tempo"]:
-                tempo = None
+                #tempo = None
+                pass
 
             if not options["apply_transpose"]:
-                transpose = 0
+                #transpose = 0
+                pass
 
             project_path = export_to_reaper_project(
                 root=root,

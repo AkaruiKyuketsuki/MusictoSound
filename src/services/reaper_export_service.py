@@ -26,6 +26,13 @@ def generate_wavs_for_reaper(
         (temp_dir, wav_files)
     """
 
+    print("XML:", xml_path)
+    print("Selected parts:", selected_parts)
+    print("Tempo:", tempo)
+    print("Transpose:", transpose)
+    print("Pitch levels:", pitch_levels)
+    print("Final key:", final_key)
+
     # ==========================================================
     # Crear carpeta temporal
     # ==========================================================
@@ -52,6 +59,7 @@ def generate_wavs_for_reaper(
         final_key=final_key,
     )
 
+    print("MIDI files generated:", midi_files)
     # ==========================================================
     # Convertir a WAV
     # ==========================================================
@@ -65,18 +73,19 @@ def generate_wavs_for_reaper(
         midi_to_wav(midi_path, wav_path)
 
         wav_files.append(wav_path)
+    
+    print("WAV files generated:", wav_files)
 
     return temp_dir, wav_files
 
-
+"""
 def create_reaper_project(
     project_path: Path,
     wav_files: list[Path],
 ):
-    """
-    Crea un proyecto .RPP con una carpeta 'CORO' que contiene
-    todas las pistas de audio generadas.
-    """
+
+    #Crea un proyecto .RPP con una carpeta 'CORO' que contiene
+    #todas las pistas de audio generadas.
 
     lines = []
 
@@ -131,7 +140,47 @@ def create_reaper_project(
     project_path.write_text(project_text, encoding="utf-8")
 
     return project_path
+"""
 
+def create_reaper_project(project_path: Path, wav_files: list[Path]):
+
+    lines = []
+
+    lines.append('<REAPER_PROJECT 0.1 "7.x">')
+
+    for wav in wav_files:
+
+        name = wav.stem
+        parts = name.split("_")
+
+        if len(parts) >= 2:
+            track_name = f"{parts[0]} {parts[1]}"
+        else:
+            track_name = parts[0]
+
+        wav_path = str(wav).replace("\\", "/")
+
+        lines.append("<TRACK")
+        lines.append(f'NAME "{track_name}"')
+
+        lines.append("<ITEM")
+        lines.append("POSITION 0")
+
+        #lines.append("<SOURCE WAV")
+        lines.append("<SOURCE WAVE")
+        lines.append(f'FILE "{wav_path}"')
+        lines.append(">")
+
+        lines.append(">")  # close ITEM
+        lines.append(">")  # close TRACK
+
+    lines.append(">")
+
+    project_text = "\n".join(lines)
+
+    project_path.write_text(project_text, encoding="utf-8")
+
+    return project_path
 
 def export_to_reaper_project(
     root,
@@ -198,20 +247,8 @@ def export_to_reaper_project(
         # Limpiar carpeta temporal
         # ==========================================================
 
-        shutil.rmtree(temp_dir, ignore_errors=True)
-
-"""
-def _open_reaper(project_path: Path):
-
-    system = platform.system()
-
-    if system == "Windows":
-        subprocess.Popen(["reaper", str(project_path)])
-    elif system == "Darwin":
-        subprocess.Popen(["open", "-a", "REAPER", str(project_path)])
-    else:
-        subprocess.Popen(["reaper", str(project_path)])
-"""
+        #shutil.rmtree(temp_dir, ignore_errors=True)
+        pass
 
 def _open_reaper(project_path: Path):
 
