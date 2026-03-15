@@ -15,7 +15,6 @@ def show_reaper_export_dialog(parent):
     win.title("Exportar a Reaper")
     win.geometry("420x320")
 
-
     # Centrar ventana si la principal está maximizada
     parent.update_idletasks()
 
@@ -26,7 +25,7 @@ def show_reaper_export_dialog(parent):
     parent_y = parent.winfo_rooty()
 
     win_width = 420
-    win_height = 320
+    win_height = 365
 
     x = parent_x + (parent_width // 2) - (win_width // 2)
     y = parent_y + (parent_height // 2) - (win_height // 2)
