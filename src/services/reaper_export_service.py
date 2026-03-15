@@ -165,6 +165,7 @@ def create_reaper_project(project_path: Path, wav_files: list[Path]):
 
         lines.append("<ITEM")
         lines.append("POSITION 0")
+        lines.append("LENGTH 10")
 
         #lines.append("<SOURCE WAV")
         lines.append("<SOURCE WAVE")
