@@ -215,10 +215,13 @@ def create_reaper_project(project_path: Path, midi_files: list[Path], wav_files:
         name = wav.stem
         parts = name.split("_")
 
+        """
         if len(parts) >= 2:
             track_name = f"{parts[0]} {parts[1]}"
         else:
             track_name = parts[0]
+        """
+        track_name = name.replace("_", " ")    
 
         wav_path = str(wav).replace("\\", "/")
 
