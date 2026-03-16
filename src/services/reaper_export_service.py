@@ -168,6 +168,17 @@ def generate_files_for_reaper(
 
             wav_files.append(wav_path)
 
+    #return temp_dir, midi_files, wav_files
+    # ==========================================================
+    # Ajustar archivos exportados según formato
+    # ==========================================================
+
+    if export_format == "midi":
+        wav_files = []
+
+    elif export_format == "wav":
+        midi_files = []
+
     return temp_dir, midi_files, wav_files
 
 
