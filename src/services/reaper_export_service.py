@@ -11,7 +11,7 @@ import subprocess
 import platform
 from tkinter import filedialog
 
-import wave
+#import wave
 
 def get_wav_duration(wav_path: Path):
 
@@ -37,7 +37,7 @@ def get_wav_duration(wav_path: Path):
 
     return duration
 
-
+"""
 def generate_wavs_for_reaper(
     xml_path: Path,
     selected_parts: list,
@@ -46,12 +46,11 @@ def generate_wavs_for_reaper(
     pitch_levels: dict,
     final_key: str,
 ):
-    """
-    Genera archivos WAV temporales para exportación a Reaper.
 
-    Devuelve:
-        (temp_dir, wav_files)
-    """
+    #Genera archivos WAV temporales para exportación a Reaper.
+
+    #Devuelve:
+        #(temp_dir, wav_files)
 
     print("XML:", xml_path)
     print("Selected parts:", selected_parts)
@@ -104,9 +103,78 @@ def generate_wavs_for_reaper(
     print("WAV files generated:", wav_files)
 
     return temp_dir, wav_files
+"""
 
 
-def create_reaper_project(project_path: Path, wav_files: list[Path]):
+def generate_files_for_reaper(
+    xml_path: Path,
+    selected_parts: list,
+    tempo: int,
+    transpose: int,
+    pitch_levels: dict,
+    final_key: str,
+    export_format: str,
+):
+
+    temp_dir = Path(tempfile.mkdtemp(prefix="reaper_export_"))
+
+    midi_dir = temp_dir / "midi"
+    wav_dir = temp_dir / "wav"
+
+    midi_dir.mkdir()
+    wav_dir.mkdir()
+
+    midi_files = []
+    wav_files = []
+
+    # ==========================================================
+    # Generar MIDI si es necesario
+    # ==========================================================
+
+    if export_format in ("midi", "both"):
+
+        midi_files = export_selected_parts_to_midi(
+            xml_path,
+            selected_parts,
+            midi_dir,
+            tempo_bpm=tempo,
+            transpose=transpose,
+            pitch_levels=pitch_levels,
+            final_key=final_key,
+        )
+
+    # ==========================================================
+    # Generar WAV si es necesario
+    # ==========================================================
+
+    if export_format in ("wav", "both"):
+
+        if not midi_files:
+            midi_files = export_selected_parts_to_midi(
+                xml_path,
+                selected_parts,
+                midi_dir,
+                tempo_bpm=tempo,
+                transpose=transpose,
+                pitch_levels=pitch_levels,
+                final_key=final_key,
+            )
+
+        for midi_path in midi_files:
+
+            wav_path = wav_dir / (midi_path.stem + ".wav")
+
+            midi_to_wav(midi_path, wav_path)
+
+            wav_files.append(wav_path)
+
+    return temp_dir, midi_files, wav_files
+
+
+
+
+#def create_reaper_project(project_path: Path, wav_files: list[Path]):
+def create_reaper_project(project_path: Path, midi_files: list[Path], wav_files: list[Path]):
 
     lines = []
 
@@ -141,10 +209,31 @@ def create_reaper_project(project_path: Path, wav_files: list[Path]):
         lines.append(">")  # close ITEM
         lines.append(">")  # close TRACK
 
+    
+    for midi in midi_files:
+
+        name = midi.stem
+        track_name = name.replace("_", " ")
+
+        midi_path = str(midi).replace("\\", "/")
+
+        lines.append("<TRACK")
+        lines.append(f'NAME "{track_name} MIDI"')
+
+        lines.append("<ITEM")
+        lines.append("POSITION 0")
+        lines.append("LENGTH 10")  # placeholder
+
+        lines.append("<SOURCE MIDI")
+        lines.append(f'FILE "{midi_path}"')
+        lines.append(">")
+
+        lines.append(">")
+        lines.append(">")
+
+
     lines.append(">")
-
     project_text = "\n".join(lines)
-
     project_path.write_text(project_text, encoding="utf-8")
 
     return project_path
@@ -157,6 +246,7 @@ def export_to_reaper_project(
     transpose: int,
     pitch_levels: dict,
     final_key: str,
+    export_format: str,  # "midi", "wav", "both"
 ):
     """
     Exporta las voces seleccionadas a un proyecto de Reaper.
@@ -165,7 +255,7 @@ def export_to_reaper_project(
     # ==========================================================
     # Generar WAV temporales
     # ==========================================================
-
+    """
     temp_dir, wav_files = generate_wavs_for_reaper(
         xml_path,
         selected_parts,
@@ -174,7 +264,17 @@ def export_to_reaper_project(
         pitch_levels,
         final_key,
     )
+    """
 
+    temp_dir, midi_files, wav_files = generate_files_for_reaper(
+        xml_path,
+        selected_parts,
+        tempo,
+        transpose,
+        pitch_levels,
+        final_key,
+        export_format,
+    )
     try:
 
         # ==========================================================
@@ -198,7 +298,9 @@ def export_to_reaper_project(
         # Crear archivo .RPP
         # ==========================================================
 
-        create_reaper_project(project_path, wav_files)
+        #create_reaper_project(project_path, wav_files)
+        create_reaper_project(project_path, midi_files, wav_files)
+
 
         # ==========================================================
         # Abrir Reaper automáticamente

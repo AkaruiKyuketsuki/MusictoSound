@@ -714,6 +714,8 @@ def run_coral_gui():
             if not options["apply_transpose"]:
                 transpose = 0
 
+            export_format = options["format"]
+            
             project_path = export_to_reaper_project(
                 root=root,
                 xml_path=path,
@@ -721,7 +723,8 @@ def run_coral_gui():
                 tempo=tempo,
                 transpose=transpose,
                 pitch_levels=pitch_levels,
-                final_key=final_key
+                final_key=final_key,
+                export_format=export_format
             )
 
             if project_path:
