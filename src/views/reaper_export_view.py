@@ -51,7 +51,8 @@ def show_reaper_export_dialog(parent):
     format_frame = ttk.LabelFrame(frm, text="Formato", padding=10)
     format_frame.pack(fill="x", pady=5)
 
-    format_var = tk.StringVar(value="midi_wav")
+    #format_var = tk.StringVar(value="midi_wav")
+    format_var = tk.StringVar(value="both")
 
     ttk.Radiobutton(
         format_frame,
@@ -71,7 +72,8 @@ def show_reaper_export_dialog(parent):
         format_frame,
         text="MIDI + WAV",
         variable=format_var,
-        value="midi_wav"
+        #value="midi_wav"
+        value="both"
     ).pack(anchor="w")
 
     # ======================================================
