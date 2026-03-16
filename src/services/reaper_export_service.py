@@ -11,7 +11,99 @@ import subprocess
 import platform
 from tkinter import filedialog
 
-#import wave
+def get_midi_duration(midi_path: Path):
+
+    import struct
+
+    with open(midi_path, "rb") as f:
+
+        data = f.read()
+
+    pos = 0
+
+    # ==============================
+    # Leer header
+    # ==============================
+
+    if data[pos:pos+4] != b"MThd":
+        raise ValueError("Archivo MIDI inválido")
+
+    pos += 8  # saltar MThd + header length
+
+    format_type, n_tracks, division = struct.unpack(">HHH", data[pos:pos+6])
+    pos += 6
+
+    ticks_per_beat = division
+
+    tempo = 500000  # microsegundos por beat (120 BPM por defecto)
+
+    total_ticks = 0
+
+    # ==============================
+    # Leer tracks
+    # ==============================
+
+    for _ in range(n_tracks):
+
+        if data[pos:pos+4] != b"MTrk":
+            break
+
+        pos += 4
+
+        track_length = struct.unpack(">I", data[pos:pos+4])[0]
+        pos += 4
+
+        track_end = pos + track_length
+
+        track_ticks = 0
+
+        while pos < track_end:
+
+            # leer delta time (variable length)
+            delta = 0
+
+            while True:
+                byte = data[pos]
+                pos += 1
+                delta = (delta << 7) | (byte & 0x7F)
+                if not (byte & 0x80):
+                    break
+
+            track_ticks += delta
+
+            event = data[pos]
+            pos += 1
+
+            if event == 0xFF:  # meta event
+
+                meta_type = data[pos]
+                pos += 1
+
+                length = data[pos]
+                pos += 1
+
+                if meta_type == 0x51 and length == 3:
+                    tempo = int.from_bytes(data[pos:pos+3], "big")
+
+                pos += length
+
+            elif event in (0xF0, 0xF7):  # sysex
+                length = data[pos]
+                pos += 1 + length
+
+            else:
+                # evento MIDI normal (2 bytes más normalmente)
+                pos += 2
+
+        total_ticks = max(total_ticks, track_ticks)
+
+    # ==============================
+    # convertir ticks → segundos
+    # ==============================
+
+    seconds = (total_ticks * tempo) / (ticks_per_beat * 1_000_000)
+
+    return seconds
 
 def get_wav_duration(wav_path: Path):
 
@@ -36,75 +128,6 @@ def get_wav_duration(wav_path: Path):
     duration = total_samples / sample_rate
 
     return duration
-
-"""
-def generate_wavs_for_reaper(
-    xml_path: Path,
-    selected_parts: list,
-    tempo: int,
-    transpose: int,
-    pitch_levels: dict,
-    final_key: str,
-):
-
-    #Genera archivos WAV temporales para exportación a Reaper.
-
-    #Devuelve:
-        #(temp_dir, wav_files)
-
-    print("XML:", xml_path)
-    print("Selected parts:", selected_parts)
-    print("Tempo:", tempo)
-    print("Transpose:", transpose)
-    print("Pitch levels:", pitch_levels)
-    print("Final key:", final_key)
-
-    # ==========================================================
-    # Crear carpeta temporal
-    # ==========================================================
-
-    temp_dir = Path(tempfile.mkdtemp(prefix="reaper_export_"))
-
-    midi_dir = temp_dir / "midi"
-    wav_dir = temp_dir / "wav"
-
-    midi_dir.mkdir()
-    wav_dir.mkdir()
-
-    # ==========================================================
-    # Generar MIDI
-    # ==========================================================
-
-    midi_files = export_selected_parts_to_midi(
-        xml_path,
-        selected_parts,
-        midi_dir,
-        tempo_bpm=tempo,
-        transpose=transpose,
-        pitch_levels=pitch_levels,
-        final_key=final_key,
-    )
-
-    print("MIDI files generated:", midi_files)
-    # ==========================================================
-    # Convertir a WAV
-    # ==========================================================
-
-    wav_files = []
-
-    for midi_path in midi_files:
-
-        wav_path = wav_dir / (midi_path.stem + ".wav")
-
-        midi_to_wav(midi_path, wav_path)
-
-        wav_files.append(wav_path)
-    
-    print("WAV files generated:", wav_files)
-
-    return temp_dir, wav_files
-"""
-
 
 def generate_files_for_reaper(
     xml_path: Path,
@@ -168,7 +191,6 @@ def generate_files_for_reaper(
 
             wav_files.append(wav_path)
 
-    #return temp_dir, midi_files, wav_files
     # ==========================================================
     # Ajustar archivos exportados según formato
     # ==========================================================
@@ -182,9 +204,6 @@ def generate_files_for_reaper(
     return temp_dir, midi_files, wav_files
 
 
-
-
-#def create_reaper_project(project_path: Path, wav_files: list[Path]):
 def create_reaper_project(project_path: Path, midi_files: list[Path], wav_files: list[Path]):
 
     lines = []
@@ -233,7 +252,9 @@ def create_reaper_project(project_path: Path, midi_files: list[Path], wav_files:
 
         lines.append("<ITEM")
         lines.append("POSITION 0")
-        lines.append("LENGTH 10")  # placeholder
+        #lines.append("LENGTH 10")  # placeholder
+        duration = get_midi_duration(midi) + 0.5
+        lines.append(f"LENGTH {duration:.6f}")
 
         lines.append("<SOURCE MIDI")
         lines.append(f'FILE "{midi_path}"')
@@ -266,16 +287,6 @@ def export_to_reaper_project(
     # ==========================================================
     # Generar WAV temporales
     # ==========================================================
-    """
-    temp_dir, wav_files = generate_wavs_for_reaper(
-        xml_path,
-        selected_parts,
-        tempo,
-        transpose,
-        pitch_levels,
-        final_key,
-    )
-    """
 
     temp_dir, midi_files, wav_files = generate_files_for_reaper(
         xml_path,

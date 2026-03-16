@@ -309,24 +309,7 @@ def build_coral_view_window():
     ttk.Label(key_row2, text=" semitonos").pack(side="left")
 
     # Al cambiar la transposición, actualizar la tonalidad final
-    """
-    def update_final_key(*args):
-
-        try:
-            transpose = int(global_transpose_var.get())
-        except:
-            return
-
-        try:
-            current_key = key.Key(initial_key_var.get())
-            new_key = current_key.transpose(transpose)
-
-            final_key_var.set(f"{new_key.tonic.name} {new_key.mode}")
-        except:
-            pass
-
-    """
-
+    
     def update_final_key(*args):
         try:
             transpose = int(global_transpose_var.get())
