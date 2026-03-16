@@ -269,18 +269,52 @@ Se añadió un selector específico para el tempo, que actúa como interfaz de e
 
 \subsection*{Implementación de tempo modificable en todas las funcionalidades}
 Se incorporó la capacidad para modificar el tempo de las partituras en todas las funcionalidades principales del sistema. Esto implicó no solo la inserción de un selector de tempo, sino también la integración del cambio de tempo a nivel funcional, de modo que todas las operaciones de análisis, generación y visualización respeten este parámetro variable. Además, se añadieron logs específicos para el seguimiento del tempo y se corrigieron errores asociados a valores negativos en el tempo, garantizando así un control robusto y fiable de esta característica esencial.
-
-
 \section{Avances del 2026-03-13}
 
-\subsection*{Integración con la rama principal del repositorio remoto}
-En esta fase del desarrollo se realizó la integración del repositorio local con la rama principal (main) del repositorio remoto alojado en GitHub. Esta operación permitió sincronizar los últimos cambios realizados de forma remota con el entorno local de desarrollo, asegurando así la coherencia y actualización del proyecto global. 
+\subsection*{Añadido selector de tempo y funcionalidad de transposición}
+Se incorporó un selector de tempo que permite modificar el tiempo de reproducción de manera sencilla. Este cambio se replicó en todas las funcionalidades, asegurando uniformidad del tempo en todo el proyecto. Se añadió soporte para logs de tempo que permiten monitorear y rastrear los cambios realizados.
 
-La fusión con la rama principal representa una estrategia fundamental para mantener la consistencia entre distintas líneas de desarrollo, lo que favorece la colaboración en equipo y la incorporación ordenada de nuevas funcionalidades o correcciones. Además, este paso facilita la detección temprana y resolución de posibles conflictos derivados de cambios concurrentes en el código base, lo que contribuye a la estabilidad y calidad del software.
+\subsection*{Desarrollo del mezclador de voces y controles individuales}
+Se integraron sliders de volumen y pitch para cada pista, con representación numérica y opción de mutear, otorgando control granular sobre la mezcla. Un pitch shifter fue añadido a nivel de mezcla para alterar la tonalidad general según se requiera. Además, se implementó la generación de mezclas WAV con nombres variables para permitir múltiples versiones en una misma carpeta de salida.
 
-La sincronización con el repositorio remoto también abre la posibilidad de continuar el desarrollo desde una base común actualizada, lo que es crucial para la planificación y ejecución de las siguientes etapas del proyecto dentro del Trabajo Fin de Grado.
+\subsection*{Mejoras en la gestión de archivos y carpetas}
+Se estableció la obligatoriedad de la carpeta de salida, corrigiendo errores en el manejo entre opciones manuales y por defecto. También se añadió la función de borrado automático de carpetas vacías, manteniendo el sistema limpio y organizado.
+
+\subsection*{Optimización de rendimiento y paralelización}
+Para mejorar el rendimiento, se introdujo la paralelización en la conversión de archivos a WAV usando dos trabajadores concurrentes, lo que aceleró notablemente los tiempos de procesamiento. Se desarrollaron barras de progreso detalladas para la conversión de pistas WAV y se mejoró la experiencia de usuario con logs que reflejan el estado de los procesos en tiempo real.
+
 
 \section{Avances del 2026-03-14}
 
-\subsection*{Integración de la rama principal remota en el repositorio local}
-En esta etapa se procedió a la fusión del estado más reciente de la rama principal del repositorio remoto en el repositorio local. Esta acción tiene como objetivo mantener el código local actualizado con los últimos desarrollos y correcciones implementados en la rama principal del proyecto. La integración garantiza la coherencia y la compatibilidad del código, facilitando la coexistencia de distintas ramas de trabajo y evitando posibles conflictos en futuros desarrollos. Técnicamente, este paso es fundamental para asegurar que las nuevas funcionalidades o arreglos se basen sobre la versión más estable y actualizada, contribuyendo a la calidad y consistencia global del proyecto. Además, la sincronización frecuente con la rama principal disminuye el riesgo de divergencias significativas que puedan complicar el proceso de integración continua.
+\subsection*{Implementación de la ventana de exportación y control de interfaz}
+Se añadió una ventana dedicada a la exportación, brindando a los usuarios un espacio específico para gestionar las opciones relacionadas con la exportación de sus proyectos. La ventana fue diseñada para mantenerse centrada en pantalla, mejorando la experiencia visual. Un botón específico para exportar directamente a Reaper fue integrado, facilitando la conexión y sincronización con este DAW.
+
+\subsection*{Persistencia y autoguardado de configuraciones}
+Se implementaron mecanismos de autoactualización de memoria y guardado automático de parámetros, garantizando que las configuraciones y estados del programa se mantengan consistentes entre sesiones.
+
+\section{Avances del 2026-03-15}
+
+\subsection*{Incorporación de funcionalidades de tempo y transposición en la selección de usuario}
+En esta fecha se añadieron funciones que permiten al usuario controlar el tempo y la transposición directamente desde la interfaz de selección. Estos parámetros enriquecen la experiencia de personalización y permiten ajustes específicos para cada proyecto musical.
+
+\subsection*{Mejora en la integración con el DAW Reaper}
+Se implementaron mejoras en la gestión de la duración real de las pistas dentro de Reaper, incorporando también los audios directamente en las pistas correspondientes. Además, se creó un mecanismo que automatiza la apertura del software Reaper desde la aplicación principal, optimizando el flujo de trabajo y reduciendo la intervención manual.
+
+\subsection*{Optimización de la interfaz gráfica}
+Se ajustó la altura del diálogo de exportación para asegurar que los botones de "exportar" y "cancelar" estén siempre visibles, mejorando la usabilidad. También se centró la ventana principal para ofrecer una presentación más equilibrada y agradable visualmente.
+
+\subsection*{Desarrollo de funcionalidades para manejo avanzado de pistas}
+Se generaron pistas individuales para cada voz dentro de Reaper, lo que permite un control detallado de cada componente musical. Además, se añadió soporte para el nombre de la tonalidad en las pistas individuales tanto en formatos MIDI como WAV, incrementando la claridad y la organización del proyecto. Se integraron pitch shifters individuales para modificar la tonalidad de cada pista, y se implementó el reseteo automático de parámetros para evitar acumulaciones no deseadas de cambios.
+
+\subsection*{Controles de transposición y tonalidad}
+Se habilitó la función de cambio de tonalidad, agregando la representación de bemoles en los nombres de las pistas para una notación musical precisa. La trasposición fue incorporada tanto a nivel general como específica en los archivos WAV generados, ampliando las posibilidades de manipulación sonora.
+
+\section{Avances del 2026-03-16}
+
+\subsection*{Integración y mejoría en la gestión de pistas MIDI y exportación de audio}
+Durante esta jornada se realizaron importantes avances orientados a mejorar la generación y exportación de pistas MIDI y audio WAV. Primero, se corrigió un problema recurrente relacionado con la denominación de las pistas, asegurándose de que los nombres fueran adecuados y coherentes, lo que facilita la identificación y posterior manipulación de las mismas. Además, se incorporó el cálculo correcto de la duración en las pistas MIDI para reflejar con precisión la temporalidad del contenido musical. 
+
+Se implementó la generación de pistas separadas considerando todas las opciones seleccionadas por el usuario, lo que supone una mejora significativa en la flexibilidad y personalización del proceso. En paralelo, se avanzó en la capacidad de exportar archivos en formatos MIDI y WAV de manera integrada, logrando una segunda versión de prueba que confirmó la viabilidad de esta funcionalidad. Estos desarrollos representan un paso clave hacia una exportación más completa y profesional de las producciones musicales manejadas en el software.
+
+
+
