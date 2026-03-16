@@ -1,0 +1,372 @@
+# src/services/reaper_export_service.py
+
+from pathlib import Path
+import tempfile
+import shutil
+
+from services.coral_midi_service import export_selected_parts_to_midi
+from services.coral_audio_render_service import midi_to_wav
+
+import subprocess
+import platform
+from tkinter import filedialog
+
+def get_midi_duration(midi_path: Path):
+
+    import struct
+
+    with open(midi_path, "rb") as f:
+
+        data = f.read()
+
+    pos = 0
+
+    # ==============================
+    # Leer header
+    # ==============================
+
+    if data[pos:pos+4] != b"MThd":
+        raise ValueError("Archivo MIDI inválido")
+
+    pos += 8  # saltar MThd + header length
+
+    format_type, n_tracks, division = struct.unpack(">HHH", data[pos:pos+6])
+    pos += 6
+
+    ticks_per_beat = division
+
+    tempo = 500000  # microsegundos por beat (120 BPM por defecto)
+
+    total_ticks = 0
+
+    # ==============================
+    # Leer tracks
+    # ==============================
+
+    for _ in range(n_tracks):
+
+        if data[pos:pos+4] != b"MTrk":
+            break
+
+        pos += 4
+
+        track_length = struct.unpack(">I", data[pos:pos+4])[0]
+        pos += 4
+
+        track_end = pos + track_length
+
+        track_ticks = 0
+
+        while pos < track_end:
+
+            # leer delta time (variable length)
+            delta = 0
+
+            while True:
+                byte = data[pos]
+                pos += 1
+                delta = (delta << 7) | (byte & 0x7F)
+                if not (byte & 0x80):
+                    break
+
+            track_ticks += delta
+
+            event = data[pos]
+            pos += 1
+
+            if event == 0xFF:  # meta event
+
+                meta_type = data[pos]
+                pos += 1
+
+                length = data[pos]
+                pos += 1
+
+                if meta_type == 0x51 and length == 3:
+                    tempo = int.from_bytes(data[pos:pos+3], "big")
+
+                pos += length
+
+            elif event in (0xF0, 0xF7):  # sysex
+                length = data[pos]
+                pos += 1 + length
+
+            else:
+                # evento MIDI normal (2 bytes más normalmente)
+                pos += 2
+
+        total_ticks = max(total_ticks, track_ticks)
+
+    # ==============================
+    # convertir ticks → segundos
+    # ==============================
+
+    seconds = (total_ticks * tempo) / (ticks_per_beat * 1_000_000)
+
+    return seconds
+
+def get_wav_duration(wav_path: Path):
+
+    import struct
+
+    with open(wav_path, "rb") as f:
+        f.seek(24)
+        sample_rate = struct.unpack("<I", f.read(4))[0]
+
+        f.seek(40)
+        data_size = struct.unpack("<I", f.read(4))[0]
+
+        f.seek(34)
+        bits_per_sample = struct.unpack("<H", f.read(2))[0]
+
+        f.seek(22)
+        channels = struct.unpack("<H", f.read(2))[0]
+
+    bytes_per_sample = bits_per_sample / 8
+    total_samples = data_size / (bytes_per_sample * channels)
+
+    duration = total_samples / sample_rate
+
+    return duration
+
+def generate_files_for_reaper(
+    xml_path: Path,
+    selected_parts: list,
+    tempo: int,
+    transpose: int,
+    pitch_levels: dict,
+    final_key: str,
+    export_format: str,
+):
+
+    temp_dir = Path(tempfile.mkdtemp(prefix="reaper_export_"))
+
+    midi_dir = temp_dir / "midi"
+    wav_dir = temp_dir / "wav"
+
+    midi_dir.mkdir()
+    wav_dir.mkdir()
+
+    midi_files = []
+    wav_files = []
+
+    # ==========================================================
+    # Generar MIDI si es necesario
+    # ==========================================================
+
+    if export_format in ("midi", "both"):
+
+        midi_files = export_selected_parts_to_midi(
+            xml_path,
+            selected_parts,
+            midi_dir,
+            tempo_bpm=tempo,
+            transpose=transpose,
+            pitch_levels=pitch_levels,
+            final_key=final_key,
+        )
+
+    # ==========================================================
+    # Generar WAV si es necesario
+    # ==========================================================
+
+    if export_format in ("wav", "both"):
+
+        if not midi_files:
+            midi_files = export_selected_parts_to_midi(
+                xml_path,
+                selected_parts,
+                midi_dir,
+                tempo_bpm=tempo,
+                transpose=transpose,
+                pitch_levels=pitch_levels,
+                final_key=final_key,
+            )
+
+        for midi_path in midi_files:
+
+            wav_path = wav_dir / (midi_path.stem + ".wav")
+
+            midi_to_wav(midi_path, wav_path)
+
+            wav_files.append(wav_path)
+
+    # ==========================================================
+    # Ajustar archivos exportados según formato
+    # ==========================================================
+
+    if export_format == "midi":
+        wav_files = []
+
+    elif export_format == "wav":
+        midi_files = []
+
+    return temp_dir, midi_files, wav_files
+
+
+def create_reaper_project(project_path: Path, midi_files: list[Path], wav_files: list[Path]):
+
+    lines = []
+
+    lines.append('<REAPER_PROJECT 0.1 "7.x">')
+
+    for wav in wav_files:
+
+        name = wav.stem
+        parts = name.split("_")
+
+        """
+        if len(parts) >= 2:
+            track_name = f"{parts[0]} {parts[1]}"
+        else:
+            track_name = parts[0]
+        """
+        track_name = name.replace("_", " ")    
+
+        wav_path = str(wav).replace("\\", "/")
+
+        lines.append("<TRACK")
+        lines.append(f'NAME "{track_name}"')
+
+        lines.append("<ITEM")
+        lines.append("POSITION 0")
+        duration = get_wav_duration(wav)
+        lines.append(f"LENGTH {duration:.6f}")
+        lines.append("LOOP 0")
+
+
+        lines.append("<SOURCE WAVE")
+        lines.append(f'FILE "{wav_path}"')
+        lines.append(">")
+
+        lines.append(">")  # close ITEM
+        lines.append(">")  # close TRACK
+
+    
+    for midi in midi_files:
+
+        name = midi.stem
+        track_name = name.replace("_", " ")
+
+        midi_path = str(midi).replace("\\", "/")
+
+        lines.append("<TRACK")
+        lines.append(f'NAME "{track_name} MIDI"')
+
+        lines.append("<ITEM")
+        lines.append("POSITION 0")
+        #lines.append("LENGTH 10")  # placeholder
+        duration = get_midi_duration(midi) + 0.5
+        lines.append(f"LENGTH {duration:.6f}")
+
+        lines.append("<SOURCE MIDI")
+        lines.append(f'FILE "{midi_path}"')
+        lines.append(">")
+
+        lines.append(">")
+        lines.append(">")
+
+
+    lines.append(">")
+    project_text = "\n".join(lines)
+    project_path.write_text(project_text, encoding="utf-8")
+
+    return project_path
+
+def export_to_reaper_project(
+    root,
+    xml_path: Path,
+    selected_parts: list,
+    tempo: int,
+    transpose: int,
+    pitch_levels: dict,
+    final_key: str,
+    export_format: str,  # "midi", "wav", "both"
+):
+    """
+    Exporta las voces seleccionadas a un proyecto de Reaper.
+    """
+
+    # ==========================================================
+    # Generar WAV temporales
+    # ==========================================================
+
+    temp_dir, midi_files, wav_files = generate_files_for_reaper(
+        xml_path,
+        selected_parts,
+        tempo,
+        transpose,
+        pitch_levels,
+        final_key,
+        export_format,
+    )
+    try:
+
+        # ==========================================================
+        # Preguntar dónde guardar el proyecto
+        # ==========================================================
+
+        save_path = filedialog.asksaveasfilename(
+            parent=root,
+            title="Guardar proyecto Reaper",
+            defaultextension=".rpp",
+            initialfile="proyecto_coral.rpp",
+            filetypes=[("Reaper Project", "*.rpp")],
+        )
+
+        if not save_path:
+            return None
+
+        project_path = Path(save_path)
+
+        # ==========================================================
+        # Crear archivo .RPP
+        # ==========================================================
+
+        #create_reaper_project(project_path, wav_files)
+        create_reaper_project(project_path, midi_files, wav_files)
+
+
+        # ==========================================================
+        # Abrir Reaper automáticamente
+        # ==========================================================
+
+        _open_reaper(project_path)
+
+        return project_path
+
+    finally:
+
+        # ==========================================================
+        # Limpiar carpeta temporal
+        # ==========================================================
+
+        #shutil.rmtree(temp_dir, ignore_errors=True)
+        pass
+
+def _open_reaper(project_path: Path):
+
+    system = platform.system()
+
+    if system == "Windows":
+
+        possible_paths = [
+            r"C:\Program Files\REAPER (x64)\reaper.exe",
+            r"C:\Program Files\REAPER\reaper.exe",
+            r"C:\Users\%USERNAME%\AppData\Local\Programs\REAPER\reaper.exe",
+        ]
+
+        for path in possible_paths:
+            if Path(path).exists():
+                subprocess.Popen([path, str(project_path)])
+                return
+
+        raise FileNotFoundError(
+            "No se encontró REAPER. Comprueba que esté instalado."
+        )
+
+    elif system == "Darwin":
+        subprocess.Popen(["open", "-a", "REAPER", str(project_path)])
+
+    else:
+        subprocess.Popen(["reaper", str(project_path)])

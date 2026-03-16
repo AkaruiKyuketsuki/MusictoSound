@@ -309,24 +309,7 @@ def build_coral_view_window():
     ttk.Label(key_row2, text=" semitonos").pack(side="left")
 
     # Al cambiar la transposición, actualizar la tonalidad final
-    """
-    def update_final_key(*args):
-
-        try:
-            transpose = int(global_transpose_var.get())
-        except:
-            return
-
-        try:
-            current_key = key.Key(initial_key_var.get())
-            new_key = current_key.transpose(transpose)
-
-            final_key_var.set(f"{new_key.tonic.name} {new_key.mode}")
-        except:
-            pass
-
-    """
-
+    
     def update_final_key(*args):
         try:
             transpose = int(global_transpose_var.get())
@@ -414,6 +397,9 @@ def build_coral_view_window():
 
     download_mix_wav_btn = ttk.Button(buttons_row, text="Descargar mezcla WAV")
     download_mix_wav_btn.pack(side="left", padx=20, ipady=6)
+
+    export_reaper_btn = ttk.Button(buttons_row, text="Exportar a Reaper")
+    export_reaper_btn.pack(side="left", padx=20, ipady=6)
 
     # La barra se controla desde el controller (gui_controller.py)
     # Solo se muestra si se llama a progress.pack(), en este caso he decidido no mostrarla
@@ -647,4 +633,5 @@ def build_coral_view_window():
         "set_initial_key": set_initial_key,
         "reset_adjustments": reset_adjustments,
         "get_final_key": get_final_key,
+        "export_reaper_btn": export_reaper_btn,
     }

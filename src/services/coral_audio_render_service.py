@@ -2,11 +2,6 @@ from pathlib import Path
 import subprocess
 import shutil
 
-"""
-def find_musescore():
-    return r"C:\Program Files\MuseScore 4\bin\MuseScore4.exe"
-"""
-
 def find_musescore():
     """
     Busca el ejecutable de MuseScore en el sistema.
