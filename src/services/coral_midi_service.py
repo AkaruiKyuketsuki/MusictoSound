@@ -8,6 +8,59 @@ from music21 import stream
 from music21 import tempo
 import copy
 
+import mido
+
+def insert_lyrics_into_midi(midi_path: Path, part):
+    """
+    Inserta eventos lyric en el MIDI usando mido.
+    """
+
+    mid = mido.MidiFile(midi_path)
+
+    # usamos la primera pista
+    track = mid.tracks[0]
+
+    ticks_per_beat = mid.ticks_per_beat
+
+    for note in part.recurse().notes:
+        if note.lyrics:
+
+            #lyric_text = note.lyrics[0].text
+            lyric_text = clean_lyric(note.lyrics[0].text)
+
+            # convertir offset musical a ticks
+            tick = int(note.offset * ticks_per_beat)
+
+            msg = mido.MetaMessage(
+                "lyrics",
+                text=lyric_text,
+                time=tick
+            )
+
+            track.append(msg)
+
+    mid.save(midi_path)
+
+def clean_lyric(text: str) -> str:
+    """
+    Limpia caracteres problemáticos para MIDI (latin-1).
+    """
+
+    replacements = {
+        "“": '"',
+        "”": '"',
+        "‘": "'",
+        "’": "'",
+        "…": "...",
+        "¿": "",
+        "¡": "",
+    }
+
+    for bad, good in replacements.items():
+        text = text.replace(bad, good)
+
+    return text
+
 def apply_tempo(score, bpm: int):
     """
     Aplica un tempo global al score y a cada parte.
@@ -102,9 +155,28 @@ def export_selected_parts_to_midi(
                 if pitch_shift != 0:
                     part_copy = part_copy.transpose(pitch_shift)
 
-            part_copy.write("midi", midi_path)
+            """
+            for n in part.recurse().notes:
+                if n.lyrics:
+                    print(n.lyrics)
+            """
 
+            for note in part_copy.recurse().notes:
+                if note.lyrics:
+                    lyric_text = note.lyrics[0].text
+                    note.lyric = lyric_text
+                    print("SET LYRIC:", lyric_text)
+                    print("NOTE:", note, "LYRIC:", lyric_text)
+                    
+            #part_copy.write("midi", midi_path)
+            #generated_files.append(midi_path)
 
+            # Crear score temporal para asegurar que se exporten las lyrics
+            temp_score = stream.Score()
+            temp_score.insert(0, part_copy)
+
+            temp_score.write("midi", midi_path)
+            insert_lyrics_into_midi(midi_path, part_copy)
 
             generated_files.append(midi_path)
 
