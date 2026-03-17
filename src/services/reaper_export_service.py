@@ -282,6 +282,7 @@ def export_to_reaper_project(
     pitch_levels: dict,
     final_key: str,
     export_format: str,  # "midi", "wav", "both"
+    include_lyrics: bool = False,
 ):
     """
     Exporta las voces seleccionadas a un proyecto de Reaper.
@@ -331,6 +332,24 @@ def export_to_reaper_project(
         # Abrir Reaper automáticamente
         # ==========================================================
 
+        """
+        _open_reaper(project_path)
+        
+        if include_lyrics:
+            # ejecutar script para insertar letra visible
+            script_path = Path(__file__).resolve().parents[2] / "scripts" / "reaper_visible_lyrics.lua"
+
+            run_reaper_script(script_path)
+        """
+
+        """
+        script_path = None
+
+        if include_lyrics:
+            script_path = Path(__file__).resolve().parents[2] / "scripts" / "reaper_visible_lyrics.lua"
+        
+        _open_reaper(project_path, script_path)
+        """
         _open_reaper(project_path)
 
         return project_path
@@ -344,7 +363,7 @@ def export_to_reaper_project(
         #shutil.rmtree(temp_dir, ignore_errors=True)
         pass
 
-def _open_reaper(project_path: Path):
+def _open_reaper(project_path: Path, script_path: Path | None = None):
 
     system = platform.system()
 
@@ -357,8 +376,16 @@ def _open_reaper(project_path: Path):
         ]
 
         for path in possible_paths:
+
             if Path(path).exists():
-                subprocess.Popen([path, str(project_path)])
+
+                cmd = [path, str(project_path)]
+
+                if script_path:
+                    cmd.append(str(script_path))
+
+                subprocess.Popen(cmd)
+
                 return
 
         raise FileNotFoundError(
@@ -366,7 +393,37 @@ def _open_reaper(project_path: Path):
         )
 
     elif system == "Darwin":
+
         subprocess.Popen(["open", "-a", "REAPER", str(project_path)])
 
     else:
+
         subprocess.Popen(["reaper", str(project_path)])
+
+"""
+def run_reaper_script(script_path: Path):
+
+    system = platform.system()
+
+    if system == "Windows":
+
+        possible_paths = [
+            r"C:\Program Files\REAPER (x64)\reaper.exe",
+            r"C:\Program Files\REAPER\reaper.exe",
+        ]
+
+        for path in possible_paths:
+
+            if Path(path).exists():
+
+                subprocess.Popen([
+                    path,
+                    "-nosplash",
+                    "-newinst",
+                    str(script_path)
+                ])
+
+                return
+
+        raise FileNotFoundError("No se encontró REAPER")
+"""        

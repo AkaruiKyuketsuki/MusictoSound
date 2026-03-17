@@ -715,6 +715,7 @@ def run_coral_gui():
                 transpose = 0
 
             export_format = options["format"]
+            include_lyrics = options["include_lyrics"]
             
             project_path = export_to_reaper_project(
                 root=root,
@@ -724,7 +725,8 @@ def run_coral_gui():
                 transpose=transpose,
                 pitch_levels=pitch_levels,
                 final_key=final_key,
-                export_format=export_format
+                export_format=export_format,
+                include_lyrics=include_lyrics,
             )
 
             if project_path:

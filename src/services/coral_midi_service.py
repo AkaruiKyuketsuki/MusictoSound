@@ -10,39 +10,6 @@ import copy
 
 import mido
 
-"""
-def insert_lyrics_into_midi(midi_path: Path, part):
-
-    #Inserta eventos lyric en el MIDI usando mido.
-    
-
-    mid = mido.MidiFile(midi_path)
-
-    # usamos la primera pista
-    track = mid.tracks[0]
-
-    ticks_per_beat = mid.ticks_per_beat
-
-    for note in part.recurse().notes:
-        if note.lyrics:
-
-            #lyric_text = note.lyrics[0].text
-            lyric_text = clean_lyric(note.lyrics[0].text)
-
-            # convertir offset musical a ticks
-            tick = int(note.offset * ticks_per_beat)
-
-            msg = mido.MetaMessage(
-                "lyrics",
-                text=lyric_text,
-                time=tick
-            )
-
-            track.append(msg)
-
-    mid.save(midi_path)
-"""
-
 def insert_lyrics_into_midi(midi_path: Path, part):
 
     mid = mido.MidiFile(midi_path)
@@ -184,14 +151,6 @@ def export_selected_parts_to_midi(
                 .replace("\\", "_")
             )
 
-            """
-            if tempo_bpm:
-                midi_path = output_dir / f"{safe_name}_{tempo_bpm}bpm.mid"
-            else:
-                midi_path = output_dir / f"{safe_name}.mid"
-
-            """
-
             key_suffix = ""
             if final_key:
                 key_suffix = "_" + final_key.replace(" ", "")
@@ -200,9 +159,6 @@ def export_selected_parts_to_midi(
                 midi_path = output_dir / f"{safe_name}_{tempo_bpm}bpm{key_suffix}.mid"
             else:
                 midi_path = output_dir / f"{safe_name}{key_suffix}.mid"
-
-       
-
        
             part_copy = copy.deepcopy(part)
 
@@ -212,22 +168,13 @@ def export_selected_parts_to_midi(
                 if pitch_shift != 0:
                     part_copy = part_copy.transpose(pitch_shift)
 
-            """
-            for n in part.recurse().notes:
-                if n.lyrics:
-                    print(n.lyrics)
-            """
-
             for note in part_copy.recurse().notes:
                 if note.lyrics:
                     lyric_text = note.lyrics[0].text
                     note.lyric = lyric_text
-                    print("SET LYRIC:", lyric_text)
-                    print("NOTE:", note, "LYRIC:", lyric_text)
+                    #print("SET LYRIC:", lyric_text)
+                    #print("NOTE:", note, "LYRIC:", lyric_text)
                     
-            #part_copy.write("midi", midi_path)
-            #generated_files.append(midi_path)
-
             # Crear score temporal para asegurar que se exporten las lyrics
             temp_score = stream.Score()
             temp_score.insert(0, part_copy)
