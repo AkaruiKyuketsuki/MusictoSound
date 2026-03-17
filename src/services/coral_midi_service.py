@@ -10,10 +10,11 @@ import copy
 
 import mido
 
+"""
 def insert_lyrics_into_midi(midi_path: Path, part):
-    """
-    Inserta eventos lyric en el MIDI usando mido.
-    """
+
+    #Inserta eventos lyric en el MIDI usando mido.
+    
 
     mid = mido.MidiFile(midi_path)
 
@@ -38,6 +39,62 @@ def insert_lyrics_into_midi(midi_path: Path, part):
             )
 
             track.append(msg)
+
+    mid.save(midi_path)
+"""
+
+def insert_lyrics_into_midi(midi_path: Path, part):
+
+    mid = mido.MidiFile(midi_path)
+    track = mid.tracks[0]
+
+    ticks_per_beat = mid.ticks_per_beat
+
+    events = []
+    abs_time = 0
+
+    # convertir eventos existentes a tiempo absoluto
+    for msg in track:
+        abs_time += msg.time
+        events.append((abs_time, msg))
+
+    # añadir lyrics
+    for note in part.recurse().notes:
+        if note.lyrics:
+
+            lyric_text = clean_lyric(note.lyrics[0].text)
+
+            #tick = int(note.offset * ticks_per_beat)
+            abs_offset = note.getOffsetInHierarchy(part)
+            tick = int(abs_offset * ticks_per_beat)
+
+            lyric_msg = mido.MetaMessage(
+                "lyrics",
+                text=lyric_text,
+                time=0
+            )
+
+            events.append((tick, lyric_msg))
+
+    # ordenar todos los eventos por tiempo
+    events.sort(key=lambda x: x[0])
+
+    # reconstruir track con delta-times correctos
+    new_track = mido.MidiTrack()
+
+    last_time = 0
+
+    for abs_time, msg in events:
+
+        delta = abs_time - last_time
+
+        msg.time = delta
+
+        new_track.append(msg)
+
+        last_time = abs_time
+
+    mid.tracks[0] = new_track
 
     mid.save(midi_path)
 
