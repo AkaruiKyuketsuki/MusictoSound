@@ -11,6 +11,9 @@ import subprocess
 import platform
 from tkinter import filedialog
 
+def get_reaper_resource_path():
+    return Path.home() / "AppData" / "Roaming" / "REAPER"
+
 def get_midi_duration(midi_path: Path):
 
     import struct
@@ -324,9 +327,10 @@ def export_to_reaper_project(
         # Crear archivo .RPP
         # ==========================================================
 
-        #create_reaper_project(project_path, wav_files)
         create_reaper_project(project_path, midi_files, wav_files)
 
+        script_path = install_reaper_script()
+        register_script_in_reaper(script_path)
 
         # ==========================================================
         # Abrir Reaper automáticamente
@@ -400,30 +404,41 @@ def _open_reaper(project_path: Path, script_path: Path | None = None):
 
         subprocess.Popen(["reaper", str(project_path)])
 
-"""
-def run_reaper_script(script_path: Path):
 
-    system = platform.system()
 
-    if system == "Windows":
+def install_reaper_script():
 
-        possible_paths = [
-            r"C:\Program Files\REAPER (x64)\reaper.exe",
-            r"C:\Program Files\REAPER\reaper.exe",
-        ]
+    reaper_path = get_reaper_resource_path()
+    scripts_dir = reaper_path / "Scripts"
 
-        for path in possible_paths:
+    scripts_dir.mkdir(exist_ok=True)
 
-            if Path(path).exists():
+    #source_script = Path(__file__).resolve().parents[2] / "scripts" / "reaper_visible_lyrics.lua"
+    source_script = Path(__file__).resolve().parents[1] / "scripts" / "reaper_visible_lyrics.lua"
+    dest_script = scripts_dir / "reaper_visible_lyrics.lua"
 
-                subprocess.Popen([
-                    path,
-                    "-nosplash",
-                    "-newinst",
-                    str(script_path)
-                ])
+    shutil.copy(source_script, dest_script)
 
-                return
+    return dest_script
 
-        raise FileNotFoundError("No se encontró REAPER")
-"""        
+def register_script_in_reaper(script_path: Path):
+
+    reaper_path = get_reaper_resource_path()
+    kb_file = reaper_path / "reaper-kb.ini"
+
+    if not kb_file.exists():
+        return
+
+    with open(kb_file, "r", encoding="utf-8") as f:
+        lines = f.readlines()
+
+    script_line = f'SCR 4 0 0 _RSreaper_visible_lyrics "{script_path}"\n'
+
+    for line in lines:
+        if "reaper_visible_lyrics.lua" in line:
+            return  # ya está registrado
+
+    lines.append(script_line)
+
+    with open(kb_file, "w", encoding="utf-8") as f:
+        f.writelines(lines)
