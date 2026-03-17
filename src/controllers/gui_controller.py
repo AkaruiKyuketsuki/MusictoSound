@@ -28,6 +28,8 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from views.reaper_export_view import show_reaper_export_dialog
 from services.reaper_export_service import export_to_reaper_project
 
+from views.reaper_guide_overlay import ReaperGuideOverlay
+
 # ==========================================================
 # Utilidades
 # ==========================================================

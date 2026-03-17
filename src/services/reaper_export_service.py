@@ -11,6 +11,8 @@ import subprocess
 import platform
 from tkinter import filedialog
 
+from views.reaper_guide_overlay import ReaperGuideOverlay
+
 def get_reaper_resource_path():
     return Path.home() / "AppData" / "Roaming" / "REAPER"
 
@@ -355,6 +357,9 @@ def export_to_reaper_project(
         _open_reaper(project_path, script_path)
         """
         _open_reaper(project_path)
+
+        if include_lyrics:
+            root.after(2000, lambda: ReaperGuideOverlay(root))
 
         return project_path
 
