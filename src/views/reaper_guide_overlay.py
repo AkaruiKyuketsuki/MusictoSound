@@ -8,10 +8,14 @@ class ReaperGuideOverlay:
         self.root = root
         self.windows = []
 
-        self.create_hint("👇 STEP 1\nCLICK 'Actions'", 400, 80)
-        self.create_hint("👇 STEP 2\nCLICK 'Show action list'", 420, 120)
-        self.create_hint("👉 STEP 3\nTYPE: visible", 650, 200)
-        self.create_hint("⭐ STEP 4\nCLICK RUN", 650, 350)
+        # posiciones ajustadas
+        self.create_hint("👇 STEP 1\nCLICK 'Actions'", 260, 90)#200, 60
+
+        self.create_hint("👇 STEP 2\nCLICK 'Show action list'",260, 175)#200, 145
+
+        self.create_hint("👉 STEP 3\nSEARCH IN FILTER\n_RSreaper_visible_lyrics", 260, 320) #920, 220
+
+        self.create_hint("⭐ STEP 4\nCLICK RUN", 260, 420)#920, 420
 
         self.create_close_button()
 
@@ -19,19 +23,17 @@ class ReaperGuideOverlay:
     def create_hint(self, text, x, y):
 
         win = tk.Toplevel(self.root)
-
         win.overrideredirect(True)
         win.attributes("-topmost", True)
 
         frame = tk.Frame(
             win,
             bg="#222",
-            padx=15,
-            pady=10,
+            padx=18,
+            pady=12,
             bd=3,
             relief="solid"
         )
-
         frame.pack()
 
         label = tk.Label(
@@ -42,7 +44,6 @@ class ReaperGuideOverlay:
             font=("Segoe UI", 14, "bold"),
             justify="center"
         )
-
         label.pack()
 
         win.geometry(f"+{x}+{y}")
@@ -60,15 +61,20 @@ class ReaperGuideOverlay:
         btn = tk.Button(
             win,
             text="❌ Close guide",
-            font=("Segoe UI", 12, "bold"),
+            font=("Segoe UI", 13, "bold"),
             bg="#cc3333",
             fg="white",
+            padx=20,
+            pady=6,
             command=self.close_all
         )
 
-        btn.pack(padx=10, pady=5)
+        btn.pack()
 
-        win.geometry("+50+50")
+        # posición inferior centrada
+        #win.geometry("+850+700")
+        win.geometry("+260+550")
+
 
         self.windows.append(win)
 
