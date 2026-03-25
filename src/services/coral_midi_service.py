@@ -126,6 +126,13 @@ def export_selected_parts_to_midi(
     # aplicar transposición global
     if transpose != 0:
         score = score.transpose(transpose)
+
+        # normalizar KeySignature para evitar >7 sostenidos o bemoles
+        for ks in score.recurse().getElementsByClass("KeySignature"):
+            while ks.sharps > 7:
+                ks.sharps -= 12
+            while ks.sharps < -7:
+                ks.sharps += 12
     
     if tempo_bpm:
         score = apply_tempo(score, tempo_bpm)
@@ -201,6 +208,13 @@ def export_mix_to_midi(
     # aplicar transposición global
     if transpose != 0:
         score = score.transpose(transpose)
+        
+        # normalizar KeySignature para evitar >7 sostenidos o bemoles
+        for ks in score.recurse().getElementsByClass("KeySignature"):
+            while ks.sharps > 7:
+                ks.sharps -= 12
+            while ks.sharps < -7:
+                ks.sharps += 12
 
     if tempo_bpm:
         score = apply_tempo(score, tempo_bpm)
