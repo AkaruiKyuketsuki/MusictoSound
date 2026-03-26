@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import ttk, filedialog
 from music21 import key
 
+from views.lyrics_editor_view import open_lyrics_editor
+from views.phoneme_viewer_view import open_phoneme_viewer
 
 def build_coral_view_window():
     root = tk.Tk()

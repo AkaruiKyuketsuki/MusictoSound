@@ -30,6 +30,9 @@ from services.reaper_export_service import export_to_reaper_project
 
 from views.reaper_guide_overlay import ReaperGuideOverlay
 
+from views.lyrics_editor_view import open_lyrics_editor
+from views.phoneme_viewer_view import open_phoneme_viewer
+
 # ==========================================================
 # Utilidades
 # ==========================================================
@@ -173,6 +176,8 @@ def run_coral_gui():
     get_final_key = widgets["get_final_key"]
 
     export_reaper_btn = widgets["export_reaper_btn"]
+    view_phonemes_btn = widgets["view_phonemes_btn"]
+    edit_lyrics_btn = widgets["edit_lyrics_btn"]
 
     log("Módulo generador coral listo.")
     current_output_dir = None
@@ -215,6 +220,20 @@ def run_coral_gui():
 
         except Exception as e:
             log(f"❌ Error al visualizar la partitura: {e}")
+
+
+    # ------------------------------------------------------
+    # Editor de letra
+    # ------------------------------------------------------
+    def open_lyrics_editor_window():
+        open_lyrics_editor(root)
+
+
+    # ------------------------------------------------------
+    # Visor de fonética
+    # ------------------------------------------------------
+    def open_phoneme_viewer_window():
+        open_phoneme_viewer(root)
 
     # ------------------------------------------------------
     # Examinar XML
@@ -646,25 +665,6 @@ def run_coral_gui():
         except Exception as e:
             log(f"❌ Error al generar WAV: {e}")
     
-    
-    # ------------------------------------------------------
-    # Exportar a Reaper
-    # ------------------------------------------------------
-    """
-    def export_to_reaper():
-
-        options = show_reaper_export_dialog(root)
-
-        if options is None:
-            log("Exportación a Reaper cancelada.")
-            return
-
-        log("Opciones de exportación seleccionadas:")
-
-        for key, value in options.items():
-            log(f"  {key}: {value}")
-    """
-
     # ------------------------------------------------------
     # Exportar a Reaper
     # ------------------------------------------------------
@@ -768,6 +768,8 @@ def run_coral_gui():
     download_mix_wav_btn.config(command=download_mix_wav)
     download_wav_btn.config(command=generate_wav)
     export_reaper_btn.config(command=export_to_reaper)
+    edit_lyrics_btn.config(command=open_lyrics_editor_window)
+    view_phonemes_btn.config(command=open_phoneme_viewer_window)
 
     root.mainloop()
 
