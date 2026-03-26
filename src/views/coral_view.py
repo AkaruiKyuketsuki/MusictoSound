@@ -200,6 +200,48 @@ def build_coral_view_window():
     view_score_btn = ttk.Button(left_frame, text="Visualizar partitura")
     view_score_btn.pack(side="left", padx=(15,0), ipady=5)
 
+    # =======================================
+    # Controles de texto y fonética
+    # =======================================
+
+    text_tools_frame = ttk.Frame(left_frame)
+    text_tools_frame.pack(side="left", padx=(20,0))
+
+    ttk.Label(text_tools_frame, text="Idioma:").pack(side="left")
+
+    language_var = tk.StringVar(value="Auto")
+
+    language_selector = ttk.Combobox(
+        text_tools_frame,
+        textvariable=language_var,
+        values=[
+            "Auto",
+            "Español",
+            "Euskera",
+            "Latín",
+            "Inglés",
+            "Alemán",
+            "Italiano",
+            "Ruso"
+        ],
+        width=12,
+        state="readonly"
+    )
+
+    language_selector.pack(side="left", padx=5)
+
+    view_phonemes_btn = ttk.Button(
+        text_tools_frame,
+        text="Ver fonética"
+    )
+    view_phonemes_btn.pack(side="left", padx=5, ipady=5)
+
+    edit_lyrics_btn = ttk.Button(
+        text_tools_frame,
+        text="Editar letra"
+    )
+    edit_lyrics_btn.pack(side="left", padx=5, ipady=5)
+
     back_btn = ttk.Button(buttons_frame, text="Volver")
     back_btn.pack(side="left", padx=10, ipady=5)
 
@@ -634,4 +676,7 @@ def build_coral_view_window():
         "reset_adjustments": reset_adjustments,
         "get_final_key": get_final_key,
         "export_reaper_btn": export_reaper_btn,
+        "language_var": language_var,
+        "edit_lyrics_btn": edit_lyrics_btn,
+        "view_phonemes_btn": view_phonemes_btn,
     }
