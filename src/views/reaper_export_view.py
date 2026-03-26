@@ -99,12 +99,36 @@ def show_reaper_export_dialog(parent):
         variable=transpose_var
     ).pack(anchor="w")
 
+    """
     ttk.Checkbutton(
         options_frame,
-        text="Incluir letra",
+        text="Incluir tutorial para añadir letra",
         variable=lyrics_var
     ).pack(anchor="w")
+    """
 
+    lyrics_check = ttk.Checkbutton(
+        options_frame,
+        text="Incluir tutorial para añadir letra",
+        variable=lyrics_var
+    )
+
+    lyrics_check.pack(anchor="w")
+
+    def update_lyrics_state(*args):
+
+        if format_var.get() == "wav":
+
+            lyrics_check.state(["disabled"])
+            lyrics_var.set(False)
+
+        else:
+
+            lyrics_check.state(["!disabled"])
+
+    format_var.trace_add("write", update_lyrics_state)
+    update_lyrics_state()
+    
     # ======================================================
     # Botones
     # ======================================================
