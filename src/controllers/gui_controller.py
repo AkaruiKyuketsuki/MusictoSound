@@ -178,6 +178,7 @@ def run_coral_gui():
     export_reaper_btn = widgets["export_reaper_btn"]
     view_phonemes_btn = widgets["view_phonemes_btn"]
     edit_lyrics_btn = widgets["edit_lyrics_btn"]
+    get_voice_models = widgets["get_voice_models"]
 
     log("Módulo generador coral listo.")
     current_output_dir = None

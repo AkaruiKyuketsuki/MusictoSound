@@ -493,9 +493,32 @@ def build_coral_view_window():
             )
             entry.pack(side="left", padx=5, fill="x", expand=True)
 
+            # ===============================
+            model_var = tk.StringVar(value="Auto")
+
+            model_selector = ttk.Combobox(
+                row_frame,
+                textvariable=model_var,
+                values=[
+                    "Auto",
+                    "Soprano AI",
+                    "Alto AI",
+                    "Tenor AI",
+                    "Bajo AI",
+                    "Neutral Voice"
+                ],
+                width=14,
+                state="readonly"
+            )
+
+            model_selector.pack(side="left", padx=5)
+            # ================================
+
+
             voice_vars[part_id] = {
                 "var": var,
-                "name_var": name_var
+                "name_var": name_var,
+                "model_var": model_var
             }
 
             # Crear slider de mezcla
@@ -610,7 +633,13 @@ def build_coral_view_window():
             part_id: var.get()
             for part_id, var in pitch_vars.items()
         }
-        
+
+    def get_voice_models():
+        return {
+            part_id: data["model_var"].get()
+            for part_id, data in voice_vars.items()
+        }
+            
     def get_final_tempo():
         return final_tempo_var.get()
 
@@ -681,4 +710,5 @@ def build_coral_view_window():
         "language_var": language_var,
         "edit_lyrics_btn": edit_lyrics_btn,
         "view_phonemes_btn": view_phonemes_btn,
+        "get_voice_models": get_voice_models,
     }
