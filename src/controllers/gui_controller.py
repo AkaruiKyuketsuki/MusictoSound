@@ -243,8 +243,8 @@ def run_coral_gui():
             log("❌ El archivo XML no existe.")
             return
 
-        #open_lyrics_editor(root, path)
-        open_lyrics_editor(root, path, log)
+        #open_lyrics_editor(root, path, log)
+        open_lyrics_editor(root, path, xml_path_var, log)
 
 
     # ------------------------------------------------------

@@ -5,9 +5,9 @@ from services.coral_parser_service import extract_syllables_by_part
 from services.coral_parser_service import create_new_xml_with_lyrics
 
 from tkinter import filedialog
+from tkinter import messagebox
 
-#def open_lyrics_editor(parent, xml_path):
-def open_lyrics_editor(parent, xml_path, log):
+def open_lyrics_editor(parent, xml_path, xml_path_var, log):
 
     editor = tk.Toplevel(parent)
     editor.title("Editor de letra")
@@ -134,7 +134,16 @@ def open_lyrics_editor(parent, xml_path, log):
 
         create_new_xml_with_lyrics(xml_path, file_path, updated_lyrics, log)
 
+        # actualizar partitura activa en la interfaz
+        xml_path_var.set(str(file_path))
+
         log("Letra guardada correctamente.")
+        log("La aplicación ahora está trabajando sobre la nueva partitura.")
+
+        messagebox.showinfo(
+            "Partitura actualizada",
+            "La aplicación ahora trabajará automáticamente\nsobre el nuevo archivo con la letra modificada."
+        )
 
         editor.destroy()
     
