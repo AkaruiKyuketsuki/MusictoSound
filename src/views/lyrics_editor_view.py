@@ -106,14 +106,21 @@ def open_lyrics_editor(parent, xml_path, log):
 
         updated_lyrics = {}
 
+        base_name = xml_path.stem
+        suggested_name = f"L_editada_{base_name}.xml"
+
         file_path = filedialog.asksaveasfilename(
             defaultextension=".xml",
+            initialfile=suggested_name,
             filetypes=[("MusicXML", "*.xml")],
             title="Guardar XML con nueva letra"
         )
 
         if not file_path:
             log("Guardado cancelado.")
+
+            editor.lift()
+            editor.focus_force()
             return
 
         for part_name, entries in entries_by_part.items():
