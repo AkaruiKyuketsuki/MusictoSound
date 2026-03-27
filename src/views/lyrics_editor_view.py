@@ -36,8 +36,11 @@ def open_lyrics_editor(parent, xml_path):
     # ===============================
 
     syllables_by_part = extract_syllables_by_part(xml_path)
+    entries_by_part = {}
 
     for part_name, syllables in syllables_by_part.items():
+        
+        entries_by_part[part_name] = []
 
         # Crear pestaña
         tab = ttk.Frame(notebook)
@@ -76,6 +79,7 @@ def open_lyrics_editor(parent, xml_path):
                 row = ttk.Frame(part_frame)
                 row.pack(anchor="w", pady=2)
 
+            """
             lbl = ttk.Label(
                 row,
                 text=syl,
@@ -84,7 +88,42 @@ def open_lyrics_editor(parent, xml_path):
             )
 
             lbl.pack(side="left", padx=2)
-              
+            """  
+
+            entry = ttk.Entry(
+                row,
+                width=max(len(syl) + 1, 3),
+                justify="center"
+            )
+
+            entry.insert(0, syl)
+
+            entry.pack(side="left", padx=2)
+
+            entries_by_part[part_name].append(entry)
+
+
+
+    def save_lyrics():
+
+        updated_lyrics = {}
+
+        for part_name, entries in entries_by_part.items():
+
+            syllables = []
+
+            for entry in entries:
+                syllables.append(entry.get().strip())
+
+            updated_lyrics[part_name] = syllables
+
+        print("\n===== UPDATED LYRICS =====")
+
+        for part, syl in updated_lyrics.items():
+            print(part, syl[:10])
+
+        print("==========================\n")
+
 
     # ===============================
     # Botones inferiores
@@ -98,3 +137,9 @@ def open_lyrics_editor(parent, xml_path):
         text="Cerrar",
         command=editor.destroy
     ).pack(side="right")
+
+    ttk.Button(
+        buttons,
+        text="Guardar",
+        command=save_lyrics
+    ).pack(side="right", padx=5)    
