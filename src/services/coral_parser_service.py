@@ -75,12 +75,13 @@ def analyze_coral_parts(xml_path: Path) -> dict:
         "key": key_name
     }
 
-
 def extract_syllables_by_part(xml_path: Path) -> dict:
 
     score = converter.parse(xml_path)
 
     syllables_by_part = {}
+
+    voice_counter = {}
 
     for part in score.parts:
 
@@ -97,8 +98,16 @@ def extract_syllables_by_part(xml_path: Path) -> dict:
                     if lyric.text:
                         syllables.append(lyric.text.strip())
 
-        # SOLO añadir la parte si tiene letra
         if syllables:
-            syllables_by_part[part_name] = syllables
+
+            # contar voces con mismo nombre
+            if part_name not in voice_counter:
+                voice_counter[part_name] = 1
+            else:
+                voice_counter[part_name] += 1
+
+            voice_name = f"{part_name} {voice_counter[part_name]}"
+
+            syllables_by_part[voice_name] = syllables
 
     return syllables_by_part
