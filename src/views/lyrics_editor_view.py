@@ -1,34 +1,87 @@
 import tkinter as tk
 from tkinter import ttk
 
+from services.coral_parser_service import extract_syllables_by_part
 
-def open_lyrics_editor(parent):
+def open_lyrics_editor(parent, xml_path):
 
     editor = tk.Toplevel(parent)
     editor.title("Editor de letra")
-    editor.geometry("700x500")
+    editor.geometry("900x600")
 
     main = ttk.Frame(editor, padding=20)
     main.pack(fill="both", expand=True)
 
     ttk.Label(
         main,
-        text="Editar letra",
-        font=("Segoe UI", 14, "bold")
+        text="Editor de letra",
+        font=("Segoe UI", 16, "bold")
     ).pack(anchor="w", pady=(0,10))
 
-    text_box = tk.Text(main, wrap="word")
-    text_box.pack(fill="both", expand=True)
+    ttk.Label(
+        main,
+        text=f"Archivo: {xml_path.name}",
+        foreground="gray"
+    ).pack(anchor="w", pady=(0,20))
 
-    text_box.insert("1.0", "Soprano:\n\nAlto:\n\nTenor:\n\nBajo:\n")
+    # ===============================
+    # Frame scrollable
+    # ===============================
+    
+    canvas = tk.Canvas(main)
+    scrollbar = ttk.Scrollbar(main, orient="vertical", command=canvas.yview)
+
+    scroll_frame = ttk.Frame(canvas)
+
+    scroll_frame.bind(
+        "<Configure>",
+        lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+    )
+
+    canvas.create_window((0,0), window=scroll_frame, anchor="nw")
+    canvas.configure(yscrollcommand=scrollbar.set)
+
+    canvas.pack(side="left", fill="both", expand=True)
+    scrollbar.pack(side="right", fill="y")
+
+    # ===============================
+    # Cargar sílabas
+    # ===============================
+
+    syllables_by_part = extract_syllables_by_part(xml_path)
+
+    for part_name, syllables in syllables_by_part.items():
+
+        part_frame = ttk.LabelFrame(scroll_frame, text=part_name, padding=10)
+        part_frame.pack(fill="x", pady=10)
+
+        row = ttk.Frame(part_frame)
+        row.pack(fill="x")
+
+        syllables_per_row = 12
+        row = None
+
+        for i, syl in enumerate(syllables):
+
+            if i % syllables_per_row == 0:
+                row = ttk.Frame(part_frame)
+                row.pack(anchor="w", pady=2)
+
+            lbl = ttk.Label(
+                row,
+                text=syl,
+                relief="solid",
+                padding=5
+            )
+
+            lbl.pack(side="left", padx=2)
+    
+    # ===============================
+    # Botones inferiores
+    # ===============================
 
     buttons = ttk.Frame(main)
     buttons.pack(fill="x", pady=10)
-
-    ttk.Button(
-        buttons,
-        text="Guardar"
-    ).pack(side="right", padx=5)
 
     ttk.Button(
         buttons,

@@ -74,3 +74,31 @@ def analyze_coral_parts(xml_path: Path) -> dict:
         "parts": parts,
         "key": key_name
     }
+
+
+def extract_syllables_by_part(xml_path: Path) -> dict:
+
+    score = converter.parse(xml_path)
+
+    syllables_by_part = {}
+
+    for part in score.parts:
+
+        part_name = part.partName.strip() if part.partName else part.id
+
+        syllables = []
+
+        for note in part.recurse().notes:
+
+            if note.lyrics:
+
+                for lyric in note.lyrics:
+
+                    if lyric.text:
+                        syllables.append(lyric.text.strip())
+
+        # SOLO añadir la parte si tiene letra
+        if syllables:
+            syllables_by_part[part_name] = syllables
+
+    return syllables_by_part

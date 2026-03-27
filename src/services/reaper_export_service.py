@@ -220,12 +220,6 @@ def create_reaper_project(project_path: Path, midi_files: list[Path], wav_files:
         name = wav.stem
         parts = name.split("_")
 
-        """
-        if len(parts) >= 2:
-            track_name = f"{parts[0]} {parts[1]}"
-        else:
-            track_name = parts[0]
-        """
         track_name = name.replace("_", " ")    
 
         wav_path = str(wav).replace("\\", "/")
@@ -338,24 +332,6 @@ def export_to_reaper_project(
         # Abrir Reaper automáticamente
         # ==========================================================
 
-        """
-        _open_reaper(project_path)
-        
-        if include_lyrics:
-            # ejecutar script para insertar letra visible
-            script_path = Path(__file__).resolve().parents[2] / "scripts" / "reaper_visible_lyrics.lua"
-
-            run_reaper_script(script_path)
-        """
-
-        """
-        script_path = None
-
-        if include_lyrics:
-            script_path = Path(__file__).resolve().parents[2] / "scripts" / "reaper_visible_lyrics.lua"
-        
-        _open_reaper(project_path, script_path)
-        """
         _open_reaper(project_path)
 
         if include_lyrics:

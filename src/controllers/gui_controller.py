@@ -230,7 +230,20 @@ def run_coral_gui():
     # Editor de letra
     # ------------------------------------------------------
     def open_lyrics_editor_window():
-        open_lyrics_editor(root)
+
+        xml_path = xml_path_var.get().strip()
+
+        if not xml_path:
+            log("⚠ Selecciona un archivo XML primero.")
+            return
+
+        path = Path(xml_path)
+
+        if not path.is_file():
+            log("❌ El archivo XML no existe.")
+            return
+
+        open_lyrics_editor(root, path)
 
 
     # ------------------------------------------------------
