@@ -31,3 +31,5 @@ Este archivo registra las decisiones, cambios, avances y problemas del desarroll
 
 ## 2026-03-16
 
+## 2026-03-27
+

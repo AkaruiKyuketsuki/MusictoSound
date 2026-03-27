@@ -316,24 +316,74 @@ Durante esta jornada se realizaron importantes avances orientados a mejorar la g
 
 Se implementó la generación de pistas separadas considerando todas las opciones seleccionadas por el usuario, lo que supone una mejora significativa en la flexibilidad y personalización del proceso. En paralelo, se avanzó en la capacidad de exportar archivos en formatos MIDI y WAV de manera integrada, logrando una segunda versión de prueba que confirmó la viabilidad de esta funcionalidad. Estos desarrollos representan un paso clave hacia una exportación más completa y profesional de las producciones musicales manejadas en el software.
 
+\subsection*{Integración de letra como evento y mejoras en automatización de memoria}
+Se añadió la letra como evento dentro del flujo midi, permitiendo que la representación textual forme parte activa y sincronizada en la secuencia musical. También se incrementó la automatización para la actualización de memoria, fortaleciendo tanto la coherencia interna como la fiabilidad en ejecución continua.
 
+\subsection*{Resolución de problemas en el nombreado de pistas y gestión de duración en MIDI}
+Se subsanó el problema relacionado con los nombres de las pistas, para evitar conflictos y garantizar unicidad. Además, se añadió la duración precisa en las pistas MIDI, mejorando la correspondencia con el material musical real.
 
+\subsection*{Generación de pistas separadas con opciones avanzadas de usuario y primeras versiones de exportación}
+Se dotó a la aplicación de la capacidad de generar pistas independientes, considerando todas las opciones configuradas por el usuario. También se completaron versiones iniciales de exportación en formatos MIDI y WAV, ampliando la compatibilidad y funcionalidad en el proceso de producción musical.
 
-\section{Avances del 2026-03-16}
+\section{Avances del 2026-03-17}
 
-\subsection*{Integración de la rama principal del repositorio remoto}
-En este avance se realizó la integración de la rama principal (\texttt{main}) del repositorio remoto alojado en GitHub, concretamente en la URL \texttt{https://github.com/AkaruiKyuketsuki/MusictoSound}. Esta acción consistió en fusionar los cambios más recientes realizados en el repositorio remoto con la copia local del proyecto, garantizando así la sincronización de las últimas actualizaciones y la coherencia del código fuente.
+\subsection*{Reorganización de posiciones de ventanas y creación de asistencia para scripts}
+Se modificaron las posiciones predeterminadas de las ventanas para optimizar la distribución y facilidad de uso dentro del entorno gráfico. Asimismo, se añadieron ventanas de asistencia específicas para el manejo de scripts, apoyando la interacción avanzada y personalización mediante scripting, lo que incrementa la versatilidad y potencia del sistema.
 
-Desde una perspectiva técnica, dicha integración es fundamental para mantener la continuidad en el desarrollo del proyecto, evitar conflictos posteriores y asegurar que las modificaciones colaborativas se reflejen en la base de código local. Además, abre la posibilidad de partir de una versión actualizada para implementar nuevas funcionalidades o corregir errores, lo que repercute positivamente en la calidad y evolución del TFG.
+\subsection*{Automatización de inserción de scripts LUA en Reaper}
+Se desarrolló una función para insertar automáticamente scripts escritos en LUA dentro de Reaper, facilitando el acceso y la ejecución de herramientas personalizadas sin requerir procedimientos manuales complejos. Esto proporciona una integración más fluida entre el software desarrollado y el entorno DAW, ampliando las posibilidades creativas de los usuarios.
 
-Este proceso también facilita la colaboración con otros desarrolladores o la incorporación de cambios externos, aspectos esenciales en proyectos de ingeniería informática debido a la naturaleza dinámica y colaborativa del desarrollo de software. En este sentido, la correcta gestión y fusión de ramas son prácticas recomendadas para mantener un flujo de trabajo eficiente y un historial de versiones ordenado.
+\section{Avances del 2026-03-25}
+
+\subsection*{Corrección de la transposición en tonalidades complejas}
+Se abordaron y resolvieron problemas relacionados con la transposición en tonalidades que contienen múltiples alteraciones. Esta mejora técnica asegura que los ajustes de tonalidad sean precisos y coherentes, posibilitando una manipulación musical avanzada sin pérdida de información ni errores en la representación armónica.
+
+\subsection*{Control de visualización de letras basado en la presencia de MIDI}
+Se ajustó la lógica para que la visualización de letras en la interfaz esté condicionada a la existencia de datos MIDI, evitando mostrar información irrelevante cuando no se cuenta con material compatible. Este cambio mejora la experiencia de usuario y reduce confusión durante la navegación y edición.
 
 \section{Avances del 2026-03-26}
 
-\subsection*{Integración de las últimas actualizaciones desde el repositorio principal}
+\subsection*{Incorporación de selectores de voz y nuevas ventanas de visualización}
+Se añadieron selectores de voz dentro de cada pista, permitiendo configurar individualmente las características vocales para cada capa sonora. Además, se desarrollaron nuevas ventanas destinadas a la visualización detallada de fonemas y letras, apoyando la precisión en la edición y análisis fonético, especialmente relevante para aplicaciones que involucran síntesis y manipulación vocal.
 
-En esta etapa del desarrollo se ha realizado una integración de la rama principal del repositorio remoto, consolidando así los últimos cambios realizados por los colaboradores en la línea base del proyecto. Esta operación es fundamental para mantener el código local sincronizado con el repositorio central, lo que permite trabajar con la versión más actualizada de los archivos y evitar conflictos futuros durante el desarrollo.
+\subsection*{Botones para selección de idioma, visualización fonética y edición lírica}
+Se incorporaron botones en la interfaz que facilitan la selección del idioma de las voces, la visualización de la fonética y la edición directa de letras. Estas herramientas integradas mejoran notablemente la accesibilidad y personalización del proyecto, permitiendo adaptarse a diferentes contextos y necesidades del usuario, vinculando análisis lingüístico y musical.
 
-Desde una perspectiva técnica, esta fusión contribuye a alinear las distintas aportaciones realizadas hasta la fecha, facilitando la continuidad del trabajo en el proyecto sin perder las mejoras o correcciones incorporadas por otros desarrolladores. Además, esta acción asegura que las nuevas implementaciones o pruebas se realicen sobre una base estable y oficial, lo que mejora la calidad y fiabilidad del avance del trabajo de fin de grado.
+\subsection*{Actualizaciones automáticas de memoria y mejoras de fiabilidad}
+Se implementaron procesos automatizados para la actualización de la memoria interna del sistema, contribuyendo a mantener el estado sincronizado y reducir errores derivados de divergencias en los datos temporales o persistentes. Este tipo de mejoras incrementa la robustez y la estabilidad durante la ejecución prolongada o la manipulación de datos complejos.
 
-Es importante destacar que este tipo de integración requiere una revisión cuidadosa para detectar y resolver posibles conflictos que puedan surgir al combinar diferentes líneas de desarrollo. Sin embargo, en esta ocasión, la fusión transcurrió sin incidencias, lo que indica una buena coordinación entre los miembros del equipo y una gestión adecuada del control de versiones durante el proceso de desarrollo del proyecto MusictoSound.
+\subsection*{Integración y posicionamiento correcto de la letra en el entorno DAW Reaper}
+Se integró con éxito la gestión de la letra como evento dentro de las pistas MIDI, asegurando el posicionamiento adecuado de esta información en la línea temporal del proyecto dentro de Reaper. Con este avance se consigue un acercamiento más natural y funcional entre las representaciones musicales y las letras vocales, mejorando la sincronización y edición en el entorno profesional de producción musical.
+
+\subsection*{Solución de problemas relacionados con nombres de pistas y duración en MIDI}
+Se corrigieron errores vinculados con los nombres asignados a las pistas, evitando duplicidades o inconsistencias, y se ajustó la duración correcta en las pistas MIDI para reflejar fielmente el contenido musical. Estas correcciones aseguran la integridad de los metadatos y la precisión temporal, aspectos cruciales para la exportación y manipulación posterior dentro de DAWs.
+
+\subsection*{Generación de pistas separadas y exportación en formatos MIDI y WAV}
+Se estableció un sistema para generar pistas separadas, permitiendo al usuario definir diversas opciones personalizadas durante el proceso. Además, se avanzó en la exportación simultánea a formatos MIDI y WAV, facilitando la compatibilidad y el flujo de trabajo hacia herramientas externas, así como la obtención de archivos listos para su edición o reproducción.
+
+\section{Avances del 2026-03-27}
+
+\subsection*{Implementación del cambio automático de partitura y mensajes informativos}
+Se incorporó una funcionalidad para el cambio automático de partitura dentro de la aplicación, complementada con la presentación de mensajes emergentes tipo popup para informar al usuario sobre dichos cambios. Esta mejora aporta una experiencia de usuario más fluida y facilita la navegación automática por diferentes partituras durante el uso, permitiendo un control más intuitivo y dinámico del contenido musical representado.
+
+\subsection*{Actualización de título y gestión del foco de ventana}
+Se llevó a cabo una actualización del título de la ventana principal y del foco, lo que contribuye a una mejor identificación visual y a la mejora en el manejo de la interfaz gráfica. La correcta gestión del foco es esencial para optimizar la interacción del usuario con los distintos elementos de la aplicación y evitar errores o comportamientos inesperados durante la operación.
+
+\subsection*{Incorporación de registro de eventos internos (logs)}
+Se añadieron funcionalidades para la integración de logs dentro de la aplicación, permitiendo el seguimiento detallado de eventos relevantes durante la ejecución. Esta práctica facilita la detección de errores, la supervisión de procesos y el análisis posterior, lo que resulta fundamental para la mejora continua y la depuración efectiva del sistema.
+
+\subsection*{Creación y actualización de archivos XML con modificaciones en letras}
+Se desarrolló un sistema para la generación de un nuevo archivo XML que refleja los cambios realizados en la letra de las partituras. Esto permite guardar y mantener sincronizadas las modificaciones de texto realizadas por el usuario, garantizando la integridad de la información textual y su correcto enlace con la estructura musical representada.
+
+\subsection*{Edición dinámica de sílabas y exclusión de indicaciones comunes}
+Se implementó la capacidad de editar sílabas directamente dentro de la interfaz, permitiendo un control detallado sobre la letra cantada. Además, se añadió una lista de exclusión para indicaciones comunes, con el fin de evitar la sobrecarga de información y mejorar la claridad en la visualización, filtrando elementos no esenciales para la interacción directa con el usuario.
+
+\subsection*{Corrección del desplazamiento en textos extensos}
+Se corrigió el problema de scroll en textos largos, garantizando un desplazamiento correcto y fluido dentro del área de visualización de letras. Este mejoramiento elimina problemas de usabilidad que dificultaban la lectura y edición de contenido extenso, ofreciendo una experiencia de usuario consistente y eficiente.
+
+\subsection*{Asignación de voces a pestañas de letra y organización en formato notebook}
+Se avanzó en la organización del contenido textual mediante la creación de pestañas tipo notebook, permitiendo visualizar múltiples letras de manera simultánea y ordenada. Paralelamente, se asignaron voces correspondientes a cada pestaña, facilitando el manejo y la asociación clara entre voces y textos, lo cual optimiza la edición y revisión de las letras en entornos polifónicos.
+
+\subsection*{Añadido de letras en el editor y botones para generación y selección de voces}
+Se añadió la funcionalidad para introducir letras directamente en la edición, dotando a la aplicación de mayor flexibilidad en la creación y modificación textual. También se incorporaron botones específicos para generar voces vocalizadas y checkboxes para incluir o excluir voces en la sección de mezcla, dando al usuario un control granular y eficiente sobre las pistas de audio y su integración en la mezcla final.
+
