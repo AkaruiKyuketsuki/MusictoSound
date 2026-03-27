@@ -176,11 +176,12 @@ def run_coral_gui():
     get_final_key = widgets["get_final_key"]
 
     export_reaper_btn = widgets["export_reaper_btn"]
-    
+
     view_phonemes_btn = widgets["view_phonemes_btn"]
     edit_lyrics_btn = widgets["edit_lyrics_btn"]
     get_voice_models = widgets["get_voice_models"]
     get_voice_enabled = widgets["get_voice_enabled"]
+    generate_voice_btn = widgets["generate_voice_btn"]
 
     log("Módulo generador coral listo.")
     current_output_dir = None
@@ -338,6 +339,43 @@ def run_coral_gui():
         collapse_file_panel()
         #collapse_controls()
 
+
+    # ------------------------------------------------------
+    # Generar voces cantadas
+    # ------------------------------------------------------
+    def generate_voices():
+
+        xml_path = xml_path_var.get().strip()
+
+        if not xml_path:
+            log("⚠ Selecciona un archivo XML.")
+            return
+
+        selected = get_selected_voices()
+
+        if not selected:
+            log("⚠ No hay voces seleccionadas.")
+            return
+
+        voice_models = get_voice_models()
+        voice_enabled = get_voice_enabled()
+
+        log("Generando voces cantadas...")
+
+        for part in selected:
+
+            part_id = part["id"]
+
+            if not voice_enabled.get(part_id, True):
+                log(f"⏭ Voz desactivada: {part['name']}")
+                continue
+
+            model = voice_models.get(part_id, "Auto")
+
+            log(f"🎤 Generando voz para {part['name']} con modelo {model}")
+
+        log("Proceso de generación vocal iniciado.")
+        
     # ------------------------------------------------------
     # Generar MIDI
     # ------------------------------------------------------
@@ -773,6 +811,7 @@ def run_coral_gui():
     export_reaper_btn.config(command=export_to_reaper)
     edit_lyrics_btn.config(command=open_lyrics_editor_window)
     view_phonemes_btn.config(command=open_phoneme_viewer_window)
+    generate_voice_btn.config(command=generate_voices)
 
     root.mainloop()
 

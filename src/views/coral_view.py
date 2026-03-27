@@ -430,6 +430,9 @@ def build_coral_view_window():
     buttons_row = ttk.Frame(top_frame)
     buttons_row.pack(pady=15)
 
+    generate_voice_btn = ttk.Button(buttons_row, text="Generar voces")
+    generate_voice_btn.pack(side="left", padx=20, ipady=6)
+
     generate_btn = ttk.Button(buttons_row, text="Generar MIDI")
     generate_btn.pack(side="left", padx=20, ipady=6)
 
@@ -734,4 +737,5 @@ def build_coral_view_window():
         "view_phonemes_btn": view_phonemes_btn,
         "get_voice_models": get_voice_models,
         "get_voice_enabled": get_voice_enabled,
+        "generate_voice_btn": generate_voice_btn,
     }
