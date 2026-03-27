@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import ttk, filedialog
 from music21 import key
 
+from views.lyrics_editor_view import open_lyrics_editor
+from views.phoneme_viewer_view import open_phoneme_viewer
 
 def build_coral_view_window():
     root = tk.Tk()
@@ -200,6 +202,48 @@ def build_coral_view_window():
     view_score_btn = ttk.Button(left_frame, text="Visualizar partitura")
     view_score_btn.pack(side="left", padx=(15,0), ipady=5)
 
+    # =======================================
+    # Controles de texto y fonética
+    # =======================================
+
+    text_tools_frame = ttk.Frame(left_frame)
+    text_tools_frame.pack(side="left", padx=(20,0))
+
+    ttk.Label(text_tools_frame, text="Idioma:").pack(side="left")
+
+    language_var = tk.StringVar(value="Auto")
+
+    language_selector = ttk.Combobox(
+        text_tools_frame,
+        textvariable=language_var,
+        values=[
+            "Auto",
+            "Español",
+            "Euskera",
+            "Latín",
+            "Inglés",
+            "Alemán",
+            "Italiano",
+            "Ruso"
+        ],
+        width=12,
+        state="readonly"
+    )
+
+    language_selector.pack(side="left", padx=5)
+
+    view_phonemes_btn = ttk.Button(
+        text_tools_frame,
+        text="Ver fonética"
+    )
+    view_phonemes_btn.pack(side="left", padx=5, ipady=5)
+
+    edit_lyrics_btn = ttk.Button(
+        text_tools_frame,
+        text="Editar letra"
+    )
+    edit_lyrics_btn.pack(side="left", padx=5, ipady=5)
+
     back_btn = ttk.Button(buttons_frame, text="Volver")
     back_btn.pack(side="left", padx=10, ipady=5)
 
@@ -386,6 +430,9 @@ def build_coral_view_window():
     buttons_row = ttk.Frame(top_frame)
     buttons_row.pack(pady=15)
 
+    generate_voice_btn = ttk.Button(buttons_row, text="Generar voces")
+    generate_voice_btn.pack(side="left", padx=20, ipady=6)
+
     generate_btn = ttk.Button(buttons_row, text="Generar MIDI")
     generate_btn.pack(side="left", padx=20, ipady=6)
 
@@ -417,6 +464,7 @@ def build_coral_view_window():
     voice_vars = {}
     mix_vars = {}
     pitch_vars = {}
+    voice_enable_vars = {}
 
     def set_voices(parts: list[dict]):
         # Limpiar lista anterior
@@ -428,6 +476,8 @@ def build_coral_view_window():
         voice_vars.clear()
         mix_vars.clear()
         pitch_vars.clear()
+        voice_enable_vars.clear()
+
 
         for part in parts:
             part_id = part["id"]
@@ -449,9 +499,32 @@ def build_coral_view_window():
             )
             entry.pack(side="left", padx=5, fill="x", expand=True)
 
+            # ===============================
+            model_var = tk.StringVar(value="Auto")
+
+            model_selector = ttk.Combobox(
+                row_frame,
+                textvariable=model_var,
+                values=[
+                    "Auto",
+                    "Soprano AI",
+                    "Alto AI",
+                    "Tenor AI",
+                    "Bajo AI",
+                    "Neutral Voice"
+                ],
+                width=14,
+                state="readonly"
+            )
+
+            model_selector.pack(side="left", padx=5)
+            # ================================
+
+
             voice_vars[part_id] = {
                 "var": var,
-                "name_var": name_var
+                "name_var": name_var,
+                "model_var": model_var
             }
 
             # Crear slider de mezcla
@@ -503,6 +576,18 @@ def build_coral_view_window():
             pitch_spin.pack(side="left", padx=(10,5))
             ttk.Label(mix_row, text="Pitch").pack(side="left", padx=(0,10))
 
+            # Checkbutton para habilitar/deshabilitar voz
+            voice_enabled_var = tk.BooleanVar(value=True)
+
+            voice_check = ttk.Checkbutton(
+                mix_row,
+                text="Voz",
+                variable=voice_enabled_var
+            )
+
+            voice_check.pack(side="left", padx=(10,0))
+
+            voice_enable_vars[part_id] = voice_enabled_var
             pitch_vars[part_id] = pitch_var
 
             # =============================
@@ -566,7 +651,20 @@ def build_coral_view_window():
             part_id: var.get()
             for part_id, var in pitch_vars.items()
         }
-        
+
+    def get_voice_models():
+        return {
+            part_id: data["model_var"].get()
+            for part_id, data in voice_vars.items()
+        }
+            
+
+    def get_voice_enabled():
+        return {
+            part_id: var.get()
+            for part_id, var in voice_enable_vars.items()
+        }
+
     def get_final_tempo():
         return final_tempo_var.get()
 
@@ -634,4 +732,10 @@ def build_coral_view_window():
         "reset_adjustments": reset_adjustments,
         "get_final_key": get_final_key,
         "export_reaper_btn": export_reaper_btn,
+        "language_var": language_var,
+        "edit_lyrics_btn": edit_lyrics_btn,
+        "view_phonemes_btn": view_phonemes_btn,
+        "get_voice_models": get_voice_models,
+        "get_voice_enabled": get_voice_enabled,
+        "generate_voice_btn": generate_voice_btn,
     }
