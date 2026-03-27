@@ -2,13 +2,12 @@ import tkinter as tk
 from tkinter import ttk
 
 from services.coral_parser_service import extract_syllables_by_part
-#from services.coral_parser_service import apply_lyrics_to_xml
 from services.coral_parser_service import create_new_xml_with_lyrics
 
 from tkinter import filedialog
-#from tkinter import messagebox
 
-def open_lyrics_editor(parent, xml_path):
+#def open_lyrics_editor(parent, xml_path):
+def open_lyrics_editor(parent, xml_path, log):
 
     editor = tk.Toplevel(parent)
     editor.title("Editor de letra")
@@ -103,32 +102,6 @@ def open_lyrics_editor(parent, xml_path):
             entries_by_part[part_name].append(entry)
 
 
-    """
-    def save_lyrics():
-
-        updated_lyrics = {}
-
-        for part_name, entries in entries_by_part.items():
-
-            syllables = []
-
-            for entry in entries:
-                syllables.append(entry.get().strip())
-
-            updated_lyrics[part_name] = syllables
-
-        print("\n===== UPDATED LYRICS =====")
-
-        for part, syl in updated_lyrics.items():
-            print(part, syl[:10])
-
-        print("==========================\n")
-
-        apply_lyrics_to_xml(xml_path, updated_lyrics)
-
-        print("XML actualizado correctamente.")
-    """
-
     def save_lyrics():
 
         updated_lyrics = {}
@@ -140,7 +113,7 @@ def open_lyrics_editor(parent, xml_path):
         )
 
         if not file_path:
-            print("Guardado cancelado.")
+            log("Guardado cancelado.")
             return
 
         for part_name, entries in entries_by_part.items():
@@ -152,27 +125,11 @@ def open_lyrics_editor(parent, xml_path):
 
             updated_lyrics[part_name] = syllables
 
-        #apply_lyrics_to_xml(xml_path, updated_lyrics)
-        create_new_xml_with_lyrics(xml_path, file_path, updated_lyrics)
+        create_new_xml_with_lyrics(xml_path, file_path, updated_lyrics, log)
 
-        #messagebox.showinfo("Editor de letra", "Letra guardada correctamente")
-        print("Letra guardada correctamente.")
+        log("Letra guardada correctamente.")
 
         editor.destroy()
-
-    """
-    def revert_changes():
-   
-        if not messagebox.askyesno(
-            "Revertir cambios",
-            "¿Seguro que quieres descartar los cambios?"
-        ):
-            return
-
-        editor.destroy()
-
-        open_lyrics_editor(parent, xml_path)
-    """
     
     def revert_changes():
 
@@ -184,7 +141,7 @@ def open_lyrics_editor(parent, xml_path):
                 entry.delete(0, tk.END)
                 entry.insert(0, text)
 
-        print("Cambios revertidos.")
+        log("Cambios revertidos.")
             
     # ===============================
     # Botones inferiores

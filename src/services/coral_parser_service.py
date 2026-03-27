@@ -242,28 +242,14 @@ def apply_lyrics_to_xml(xml_path, updated_lyrics):
 
 
 
-def create_new_xml_with_lyrics(original_xml, new_xml_path, updated_lyrics):
+#def create_new_xml_with_lyrics(original_xml, new_xml_path, updated_lyrics):
+def create_new_xml_with_lyrics(original_xml, new_xml_path, updated_lyrics, log):    
     """
     Crea un nuevo MusicXML copiando toda la información del original
     pero sustituyendo la letra por la editada en el editor.
-
-    Parameters
-    ----------
-    original_xml : Path
-        Ruta al XML original.
-
-    new_xml_path : str | Path
-        Ruta donde se guardará el nuevo XML.
-
-    updated_lyrics : dict
-        Diccionario con las sílabas por voz.
-        {
-            "Soprano 1": ["Con", "el", "hi", "jo"],
-            "Alto 1": [...]
-        }
     """
 
-    print("Creando nuevo XML con la letra modificada...")
+    log("Creando nuevo XML con la letra modificada...")
 
     # Cargar partitura original
     score = converter.parse(original_xml)
@@ -306,9 +292,9 @@ def create_new_xml_with_lyrics(original_xml, new_xml_path, updated_lyrics):
 
             syl_index += 1
 
-        print(f"{part_name}: {syl_index} sílabas aplicadas.")
+        #log(f"{part_name}: {syl_index} sílabas aplicadas.")
 
     # Guardar nuevo XML
     score.write("musicxml", new_xml_path)
 
-    print(f"Nuevo XML guardado en: {new_xml_path}")
+    log(f"Nuevo XML guardado en: {new_xml_path}")
