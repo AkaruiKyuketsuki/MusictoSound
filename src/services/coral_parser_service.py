@@ -8,6 +8,8 @@ from pathlib import Path
 from collections import Counter
 from music21 import key
 
+#import shutil
+
 # ==========================================================
 # Indicaciones musicales que a veces aparecen como lyrics
 # ==========================================================
@@ -192,3 +194,121 @@ def extract_syllables_by_part(xml_path: Path) -> dict:
             syllables_by_part[voice_name] = syllables
 
     return syllables_by_part
+
+
+
+def apply_lyrics_to_xml(xml_path, updated_lyrics):
+    """
+    Aplica las sílabas editadas al MusicXML.
+    """
+    backup = xml_path.with_suffix(".backup.xml")
+    shutil.copy(xml_path, backup)
+
+    score = converter.parse(xml_path)
+
+    part_index = 0
+
+    for part in score.parts:
+
+        part_name = part.partName or f"Voz {part_index+1}"
+
+        if part_name not in updated_lyrics:
+            part_index += 1
+            continue
+
+        syllables = updated_lyrics[part_name]
+        syl_index = 0
+
+        for note in part.recurse().notes:
+
+            if syl_index >= len(syllables):
+                break
+
+            text = syllables[syl_index]
+
+            if note.lyrics:
+
+                note.lyrics[0].text = text
+
+            else:
+
+                note.lyric = text
+
+            syl_index += 1
+
+        part_index += 1
+
+    score.write("musicxml", xml_path)
+
+
+
+def create_new_xml_with_lyrics(original_xml, new_xml_path, updated_lyrics):
+    """
+    Crea un nuevo MusicXML copiando toda la información del original
+    pero sustituyendo la letra por la editada en el editor.
+
+    Parameters
+    ----------
+    original_xml : Path
+        Ruta al XML original.
+
+    new_xml_path : str | Path
+        Ruta donde se guardará el nuevo XML.
+
+    updated_lyrics : dict
+        Diccionario con las sílabas por voz.
+        {
+            "Soprano 1": ["Con", "el", "hi", "jo"],
+            "Alto 1": [...]
+        }
+    """
+
+    print("Creando nuevo XML con la letra modificada...")
+
+    # Cargar partitura original
+    score = converter.parse(original_xml)
+
+    # Contador para numerar voces con mismo nombre
+    voice_counter = {}
+
+    for part in score.parts:
+
+        raw_name = part.partName.strip() if part.partName else "Voz"
+
+        # Numerar voces duplicadas
+        if raw_name not in voice_counter:
+            voice_counter[raw_name] = 1
+        else:
+            voice_counter[raw_name] += 1
+
+        part_name = f"{raw_name} {voice_counter[raw_name]}"
+
+        # Si esta voz no está en el editor, saltar
+        if part_name not in updated_lyrics:
+            continue
+
+        syllables = updated_lyrics[part_name]
+        syl_index = 0
+
+        # Recorrer notas de la voz
+        for note in part.recurse().notes:
+
+            if syl_index >= len(syllables):
+                break
+
+            text = syllables[syl_index]
+
+            # Si ya existe lyric → reemplazar
+            if note.lyrics:
+                note.lyrics[0].text = text
+            else:
+                note.lyric = text
+
+            syl_index += 1
+
+        print(f"{part_name}: {syl_index} sílabas aplicadas.")
+
+    # Guardar nuevo XML
+    score.write("musicxml", new_xml_path)
+
+    print(f"Nuevo XML guardado en: {new_xml_path}")

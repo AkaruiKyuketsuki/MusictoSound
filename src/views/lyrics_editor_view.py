@@ -2,6 +2,11 @@ import tkinter as tk
 from tkinter import ttk
 
 from services.coral_parser_service import extract_syllables_by_part
+#from services.coral_parser_service import apply_lyrics_to_xml
+from services.coral_parser_service import create_new_xml_with_lyrics
+
+from tkinter import filedialog
+#from tkinter import messagebox
 
 def open_lyrics_editor(parent, xml_path):
 
@@ -36,6 +41,12 @@ def open_lyrics_editor(parent, xml_path):
     # ===============================
 
     syllables_by_part = extract_syllables_by_part(xml_path)
+    
+    original_syllables = {
+        part: list(sylls)
+        for part, sylls in syllables_by_part.items()
+    }
+
     entries_by_part = {}
 
     for part_name, syllables in syllables_by_part.items():
@@ -79,17 +90,6 @@ def open_lyrics_editor(parent, xml_path):
                 row = ttk.Frame(part_frame)
                 row.pack(anchor="w", pady=2)
 
-            """
-            lbl = ttk.Label(
-                row,
-                text=syl,
-                relief="solid",
-                padding=5
-            )
-
-            lbl.pack(side="left", padx=2)
-            """  
-
             entry = ttk.Entry(
                 row,
                 width=max(len(syl) + 1, 3),
@@ -103,7 +103,7 @@ def open_lyrics_editor(parent, xml_path):
             entries_by_part[part_name].append(entry)
 
 
-
+    """
     def save_lyrics():
 
         updated_lyrics = {}
@@ -124,13 +124,81 @@ def open_lyrics_editor(parent, xml_path):
 
         print("==========================\n")
 
+        apply_lyrics_to_xml(xml_path, updated_lyrics)
 
+        print("XML actualizado correctamente.")
+    """
+
+    def save_lyrics():
+
+        updated_lyrics = {}
+
+        file_path = filedialog.asksaveasfilename(
+            defaultextension=".xml",
+            filetypes=[("MusicXML", "*.xml")],
+            title="Guardar XML con nueva letra"
+        )
+
+        if not file_path:
+            print("Guardado cancelado.")
+            return
+
+        for part_name, entries in entries_by_part.items():
+
+            syllables = []
+
+            for entry in entries:
+                syllables.append(entry.get().strip())
+
+            updated_lyrics[part_name] = syllables
+
+        #apply_lyrics_to_xml(xml_path, updated_lyrics)
+        create_new_xml_with_lyrics(xml_path, file_path, updated_lyrics)
+
+        #messagebox.showinfo("Editor de letra", "Letra guardada correctamente")
+        print("Letra guardada correctamente.")
+
+        editor.destroy()
+
+    """
+    def revert_changes():
+   
+        if not messagebox.askyesno(
+            "Revertir cambios",
+            "¿Seguro que quieres descartar los cambios?"
+        ):
+            return
+
+        editor.destroy()
+
+        open_lyrics_editor(parent, xml_path)
+    """
+    
+    def revert_changes():
+
+        for part_name, entries in entries_by_part.items():
+
+            original = original_syllables[part_name]
+
+            for entry, text in zip(entries, original):
+                entry.delete(0, tk.END)
+                entry.insert(0, text)
+
+        print("Cambios revertidos.")
+            
     # ===============================
     # Botones inferiores
     # ===============================
 
     buttons = ttk.Frame(main)
     buttons.pack(fill="x", pady=10)
+
+    ttk.Button(
+        buttons,
+        text="Revertir cambios",
+        command=revert_changes
+    ).pack(side="left")
+
 
     ttk.Button(
         buttons,
