@@ -8,6 +8,80 @@ from pathlib import Path
 from collections import Counter
 from music21 import key
 
+# ==========================================================
+# Indicaciones musicales que a veces aparecen como lyrics
+# ==========================================================
+
+IGNORE_LYRICS = {
+    # tempo / tempo changes
+    "tempo",
+    "a tempo",
+    "tempo i",
+    "tempo primo",
+
+    # rallentando family
+    "rall",
+    "rall.",
+    "rall. ",
+    "rail.",
+    "rallentando",
+    "poco rall",
+    "poco rall.",
+
+    # ritardando family
+    "rit",
+    "rit.",
+    "ritard",
+    "ritard.",
+    "ritardando",
+    "poco rit",
+    "poco rit.",
+
+    # accelerando
+    "accel",
+    "accel.",
+    "accelerando",
+
+    # allargando
+    "allarg",
+    "allarg.",
+    "allargando",
+
+    # rubato / expression
+    "rubato",
+
+    # poco rail / poco rall style markings
+    "poco rail",
+    "poco rail.",
+
+    # dynamic style words sometimes exported
+    "dolce",
+    "espressivo",
+    "cantabile",
+    "legato",
+    "staccato",
+    "confuoco",
+    "apiacere",
+    "a piacere",
+
+    # other musical indications
+    "fine",
+    "da capo",
+    "d.c.",
+    "d.c. al fine",
+    "dal segno",
+    "d.s.",
+    "d.s. al fine",
+
+    # repeats
+    "bis",
+
+    # expressive
+    "sostenuto",
+    "marcato",
+    "tenuto",
+}
+
 
 def analyze_coral_parts(xml_path: Path) -> dict:
     """
@@ -96,7 +170,14 @@ def extract_syllables_by_part(xml_path: Path) -> dict:
                 for lyric in note.lyrics:
 
                     if lyric.text:
-                        syllables.append(lyric.text.strip())
+                        #syllables.append(lyric.text.strip())
+                        text = lyric.text.strip()
+
+                        # filtrar indicaciones musicales
+                        if text.lower() in IGNORE_LYRICS:
+                            continue
+
+                        syllables.append(text)
 
         if syllables:
 
