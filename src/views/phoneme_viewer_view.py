@@ -2,8 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 from pathlib import Path
 
-from services.coral_parser_service import extract_phonemes_by_part
-
+#from services.coral_parser_service import extract_phonemes_by_part
+from services.phoneme_service import extract_phonemes_by_part
 
 def open_phoneme_viewer(parent, xml_path, language):
 
