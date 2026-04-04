@@ -241,8 +241,6 @@ def apply_lyrics_to_xml(xml_path, updated_lyrics):
     score.write("musicxml", xml_path)
 
 
-
-#def create_new_xml_with_lyrics(original_xml, new_xml_path, updated_lyrics):
 def create_new_xml_with_lyrics(original_xml, new_xml_path, updated_lyrics, log):    
     """
     Crea un nuevo MusicXML copiando toda la información del original
@@ -298,3 +296,56 @@ def create_new_xml_with_lyrics(original_xml, new_xml_path, updated_lyrics, log):
     score.write("musicxml", new_xml_path)
 
     log(f"Nuevo XML guardado en: {new_xml_path}")
+
+def syllable_to_phoneme(syl: str, language: str) -> str:
+    """
+    Convierte una sílaba en representación fonética simple.
+    """
+
+    s = syl.lower()
+
+    if language == "Auto":
+        language = "Español"
+
+    if language == "Español":
+
+        replacements = {
+            "que": "ke",
+            "qui": "ki",
+            "ge": "je",
+            "gi": "ji",
+            "ce": "ze",
+            "ci": "zi",
+            "ch": "ch",
+            "ll": "y",
+            "ñ": "ny",
+            "j": "j",
+            "v": "b",
+            "z": "z",
+        }
+
+        for k, v in replacements.items():
+            s = s.replace(k, v)
+
+        return s
+
+    # fallback
+    return s
+
+def extract_phonemes_by_part(xml_path: Path, language: str) -> dict:
+
+    syllables_by_part = extract_syllables_by_part(xml_path)
+
+    phonemes_by_part = {}
+
+    for part, syllables in syllables_by_part.items():
+
+        phonemes = []
+
+        for syl in syllables:
+            phon = syllable_to_phoneme(syl, language)
+            phonemes.append((syl, phon))
+
+        phonemes_by_part[part] = phonemes
+
+    return phonemes_by_part
