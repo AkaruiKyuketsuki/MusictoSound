@@ -19,6 +19,7 @@ class EspeakConverter(BasePhonemeConverter):
 
         try:
             # Ejecutar espeak con salida fonética
+            """
             result = subprocess.run(
                 [
                     self.espeak_path,
@@ -30,13 +31,37 @@ class EspeakConverter(BasePhonemeConverter):
                 capture_output=True,
                 text=True
             )
-
+            """
+            result = subprocess.run(
+                [
+                    self.espeak_path,
+                    "-q",          # sin audio
+                    "--ipa",       # salida IPA
+                    "-v", self.language_code,
+                    syllable
+                ],
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="ignore"
+            )
+            
             phoneme_str = result.stdout.strip()
 
             return self._normalize(phoneme_str)
 
         except Exception as e:
-            return [f"[error]"]
+            return [f"[error:{e}]"]
 
+    """
     def _normalize(self, phoneme_str: str) -> list[str]:
         return list(phoneme_str.replace(" ", ""))
+    """
+
+    def _normalize(self, phoneme_str: str) -> list[str]:
+        phoneme_str = phoneme_str.strip()
+
+        # quitar espacios dobles
+        phoneme_str = phoneme_str.replace("  ", " ")
+
+        return phoneme_str.split()    
