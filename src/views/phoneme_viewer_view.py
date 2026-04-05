@@ -33,7 +33,15 @@ def open_phoneme_viewer(parent, xml_path, language):
     notebook = ttk.Notebook(main)
     notebook.pack(fill="both", expand=True)
 
-    phonemes_by_part = extract_phonemes_by_part(xml_path, language)
+    try:
+        phonemes_by_part = extract_phonemes_by_part(xml_path, language)
+    except Exception as e:
+        ttk.Label(
+            main,
+            text=f"Error generando fonética:\n{e}",
+            foreground="red"
+        ).pack()
+        return
 
     for part_name, pairs in phonemes_by_part.items():
 
@@ -67,37 +75,17 @@ def open_phoneme_viewer(parent, xml_path, language):
         per_row = 8
         row = None
 
-        """
-        for i, (syl, phon) in enumerate(pairs):
-
-            if i % per_row == 0:
-                row = ttk.Frame(part_frame)
-                row.pack(anchor="w", pady=5)
-
-            cell = ttk.Frame(row)
-            cell.pack(side="left", padx=5)
-
-            # Sílabas (arriba)
-            ttk.Label(
-                cell,
-                text=syl,
-                font=("Segoe UI", 10, "bold")
-            ).pack()
-
-            # Fonética (abajo)
-            ttk.Label(
-                cell,
-                text=phon,
-                foreground="blue"
-            ).pack()
-        """
-
         for i, item in enumerate(pairs):
 
             syl = item["syllable"]
             tokens = item["phonemes"]
 
-            phon = " ".join(tokens)   # ← mostramos tokens separados
+            #phon = " ".join(tokens)   # ← mostramos tokens separados
+            phon = " ".join(tokens).replace("ˈ", "").replace("ˌ", "")
+            if not tokens:
+                phon = "-"
+            else:
+                phon = " ".join(tokens)
 
             if i % per_row == 0:
                 row = ttk.Frame(part_frame)
