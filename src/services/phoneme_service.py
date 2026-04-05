@@ -1,43 +1,105 @@
 from pathlib import Path
-
 from services.coral_parser_service import extract_syllables_by_part
 
 
 # ==========================================================
-# Conversión básica sílaba → fonema
+# Dispatcher
 # ==========================================================
-def syllable_to_phoneme(syl: str, language: str) -> str:
+def syllable_to_phonemes(syl: str, language: str) -> list[str]:
 
-    s = syl.lower()
-
-    # de momento Auto → Español
     if language == "Auto":
         language = "Español"
 
     if language == "Español":
+        return spanish_phonemes(syl)
 
-        replacements = {
-            "que": "ke",
-            "qui": "ki",
-            "ge": "je",
-            "gi": "ji",
-            "ce": "ze",
-            "ci": "zi",
-            "ch": "ch",
-            "ll": "y",
-            "ñ": "ny",
-            "j": "j",
-            "v": "b",
-            "z": "z",
-        }
+    if language == "Inglés":
+        return english_phonemes(syl)
 
-        for k, v in replacements.items():
-            s = s.replace(k, v)
+    if language == "Latín":
+        return latin_phonemes(syl)
 
-        return s
+    # fallback
+    return [syl.lower()]
 
-    # fallback (otros idiomas aún no implementados)
-    return s
+
+# ==========================================================
+# Español (base)
+# ==========================================================
+def spanish_phonemes(s: str) -> list[str]:
+
+    s = s.lower()
+    s = s.replace("_", "")  # limpiar melismas
+
+    tokens = []
+
+    i = 0
+    while i < len(s):
+
+        # reglas de 2 letras primero
+        if s[i:i+2] == "ch":
+            tokens.append("ch")
+            i += 2
+            continue
+
+        if s[i:i+2] == "ll":
+            tokens.append("y")
+            i += 2
+            continue
+
+        if s[i:i+2] == "rr":
+            tokens.append("rr")
+            i += 2
+            continue
+
+        if s[i:i+2] == "qu":
+            tokens.append("k")
+            i += 2
+            continue
+
+        if s[i:i+2] == "gu":
+            tokens.append("g")
+            i += 2
+            continue
+
+        # letras individuales
+        c = s[i]
+
+        if c == "c":
+            tokens.append("k")
+
+        elif c == "z":
+            tokens.append("z")
+
+        elif c == "v":
+            tokens.append("b")
+
+        elif c == "ñ":
+            tokens.append("ny")
+
+        elif c == "j":
+            tokens.append("x")
+
+        else:
+            tokens.append(c)
+
+        i += 1
+
+    return tokens
+
+
+# ==========================================================
+# Inglés (placeholder)
+# ==========================================================
+def english_phonemes(s: str) -> list[str]:
+    return list(s.lower())
+
+
+# ==========================================================
+# Latín (placeholder)
+# ==========================================================
+def latin_phonemes(s: str) -> list[str]:
+    return list(s.lower())
 
 
 # ==========================================================
@@ -51,12 +113,17 @@ def extract_phonemes_by_part(xml_path: Path, language: str) -> dict:
 
     for part, syllables in syllables_by_part.items():
 
-        phonemes = []
+        result = []
 
         for syl in syllables:
-            phon = syllable_to_phoneme(syl, language)
-            phonemes.append((syl, phon))
 
-        phonemes_by_part[part] = phonemes
+            tokens = syllable_to_phonemes(syl, language)
+
+            result.append({
+                "syllable": syl,
+                "phonemes": tokens
+            })
+
+        phonemes_by_part[part] = result
 
     return phonemes_by_part
