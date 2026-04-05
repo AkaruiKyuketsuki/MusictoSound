@@ -9,13 +9,26 @@ def get_converter(language: str):
 
     mapping = {
         "Español": "es",
+        "Latín": "la",
         "Inglés": "en",
-        "Francés": "fr",
         "Alemán": "de",
+        "Francés": "fr",
         "Italiano": "it",
         "Portugués": "pt",
+        "Catalán": "ca",
+        "Euskera": "eu",
+        "Holandés": "nl",
+        "Polaco": "pl",
+        "Checo": "cs",
+        "Sueco": "sv",
+        "Danés": "da",
+        "Noruego": "no",
+        "Finlandés": "fi",
         "Ruso": "ru",
-        "Latín": "la",
+        "Ucraniano": "uk",
+        "Húngaro": "hu",
+        "Rumano": "ro",
+        "Turco": "tr",
     }
 
     if language == "Euskera":
