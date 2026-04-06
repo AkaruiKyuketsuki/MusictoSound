@@ -387,11 +387,45 @@ Se avanzó en la organización del contenido textual mediante la creación de pe
 \subsection*{Añadido de letras en el editor y botones para generación y selección de voces}
 Se añadió la funcionalidad para introducir letras directamente en la edición, dotando a la aplicación de mayor flexibilidad en la creación y modificación textual. También se incorporaron botones específicos para generar voces vocalizadas y checkboxes para incluir o excluir voces en la sección de mezcla, dando al usuario un control granular y eficiente sobre las pistas de audio y su integración en la mezcla final.
 
+\section{Avances del 2026-03-28}
 
-\section{Avances del 2026-03-27}
+\subsection*{Automatización y actualización continua de la memoria}
+Se implementaron mecanismos para la actualización automática de la memoria del proyecto, integrándose con sistemas de integración continua (CI). Esto asegura que la documentación y el estado del desarrollo se mantengan actualizados sin intervención manual constante, mejorando la eficiencia en el seguimiento del avance.
 
-\subsection*{Integración y consolidación de la rama principal del repositorio}
+\subsection*{Mejoras en la gestión y edición de partituras y letras}
+Se añadieron funcionalidades para la edición interactiva de sílabas dentro de las letras musicales, lo que permite un control más detallado sobre la sincronización texto-música. Además, se introdujo un sistema de pestañas tipo notebook que posibilita visualizar y manipular múltiples letras simultáneamente, aumentando la productividad.
 
-En esta fecha se realizó una fusión de la rama principal del repositorio remoto en el proyecto local, con el propósito de sincronizar los últimos cambios y mantener la coherencia entre las distintas líneas de desarrollo. Esta acción es fundamental para asegurar que el desarrollo avance sobre la base de la versión más actualizada del código, incorporando mejoras, correcciones o nuevas funcionalidades realizadas por otros colaboradores o por el propio autor en distintos contextos.
+\subsection*{Automatización en el cambio de partitura y mensajes informativos}
+Se implementó un sistema para que el cambio de partitura se realice de forma automática, acompañado de mensajes emergentes tipo popup para informar al usuario sobre las operaciones realizadas, mejorando la experiencia de usuario y el flujo de trabajo.
 
-La integración consistió en resolver posibles conflictos y validar que la funcionalidad importada se ajusta a los objetivos del proyecto. Esta práctica refleja un flujo de trabajo colaborativo y profesional, minimizando riesgos de divergencia en el código fuente y facilitando la coordinación del proceso de desarrollo. De este modo, se facilita la posterior implementación de nuevas características o la corrección de errores, garantizando la estabilidad y continuidad del desarrollo del sistema.
+\subsection*{Integración de diversas voces y controles en la interfaz}
+La interfaz incorporó selectores de voz en cada pista musical, así como checkboxes para activar o desactivar voces durante la mezcla. También se añadieron botones que facilitan la selección del idioma, la visualización fonética y la edición de letras, consolidando un entorno interactivo y flexible.
+
+\subsection*{Gestión avanzada de volúmenes y registros de actividad}
+Se añadieron logs dentro de la aplicación para rastrear acciones y eventos relevantes, facilitando debugging y auditoría. Además, se implementaron controles y sliders para gestionar el volumen de cada pista, con fases de mezcla sincronizadas y funcionales.
+
+\section{Avances del 2026-04-04}
+
+\subsection*{Modularización y creación de un servicio independiente de fonética}
+Se separaron claramente las funcionalidades en distintos servicios, culminando con la creación de un servicio específico dedicado a la fonética. Esta modularización favorece la mantenibilidad y escalabilidad del software, permitiendo aislar procesos fonéticos para su actualización o mejora sin afectar al resto del sistema.
+
+\subsection*{Primera versión de visualización de fonemas}
+Se desarrolló un primer prototipo para la visualización de fonemas, permitiendo la representación gráfica o textual de unidades fonéticas que componen la síntesis de voz. Esta herramienta facilita la depuración y análisis del procesamiento lingüístico, brindando mayor control y comprensión al desarrollador y usuario.
+
+\section{Avances del 2026-04-05}
+
+\subsection*{Ampliación del soporte multilingüe}
+Se añadieron múltiples idiomas soportados para la aplicación, ampliando la capacidad de internacionalización del software. Esta ampliación facilita la adaptación del proyecto a diversos mercados y usuarios, incrementando su accesibilidad y rango de uso potencial.
+
+\subsection*{Implementación y evolución del módulo de síntesis vocal Espeak}
+Se introdujo la primera versión funcional del sistema basado en Espeak para la síntesis de voz, lo que supone un avance significativo en la generación automática de audio a partir de texto. Posteriormente, se publicó una segunda versión que mejora o ajusta dicha sintetización, optimizando la calidad o la integración del módulo en la plataforma global.
+
+\subsection*{Desarrollo de la funcionalidad fonética}
+En esta etapa se realizó el tercer borrador relacionado con el procesamiento fonético, abordando aspectos técnicos relativos a la generación, interpretación y visualización de fonemas. Esta mejora constituye un paso clave para el tratamiento preciso de la pronunciación en el síntesis de voz y en la interacción usuario-sistema.
+
+\section{Avances del 2026-04-06}
+
+\subsection*{Establecimiento del idioma por defecto en español con notificación al usuario}
+Se configuró el sistema para que el idioma predeterminado sea el español, acompañando esta decisión con una notificación o aviso al usuario. Esta medida mejora la usabilidad, asegurando que la mayoría de los usuarios accedan al software en su idioma nativo sin necesidad de ajustes iniciales, a la vez que permite una comunicación clara respecto a las opciones lingüísticas disponibles.
+
+
