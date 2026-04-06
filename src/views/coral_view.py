@@ -211,20 +211,35 @@ def build_coral_view_window():
 
     ttk.Label(text_tools_frame, text="Idioma:").pack(side="left")
 
-    language_var = tk.StringVar(value="Auto")
+    #language_var = tk.StringVar(value="None")
+    language_var = tk.StringVar(value="Español")
+
 
     language_selector = ttk.Combobox(
         text_tools_frame,
         textvariable=language_var,
         values=[
-            "Auto",
             "Español",
-            "Euskera",
             "Latín",
             "Inglés",
             "Alemán",
+            "Francés",
             "Italiano",
-            "Ruso"
+            "Portugués",
+            "Catalán",
+            "Euskera",
+            "Holandés",
+            "Polaco",
+            "Checo",
+            "Sueco",
+            "Danés",
+            "Noruego",
+            "Finlandés",
+            "Ruso",
+            "Ucraniano",
+            "Húngaro",
+            "Rumano",
+            "Turco",
         ],
         width=12,
         state="readonly"

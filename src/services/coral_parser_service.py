@@ -241,8 +241,6 @@ def apply_lyrics_to_xml(xml_path, updated_lyrics):
     score.write("musicxml", xml_path)
 
 
-
-#def create_new_xml_with_lyrics(original_xml, new_xml_path, updated_lyrics):
 def create_new_xml_with_lyrics(original_xml, new_xml_path, updated_lyrics, log):    
     """
     Crea un nuevo MusicXML copiando toda la información del original

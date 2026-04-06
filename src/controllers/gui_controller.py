@@ -182,6 +182,8 @@ def run_coral_gui():
     get_voice_models = widgets["get_voice_models"]
     get_voice_enabled = widgets["get_voice_enabled"]
     generate_voice_btn = widgets["generate_voice_btn"]
+    
+    language_var = widgets["language_var"]
 
     log("Módulo generador coral listo.")
     current_output_dir = None
@@ -243,7 +245,6 @@ def run_coral_gui():
             log("❌ El archivo XML no existe.")
             return
 
-        #open_lyrics_editor(root, path, log)
         open_lyrics_editor(root, path, xml_path_var, log)
 
 
@@ -251,7 +252,28 @@ def run_coral_gui():
     # Visor de fonética
     # ------------------------------------------------------
     def open_phoneme_viewer_window():
-        open_phoneme_viewer(root)
+        xml_path = xml_path_var.get().strip()
+
+        if not xml_path:
+            log("⚠ Selecciona un archivo XML.")
+            return
+
+        language = language_var.get()
+
+        """
+        if language == "None":
+            log("⚠ Debes seleccionar un idioma para generar la fonética.")
+            return
+        """
+        
+        if language == "Español":
+            log("Idioma por defecto Español, recuerde seleccionar un idioma para generar la fonética correcta.")
+         
+        open_phoneme_viewer(
+            root,
+            Path(xml_path),
+            language_var.get()
+        )
 
     # ------------------------------------------------------
     # Examinar XML
