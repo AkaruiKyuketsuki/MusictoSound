@@ -4,7 +4,7 @@ from .basque_converter import BasqueConverter
 
 def get_converter(language: str):
 
-    if language == "Auto":
+    if language == "None":
         language = "Español"
 
     mapping = {

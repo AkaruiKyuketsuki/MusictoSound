@@ -258,6 +258,17 @@ def run_coral_gui():
             log("⚠ Selecciona un archivo XML.")
             return
 
+        language = language_var.get()
+
+        """
+        if language == "None":
+            log("⚠ Debes seleccionar un idioma para generar la fonética.")
+            return
+        """
+        
+        if language == "Español":
+            log("Idioma por defecto Español, recuerde seleccionar un idioma para generar la fonética correcta.")
+         
         open_phoneme_viewer(
             root,
             Path(xml_path),
