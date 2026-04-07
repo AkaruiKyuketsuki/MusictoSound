@@ -33,6 +33,8 @@ from views.reaper_guide_overlay import ReaperGuideOverlay
 from views.lyrics_editor_view import open_lyrics_editor
 from views.phoneme_viewer_view import open_phoneme_viewer
 
+from services.singing_voice_service import generate_singing_voices
+
 # ==========================================================
 # Utilidades
 # ==========================================================
@@ -379,6 +381,7 @@ def run_coral_gui():
     # ------------------------------------------------------
     # Generar voces cantadas
     # ------------------------------------------------------
+    """
     def generate_voices():
 
         xml_path = xml_path_var.get().strip()
@@ -411,7 +414,51 @@ def run_coral_gui():
             log(f"🎤 Generando voz para {part['name']} con modelo {model}")
 
         log("Proceso de generación vocal iniciado.")
-        
+    """
+
+    def generate_voices():
+
+        xml_path = xml_path_var.get().strip()
+
+        if not xml_path:
+            log("⚠ Selecciona un archivo XML.")
+            return
+
+        selected = get_selected_voices()
+
+        if not selected:
+            log("⚠ No hay voces seleccionadas.")
+            return
+
+        voice_models = get_voice_models()
+        voice_enabled = get_voice_enabled()
+        language = language_var.get()
+
+        if current_output_dir is None:
+            log("⚠ Primero analiza la partitura.")
+            return
+
+        enabled_parts = []
+
+        for part in selected:
+
+            part_id = part["id"]
+
+            if not voice_enabled.get(part_id, True):
+                log(f"⏭ Voz desactivada: {part['name']}")
+                continue
+
+            enabled_parts.append(part)
+
+        generate_singing_voices(
+            xml_path=Path(xml_path),
+            selected_parts=enabled_parts,
+            voice_models=voice_models,
+            language=language,
+            output_dir=current_output_dir,
+            log=log
+        )
+
     # ------------------------------------------------------
     # Generar MIDI
     # ------------------------------------------------------
