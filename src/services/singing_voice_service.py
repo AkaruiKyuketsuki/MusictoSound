@@ -184,11 +184,13 @@ def generate_singing_voices(
         aligned = align_notes_and_phonemes(notes, phonemes)
 
         model = voice_models.get(part_id, "Auto")
-
         part_dir = output_dir / part_name
+        
         score_path = part_dir / "singing_score.json"
-
         save_singing_score(aligned, score_path)
+        
+        lab_path = part_dir / "singing.lab"
+        generate_lab_from_score(aligned, lab_path)
 
         if log:
             log(f"🎤 Voz preparada: {part_name}")
@@ -198,3 +200,35 @@ def generate_singing_voices(
 
     if log:
         log("Proceso de preparación vocal completado.")
+
+
+# ==========================================================
+# Convertir score a label HTS (.lab)
+# ==========================================================
+def generate_lab_from_score(score, output_path):
+
+    lines = []
+
+    time = 0.0
+
+    for item in score:
+
+        phonemes = item["phonemes"]
+        duration = item["duration"]
+
+        # repartir duración entre fonemas
+        phoneme_duration = duration / len(phonemes)
+
+        for phoneme in phonemes:
+
+            start = int(time * 10_000_000)
+            end = int((time + phoneme_duration) * 10_000_000)
+
+            lines.append(f"{start} {end} {phoneme}")
+
+            time += phoneme_duration
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines))
