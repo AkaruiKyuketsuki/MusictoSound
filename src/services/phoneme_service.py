@@ -21,6 +21,7 @@ def extract_phonemes_by_part(xml_path: Path, language: str) -> dict:
         for syl in syllables:
 
             tokens = converter.convert(syl)
+            tokens = _split_ipa_tokens(tokens)
 
             result.append({
                 "syllable": syl,
@@ -30,3 +31,21 @@ def extract_phonemes_by_part(xml_path: Path, language: str) -> dict:
         phonemes_by_part[part] = result
 
     return phonemes_by_part
+
+# ==========================================================
+# Separar IPA en fonemas individuales
+# ==========================================================
+def _split_ipa_tokens(tokens):
+
+    result = []
+
+    for token in tokens:
+
+        # eliminar marcas de acento IPA
+        token = token.replace("ˈ", "").replace("ˌ", "")
+
+        # dividir en caracteres IPA individuales
+        for char in token:
+            result.append(char)
+
+    return result
