@@ -493,9 +493,8 @@ def build_coral_view_window():
         pitch_vars.clear()
         voice_enable_vars.clear()
 
-
-        for part in parts:
-            part_id = part["id"]
+        for idx, part in enumerate(parts):
+            part_id = f"{part['id']}_{idx}"    
             part_name = part["name"]
 
             row_frame = ttk.Frame(voices_list_frame)
@@ -515,12 +514,14 @@ def build_coral_view_window():
             entry.pack(side="left", padx=5, fill="x", expand=True)
             # ================================
 
-            # Mostrar selector solo si la pista tiene letra
             has_lyrics = part.get("has_lyrics", False)
+            
+            # crear la variable primero
+            model_var = tk.StringVar()
 
             if has_lyrics:
 
-                model_var = tk.StringVar(value="Neutral Voice")
+                model_var.set("Neutral Voice")
 
                 model_selector = ttk.Combobox(
                     row_frame,
@@ -539,8 +540,7 @@ def build_coral_view_window():
                 model_selector.pack(side="left", padx=5)
 
             else:
-                #model_var = tk.StringVar(value="")
-                model_var = tk.StringVar(value="__no_voice__")
+                model_var.set("__no_voice__")
 
             # ================================
             voice_vars[part_id] = {
