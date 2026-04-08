@@ -515,6 +515,7 @@ def build_coral_view_window():
             entry.pack(side="left", padx=5, fill="x", expand=True)
 
             # ===============================
+            """
             model_var = tk.StringVar(value="Auto")
 
             model_selector = ttk.Combobox(
@@ -533,9 +534,37 @@ def build_coral_view_window():
             )
 
             model_selector.pack(side="left", padx=5)
+            """
             # ================================
 
+            # Mostrar selector solo si la pista tiene letra
+            has_lyrics = part.get("has_lyrics", False)
 
+            if has_lyrics:
+
+                model_var = tk.StringVar(value="Neutral Voice")
+
+                model_selector = ttk.Combobox(
+                    row_frame,
+                    textvariable=model_var,
+                    values=[
+                        "Soprano AI",
+                        "Alto AI",
+                        "Tenor AI",
+                        "Bajo AI",
+                        "Neutral Voice"
+                    ],
+                    width=14,
+                    state="readonly"
+                )
+
+                model_selector.pack(side="left", padx=5)
+
+            else:
+                model_var = tk.StringVar(value="")
+
+
+            # ================================
             voice_vars[part_id] = {
                 "var": var,
                 "name_var": name_var,
