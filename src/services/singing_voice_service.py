@@ -75,29 +75,6 @@ def extract_notes_by_part(xml_path: Path) -> dict:
 # ==========================================================
 # Alinear notas y fonemas
 # ==========================================================
-"""
-def align_notes_and_phonemes(notes, phonemes):
-
-    aligned = []
-
-    count = min(len(notes), len(phonemes))
-
-    for i in range(count):
-
-        note = notes[i]
-        phoneme_data = phonemes[i]
-
-        aligned.append({
-            "syllable": phoneme_data["syllable"],
-            "phonemes": phoneme_data["phonemes"],
-            "pitch": note["pitch"],
-            "duration": note["duration"],
-            "offset": note["offset"]
-        })
-
-    return aligned
-"""
-
 def align_notes_and_phonemes(notes, phonemes):
 
     aligned = []
@@ -192,6 +169,9 @@ def generate_singing_voices(
         lab_path = part_dir / "singing.lab"
         generate_lab_from_score(aligned, lab_path)
 
+        f0_path = part_dir / "singing.f0"
+        generate_f0_from_score(aligned, f0_path)
+
         if log:
             log(f"🎤 Voz preparada: {part_name}")
             log(f"   Modelo: {model}")
@@ -205,36 +185,6 @@ def generate_singing_voices(
 # ==========================================================
 # Convertir score a label HTS (.lab)
 # ==========================================================
-"""
-def generate_lab_from_score(score, output_path):
-
-    lines = []
-
-    time = 0.0
-
-    for item in score:
-
-        phonemes = item["phonemes"]
-        duration = item["duration"]
-
-        # repartir duración entre fonemas
-        phoneme_duration = duration / len(phonemes)
-
-        for phoneme in phonemes:
-
-            start = int(time * 10_000_000)
-            end = int((time + phoneme_duration) * 10_000_000)
-
-            lines.append(f"{start} {end} {phoneme}")
-
-            time += phoneme_duration
-
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-
-    with open(output_path, "w", encoding="utf-8") as f:
-        f.write("\n".join(lines))
-
-"""
 
 def generate_lab_from_score(score, output_path):
 
@@ -299,3 +249,31 @@ def generate_lab_from_score(score, output_path):
 
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
+
+
+# ==========================================================
+# Generar curva de pitch (F0)
+# ==========================================================
+def generate_f0_from_score(score, output_path, frame_rate=100):
+
+    f0 = []
+
+    for item in score:
+
+        pitch = item["pitch"]
+        duration = item["duration"]
+
+        # número de frames
+        frames = int(duration * frame_rate)
+
+        if pitch is None:
+            pitch = 0
+
+        for _ in range(frames):
+            f0.append(pitch)
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(output_path, "w", encoding="utf-8") as f:
+        for value in f0:
+            f.write(f"{value}\n")
