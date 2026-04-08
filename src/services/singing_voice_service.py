@@ -185,7 +185,7 @@ def generate_singing_voices(
 
         model = voice_models.get(part_id, "Auto")
         part_dir = output_dir / part_name
-        
+
         score_path = part_dir / "singing_score.json"
         save_singing_score(aligned, score_path)
         
@@ -205,6 +205,7 @@ def generate_singing_voices(
 # ==========================================================
 # Convertir score a label HTS (.lab)
 # ==========================================================
+"""
 def generate_lab_from_score(score, output_path):
 
     lines = []
@@ -227,6 +228,72 @@ def generate_lab_from_score(score, output_path):
             lines.append(f"{start} {end} {phoneme}")
 
             time += phoneme_duration
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines))
+
+"""
+
+def generate_lab_from_score(score, output_path):
+
+    lines = []
+
+    time = 0.0
+
+    # silencio inicial
+    sil = 0.2
+    start = int(time * 10_000_000)
+    end = int((time + sil) * 10_000_000)
+    lines.append(f"{start} {end} sil")
+
+    time += sil
+
+    vowels = {"a","e","i","o","u","ɔ","ɛ","ɪ","ʊ","æ","ɑ","ɒ","ə","ɨ"}
+
+    for item in score:
+
+        phonemes = item["phonemes"]
+        duration = item["duration"]
+
+        if len(phonemes) == 1:
+
+            start = int(time * 10_000_000)
+            end = int((time + duration) * 10_000_000)
+
+            lines.append(f"{start} {end} {phonemes[0]}")
+
+            time += duration
+
+        else:
+
+            # consonantes cortas, vocal larga
+            consonant_time = duration * 0.2
+            vowel_time = duration * 0.8
+
+            per_consonant = consonant_time / (len(phonemes) - 1)
+
+            for p in phonemes:
+
+                if p in vowels:
+                    d = vowel_time
+                else:
+                    d = per_consonant
+
+                start = int(time * 10_000_000)
+                end = int((time + d) * 10_000_000)
+
+                lines.append(f"{start} {end} {p}")
+
+                time += d
+
+    # silencio final
+    sil = 0.3
+    start = int(time * 10_000_000)
+    end = int((time + sil) * 10_000_000)
+
+    lines.append(f"{start} {end} sil")
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
