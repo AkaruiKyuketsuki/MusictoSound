@@ -513,28 +513,6 @@ def build_coral_view_window():
                 width=40
             )
             entry.pack(side="left", padx=5, fill="x", expand=True)
-
-            # ===============================
-            """
-            model_var = tk.StringVar(value="Auto")
-
-            model_selector = ttk.Combobox(
-                row_frame,
-                textvariable=model_var,
-                values=[
-                    "Auto",
-                    "Soprano AI",
-                    "Alto AI",
-                    "Tenor AI",
-                    "Bajo AI",
-                    "Neutral Voice"
-                ],
-                width=14,
-                state="readonly"
-            )
-
-            model_selector.pack(side="left", padx=5)
-            """
             # ================================
 
             # Mostrar selector solo si la pista tiene letra
@@ -561,8 +539,8 @@ def build_coral_view_window():
                 model_selector.pack(side="left", padx=5)
 
             else:
-                model_var = tk.StringVar(value="")
-
+                #model_var = tk.StringVar(value="")
+                model_var = tk.StringVar(value="__no_voice__")
 
             # ================================
             voice_vars[part_id] = {
@@ -673,6 +651,7 @@ def build_coral_view_window():
 
             chk.config(command=toggle_voice)
 
+    """
     def get_selected_voices():
         return [
             {
@@ -682,6 +661,27 @@ def build_coral_view_window():
             for part_id, data in voice_vars.items()
             if data["var"].get()
         ]
+    """
+    def get_selected_voices():
+        selected = []
+
+        for part_id, data in voice_vars.items():
+
+            if not data["var"].get():
+                continue
+
+            model = data["model_var"].get()
+
+            # ignorar pistas sin modelo (sin letra)
+            if not model:
+                continue
+
+            selected.append({
+                "id": part_id,
+                "name": data["name_var"].get().strip()
+            })
+
+        return selected
 
     def get_mix_levels():
         return {

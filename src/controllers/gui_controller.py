@@ -448,6 +448,13 @@ def run_coral_gui():
                 log(f"⏭ Voz desactivada: {part['name']}")
                 continue
 
+            model = voice_models.get(part_id)
+
+            # ignorar pistas sin modelo vocal (instrumentos)
+            if not model or model == "__no_voice__":
+                log(f"⏭ Sin letra (omitido): {part['name']}")
+                continue
+
             enabled_parts.append(part)
 
         generate_singing_voices(
