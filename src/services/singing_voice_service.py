@@ -75,6 +75,7 @@ def extract_notes_by_part(xml_path: Path) -> dict:
 # ==========================================================
 # Alinear notas y fonemas
 # ==========================================================
+"""
 def align_notes_and_phonemes(notes, phonemes):
 
     aligned = []
@@ -95,7 +96,34 @@ def align_notes_and_phonemes(notes, phonemes):
         })
 
     return aligned
+"""
 
+def align_notes_and_phonemes(notes, phonemes):
+
+    aligned = []
+
+    count = min(len(notes), len(phonemes))
+
+    current_time = 0.0
+
+    for i in range(count):
+
+        note = notes[i]
+        phoneme_data = phonemes[i]
+
+        duration = note["duration"]
+
+        aligned.append({
+            "syllable": phoneme_data["syllable"],
+            "phonemes": phoneme_data["phonemes"],
+            "pitch": note["pitch"],
+            "duration": duration,
+            "offset": current_time
+        })
+
+        current_time += duration
+
+    return aligned
 
 # ==========================================================
 # Guardar singing score
