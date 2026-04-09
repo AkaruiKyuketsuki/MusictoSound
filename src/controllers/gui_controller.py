@@ -381,40 +381,6 @@ def run_coral_gui():
     # ------------------------------------------------------
     # Generar voces cantadas
     # ------------------------------------------------------
-    """
-    def generate_voices():
-
-        xml_path = xml_path_var.get().strip()
-
-        if not xml_path:
-            log("⚠ Selecciona un archivo XML.")
-            return
-
-        selected = get_selected_voices()
-
-        if not selected:
-            log("⚠ No hay voces seleccionadas.")
-            return
-
-        voice_models = get_voice_models()
-        voice_enabled = get_voice_enabled()
-
-        log("Generando voces cantadas...")
-
-        for part in selected:
-
-            part_id = part["id"]
-
-            if not voice_enabled.get(part_id, True):
-                log(f"⏭ Voz desactivada: {part['name']}")
-                continue
-
-            model = voice_models.get(part_id, "Auto")
-
-            log(f"🎤 Generando voz para {part['name']} con modelo {model}")
-
-        log("Proceso de generación vocal iniciado.")
-    """
 
     def generate_voices():
 
