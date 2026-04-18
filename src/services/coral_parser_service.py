@@ -125,7 +125,9 @@ def analyze_coral_parts(xml_path: Path) -> dict:
 
     for i, part in enumerate(score.parts, start=1):
 
-        part_id = part.id
+        #part_id = part.id
+        part_id = f"{part.id}_{i}"
+
         raw_name = raw_names[i - 1]
 
         if name_counts[raw_name] > 1:
@@ -139,10 +141,40 @@ def analyze_coral_parts(xml_path: Path) -> dict:
         else:
             display_name = raw_name
 
+        """
         parts.append({
             "id": part_id,
             "name": display_name
         })
+        """
+        # Detectar si la parte tiene letra real
+        has_lyrics = False
+
+        for note in part.recurse().notes:
+
+            if note.lyrics:
+
+                for lyric in note.lyrics:
+
+                    if lyric.text:
+                        text = lyric.text.strip().lower()
+
+                        if text in IGNORE_LYRICS:
+                            continue
+
+                        has_lyrics = True
+                        break
+
+            if has_lyrics:
+                break
+
+
+        parts.append({
+            "id": part_id,
+            "name": display_name,
+            "has_lyrics": has_lyrics
+        })
+
 
     return {
         "title": title,

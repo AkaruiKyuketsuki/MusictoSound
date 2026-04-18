@@ -33,6 +33,8 @@ from views.reaper_guide_overlay import ReaperGuideOverlay
 from views.lyrics_editor_view import open_lyrics_editor
 from views.phoneme_viewer_view import open_phoneme_viewer
 
+from services.singing_voice_service import generate_singing_voices
+
 # ==========================================================
 # Utilidades
 # ==========================================================
@@ -341,6 +343,8 @@ def run_coral_gui():
 
         try:
             result = analyze_coral_parts(path)
+            log(f"DEBUG PARTS: {result['parts']}")
+            
         except Exception as e:
             log(f"❌ Error al analizar el XML: {e}")
             return
@@ -379,6 +383,7 @@ def run_coral_gui():
     # ------------------------------------------------------
     # Generar voces cantadas
     # ------------------------------------------------------
+
     def generate_voices():
 
         xml_path = xml_path_var.get().strip()
@@ -395,8 +400,13 @@ def run_coral_gui():
 
         voice_models = get_voice_models()
         voice_enabled = get_voice_enabled()
+        language = language_var.get()
 
-        log("Generando voces cantadas...")
+        if current_output_dir is None:
+            log("⚠ Primero analiza la partitura.")
+            return
+
+        enabled_parts = []
 
         for part in selected:
 
@@ -406,12 +416,24 @@ def run_coral_gui():
                 log(f"⏭ Voz desactivada: {part['name']}")
                 continue
 
-            model = voice_models.get(part_id, "Auto")
+            model = voice_models.get(part_id)
 
-            log(f"🎤 Generando voz para {part['name']} con modelo {model}")
+            # ignorar pistas sin modelo vocal (instrumentos)
+            if not model or model == "__no_voice__":
+                log(f"⏭ Sin letra (omitido): {part['name']}")
+                continue
 
-        log("Proceso de generación vocal iniciado.")
-        
+            enabled_parts.append(part)
+
+        generate_singing_voices(
+            xml_path=Path(xml_path),
+            selected_parts=enabled_parts,
+            voice_models=voice_models,
+            language=language,
+            output_dir=current_output_dir,
+            log=log
+        )
+
     # ------------------------------------------------------
     # Generar MIDI
     # ------------------------------------------------------

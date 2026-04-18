@@ -454,7 +454,7 @@ def build_coral_view_window():
     download_wav_btn = ttk.Button(buttons_row, text="Generar WAV")
     download_wav_btn.pack(side="left", padx=20, ipady=6)
 
-    download_mix_btn = ttk.Button(buttons_row, text="Descargar mezcla")
+    download_mix_btn = ttk.Button(buttons_row, text="Descargar mezcla MIDI")
     download_mix_btn.pack(side="left", padx=20, ipady=6)
 
     download_mix_wav_btn = ttk.Button(buttons_row, text="Descargar mezcla WAV")
@@ -493,9 +493,8 @@ def build_coral_view_window():
         pitch_vars.clear()
         voice_enable_vars.clear()
 
-
-        for part in parts:
-            part_id = part["id"]
+        for idx, part in enumerate(parts):
+            part_id = f"{part['id']}_{idx}"    
             part_name = part["name"]
 
             row_frame = ttk.Frame(voices_list_frame)
@@ -513,29 +512,37 @@ def build_coral_view_window():
                 width=40
             )
             entry.pack(side="left", padx=5, fill="x", expand=True)
-
-            # ===============================
-            model_var = tk.StringVar(value="Auto")
-
-            model_selector = ttk.Combobox(
-                row_frame,
-                textvariable=model_var,
-                values=[
-                    "Auto",
-                    "Soprano AI",
-                    "Alto AI",
-                    "Tenor AI",
-                    "Bajo AI",
-                    "Neutral Voice"
-                ],
-                width=14,
-                state="readonly"
-            )
-
-            model_selector.pack(side="left", padx=5)
             # ================================
 
+            has_lyrics = part.get("has_lyrics", False)
+            
+            # crear la variable primero
+            model_var = tk.StringVar()
 
+            if has_lyrics:
+
+                model_var.set("Neutral Voice")
+
+                model_selector = ttk.Combobox(
+                    row_frame,
+                    textvariable=model_var,
+                    values=[
+                        "Soprano AI",
+                        "Alto AI",
+                        "Tenor AI",
+                        "Bajo AI",
+                        "Neutral Voice"
+                    ],
+                    width=14,
+                    state="readonly"
+                )
+
+                model_selector.pack(side="left", padx=5)
+
+            else:
+                model_var.set("__no_voice__")
+
+            # ================================
             voice_vars[part_id] = {
                 "var": var,
                 "name_var": name_var,
@@ -644,6 +651,7 @@ def build_coral_view_window():
 
             chk.config(command=toggle_voice)
 
+    """
     def get_selected_voices():
         return [
             {
@@ -653,6 +661,27 @@ def build_coral_view_window():
             for part_id, data in voice_vars.items()
             if data["var"].get()
         ]
+    """
+    def get_selected_voices():
+        selected = []
+
+        for part_id, data in voice_vars.items():
+
+            if not data["var"].get():
+                continue
+
+            model = data["model_var"].get()
+
+            # ignorar pistas sin modelo (sin letra)
+            if not model:
+                continue
+
+            selected.append({
+                "id": part_id,
+                "name": data["name_var"].get().strip()
+            })
+
+        return selected
 
     def get_mix_levels():
         return {
