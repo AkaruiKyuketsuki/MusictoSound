@@ -243,40 +243,61 @@ def export_mix_to_midi(
 
     mix_score = stream.Score()
 
-    selected_ids = {p["id"] for p in selected_parts}
+    #selected_ids = {p["id"] for p in selected_parts}
+    selected_map = {}
+
+    for p in selected_parts:
+        real_id = p["id"].split("_")[0]
+        selected_map.setdefault(real_id, []).append(p)
+        
+    #for part in score.parts:
+        #if part.id in selected_ids:
+    part_counter = {}
 
     for part in score.parts:
 
-        if part.id in selected_ids:
+        if part.id not in selected_map:
+            continue
 
-            # copiar la parte para no modificar el score original
-            part_copy = copy.deepcopy(part)
+        count = part_counter.get(part.id, 0)
 
-            if pitch_levels:
-                pitch_shift = pitch_levels.get(part.id, 0)
+        if count >= len(selected_map[part.id]):
+            continue
 
-                if pitch_shift != 0:
-                    part_copy = part_copy.transpose(pitch_shift)
+        selected_part = selected_map[part.id][count]
 
-            volume = volumes.get(part.id, 1.0)
+        part_counter[part.id] = count + 1
 
-            # ajustar velocity de las notas
-            for n in part_copy.recurse().notes:
+        # copiar la parte para no modificar el score original
+        part_copy = copy.deepcopy(part)
 
-                if hasattr(n, "volume"):
+        if pitch_levels:
+            #pitch_shift = pitch_levels.get(part.id, 0)
+            pitch_shift = pitch_levels.get(selected_part["id"], 0)
 
-                    velocity = n.volume.velocity
+            if pitch_shift != 0:
+                part_copy = part_copy.transpose(pitch_shift)
 
-                    if velocity is None:
-                        velocity = 64
+        #volume = volumes.get(part.id, 1.0)
+        volume = volumes.get(selected_part["id"], 1.0)
+        
+        # ajustar velocity de las notas
+        for n in part_copy.recurse().notes:
 
-                    new_velocity = int(velocity * volume)
+            if hasattr(n, "volume"):
 
-                    new_velocity = max(1, min(127, new_velocity))
+                velocity = n.volume.velocity
 
-                    n.volume.velocity = new_velocity
+                if velocity is None:
+                    velocity = 64
 
-            mix_score.insert(0, part_copy)
+                new_velocity = int(velocity * volume)
+
+                new_velocity = max(1, min(127, new_velocity))
+
+                n.volume.velocity = new_velocity
+
+        mix_score.insert(0, part_copy)
 
     mix_score.write("midi", output_path)
 
