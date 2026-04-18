@@ -125,7 +125,9 @@ def analyze_coral_parts(xml_path: Path) -> dict:
 
     for i, part in enumerate(score.parts, start=1):
 
-        part_id = part.id
+        #part_id = part.id
+        part_id = f"{part.id}_{i}"
+
         raw_name = raw_names[i - 1]
 
         if name_counts[raw_name] > 1:

@@ -343,6 +343,8 @@ def run_coral_gui():
 
         try:
             result = analyze_coral_parts(path)
+            log(f"DEBUG PARTS: {result['parts']}")
+            
         except Exception as e:
             log(f"❌ Error al analizar el XML: {e}")
             return

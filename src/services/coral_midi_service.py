@@ -142,13 +142,33 @@ def export_selected_parts_to_midi(
     generated_files = []
 
     # Convertimos a diccionario para lookup rápido
-    selected_map = {p["id"]: p["name"] for p in selected_parts}
+    #selected_map = {p["id"]: p["name"] for p in selected_parts}
+    selected_map = {}
 
+    for p in selected_parts:
+        real_id = p["id"].split("_")[0]   # 🔥 clave
+        selected_map.setdefault(real_id, []).append(p["name"])
+        
+    part_counter = {}    
     for part in score.parts:
 
+        #if part.id in selected_map:
+            #display_name = selected_map[part.id]
+        
         if part.id in selected_map:
 
-            display_name = selected_map[part.id]
+            names = selected_map[part.id]
+
+            # índice basado en cuántas veces hemos visto esta part
+            count = part_counter.get(part.id, 0)
+
+            if count >= len(names):
+                continue  # seguridad
+
+            display_name = names[count]
+
+            part_counter[part.id] = count + 1
+
 
             safe_name = (
                 display_name
