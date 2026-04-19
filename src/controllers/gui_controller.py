@@ -1037,6 +1037,5 @@ def run_transcription_gui():
     open_btn.config(command=on_open_output)
     view_xml_btn.config(command=on_view_xml)
     edit_btn.config(command=on_edit)
-    download_wav_btn.config(command=generate_wav)
-
+    
     root.mainloop()
