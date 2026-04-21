@@ -69,7 +69,7 @@ def _create_unique_output_dir(base_path: Path, folder_name: str) -> Path:
 # ==========================================================
 # Worker (hilo de conversión)
 # ==========================================================
-def _run_conversion(log, request: ConversionRequest, root, progress, start_btn, auto_open_var, on_view_xml, on_edit,):
+def _run_conversion(log, request: ConversionRequest, root, progress, start_btn, auto_open_var, on_view_xml, on_edit, set_last_xml):
     try:
         log("▶ Iniciando conversión... (ESTE PROCESO PODRÍA TARDAR UNOS MINUTOS)")
         log(f"  Entrada: {request.input_path}")
@@ -79,6 +79,7 @@ def _run_conversion(log, request: ConversionRequest, root, progress, start_btn, 
         result = convert_score(request)
 
         if result.success:
+            set_last_xml(result.output_file)
             log("✅ Conversión finalizada correctamente")
             log(result.message)
 
@@ -96,6 +97,7 @@ def _run_conversion(log, request: ConversionRequest, root, progress, start_btn, 
                 root.after(0, on_edit)
 
         else:
+            set_last_xml(None)
             log("❌ Error durante la conversión")
             log(result.message)
 
@@ -896,6 +898,7 @@ def run_transcription_gui():
 
 
     log("Interfaz gráfica lista.")
+    last_generated_xml = None
 
     # ------------------------------------------------------
     def on_start():
@@ -935,11 +938,25 @@ def run_transcription_gui():
         progress.start(10)   # velocidad de animación
         start_btn.config(state="disabled")
 
+        def set_last_xml(path):
+            nonlocal last_generated_xml
+            last_generated_xml = Path(path) if path else None
 
         # Lanzar conversión en hilo
+        """
         thread = threading.Thread(
             target=_run_conversion,
             args=(log, request, root, progress, start_btn, auto_open_var, on_view_xml, on_edit,),
+            daemon=True,
+        )
+        """
+        thread = threading.Thread(
+            target=_run_conversion,
+            args=(
+                log, request, root, progress, start_btn,
+                auto_open_var, on_view_xml, on_edit,
+                set_last_xml
+            ),
             daemon=True,
         )
         thread.start()
@@ -966,6 +983,7 @@ def run_transcription_gui():
             log(f"⚠ La carpeta de salida no existe: {outdir}")
             return
 
+        """
         xml_files = list(outdir.glob("*.xml")) + list(outdir.glob("*.mxl"))
 
         if not xml_files:
@@ -974,6 +992,13 @@ def run_transcription_gui():
 
         # Elegir el archivo más reciente (última transcripción)
         xml_path = max(xml_files, key=lambda p: p.stat().st_mtime)
+        """
+
+        if not last_generated_xml or not last_generated_xml.exists():
+            log("⚠ No hay ninguna partitura generada todavía.")
+            return
+
+        xml_path = last_generated_xml
 
         log(f"🎼 Cargando partitura: {xml_path.name}")
 
@@ -1010,6 +1035,7 @@ def run_transcription_gui():
             return
 
         # Solo buscamos archivos editables
+        """
         xml_files = list(outdir.glob("*.mxl")) + list(outdir.glob("*.xml"))
 
         if not xml_files:
@@ -1018,6 +1044,13 @@ def run_transcription_gui():
 
         # Usar el más reciente
         xml_path = max(xml_files, key=lambda p: p.stat().st_mtime)
+        """
+
+        if not last_generated_xml or not last_generated_xml.exists():
+            log("⚠ No hay ninguna partitura generada todavía.")
+            return
+
+        xml_path = last_generated_xml
 
         try:
             _open_with_default_app(xml_path)
