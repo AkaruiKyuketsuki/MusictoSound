@@ -975,7 +975,7 @@ def run_transcription_gui():
         # Elegir el archivo más reciente (última transcripción)
         xml_path = max(xml_files, key=lambda p: p.stat().st_mtime)
 
-        log(f"🎼 Generando partitura desde: {xml_path.name}")
+        log(f"🎼 Cargando partitura: {xml_path.name}")
 
         try:
             pdf_path = render_xml_to_pdf(xml_path, outdir)

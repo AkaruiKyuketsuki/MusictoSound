@@ -52,6 +52,7 @@ def run_audiveris(
         raise AudiverisError(f"El fichero de entrada no existe: {input_pdf}")
 
     output_dir.mkdir(parents=True, exist_ok=True)
+    before_files = set(output_dir.glob("*.mxl")) | set(output_dir.glob("*.xml"))
 
     # Primero intentamos ejecutar usando -cp con todos los jars de la carpeta app
     cmd = _build_base_command_use_cp()
@@ -73,6 +74,8 @@ def run_audiveris(
             check=True,
             capture_output=True,
             text=True,
+            encoding="utf-8",
+            errors="ignore",
         )
     except subprocess.CalledProcessError as exc:
         # Si falla por classpath, intentamos de forma segura con -jar como respaldo
@@ -97,6 +100,8 @@ def run_audiveris(
                 check=True,
                 capture_output=True,
                 text=True,
+                encoding="utf-8",
+                errors="ignore",
             )
         except subprocess.CalledProcessError as exc2:
             # Ambos intentos fallaron: devolvemos el error combinado para depuración
@@ -107,9 +112,26 @@ def run_audiveris(
             ) from exc2
 
     # Si llegó aquí, el proceso terminó correctamente (o al menos sin excepción)
+    after_files = set(output_dir.glob("*.mxl")) | set(output_dir.glob("*.xml"))
+    new_files = after_files - before_files
+
     if mode == ConversionMode.FULL_AUTOMATIC:
+        """
         candidates = list(output_dir.glob("*.mxl")) + list(output_dir.glob("*.xml"))
         if candidates:
             return candidates[0]
+        """    
+        if new_files:
+            return max(new_files, key=lambda p: p.stat().st_mtime)
+
+        # fallback si no detectamos nuevos archivos
+        candidates = list(output_dir.glob("*.mxl")) + list(output_dir.glob("*.xml"))
+
+        if candidates:
+                latest = max(candidates, key=lambda p: p.stat().st_mtime)
+
+                # comprobar que pertenece al PDF actual
+                if input_pdf.stem.lower() in latest.stem.lower():
+                    return latest
 
     return None
