@@ -5,7 +5,8 @@ from tkinter import ttk, filedialog, scrolledtext
 def build_window():
     root = tk.Tk()
     root.title("MusictoSound - Conversor de partituras")
-    root.geometry("800x480")
+    #root.geometry("800x480")
+    root.state("zoomed")
 
     frm = ttk.Frame(root, padding=12)
     frm.pack(fill=tk.BOTH, expand=True)

@@ -47,6 +47,11 @@ def show_comparison_view(
 
 
     win = tk.Toplevel()
+    win.lift()
+    win.focus_force()
+    win.attributes("-topmost", True)
+    win.after(100, lambda: win.attributes("-topmost", False))
+
     def on_close():
         try:
             win.unbind("<MouseWheel>")
