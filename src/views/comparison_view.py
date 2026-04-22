@@ -47,6 +47,16 @@ def show_comparison_view(
 
 
     win = tk.Toplevel()
+    def on_close():
+        try:
+            win.unbind("<MouseWheel>")
+        except:
+            pass
+        win.destroy()
+
+    win.protocol("WM_DELETE_WINDOW", on_close)
+
+
     win.title("Comparación de partituras")
     win.geometry("1000x700")
 
@@ -563,12 +573,28 @@ def show_comparison_view(
     # =========================
     # Rueda del ratón (Windows)
     # =========================
+    
+    """
     def _on_mousewheel(event):
         delta = int(-1 * (event.delta / 120))
         canvas_left.yview_scroll(delta, "units")
         canvas_right.yview_scroll(delta, "units")
+    """
+    def _on_mousewheel(event):
+        try:
+            delta = int(-1 * (event.delta / 120))
 
-    win.bind_all("<MouseWheel>", _on_mousewheel)
+            if canvas_left.winfo_exists():
+                canvas_left.yview_scroll(delta, "units")
+
+            if canvas_right.winfo_exists():
+                canvas_right.yview_scroll(delta, "units")
+
+        except Exception:
+            pass
+            
+    #win.bind_all("<MouseWheel>", _on_mousewheel)
+    win.bind("<MouseWheel>", _on_mousewheel)
 
     # =========================
     # Ajustar región de scroll
