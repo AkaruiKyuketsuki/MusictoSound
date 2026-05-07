@@ -92,17 +92,35 @@ def build_window():
     quit_btn.pack(side="right", padx=5)
 
     # AUTO OPEN OPTIONS
-    auto_open_var = tk.BooleanVar(value=True)
+    #auto_open_var = tk.BooleanVar(value=True)
+    auto_view_var = tk.BooleanVar(value=True)
+    auto_edit_var = tk.BooleanVar(value=True)
+
     view_in_app_var = tk.BooleanVar(value=False)
     view_in_system_var = tk.BooleanVar(value=False)
 
-
+    """
     auto_open_chk = ttk.Checkbutton(
         frm,
         text="Abrir automáticamente la partitura generada al finalizar",
         variable=auto_open_var
     )
     auto_open_chk.pack(anchor="w", pady=(0, 6))
+    """
+
+    auto_edit_chk = ttk.Checkbutton(
+        frm,
+        text="Abrir automáticamente el xml generado en el editor",
+        variable=auto_edit_var
+    )
+    auto_edit_chk.pack(anchor="w", pady=(0, 6))
+
+    auto_view_chk = ttk.Checkbutton(
+        frm,
+        text="Abrir automáticamente el xml generado en el visor",
+        variable=auto_view_var
+    )
+    auto_view_chk.pack(anchor="w")
 
     def on_view_in_app_toggle():
         if view_in_app_var.get():
@@ -155,7 +173,9 @@ def build_window():
         "back_btn": back_btn,
         "edit_btn": edit_btn,
         "log": log,
-        "auto_open_var": auto_open_var,
+        #"auto_open_var": auto_open_var,
+        "auto_view_var": auto_view_var,
+        "auto_edit_var": auto_edit_var,
         "view_in_app_var": view_in_app_var,
         "view_in_system_var": view_in_system_var,
         "progress": progress,

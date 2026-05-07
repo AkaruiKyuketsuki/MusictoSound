@@ -69,7 +69,9 @@ def _create_unique_output_dir(base_path: Path, folder_name: str) -> Path:
 # ==========================================================
 # Worker (hilo de conversión)
 # ==========================================================
-def _run_conversion(log, request: ConversionRequest, root, progress, start_btn, auto_open_var, on_view_xml, on_edit, set_last_xml):
+#def _run_conversion(log, request: ConversionRequest, root, progress, start_btn, auto_open_var, on_view_xml, on_edit, set_last_xml):
+def _run_conversion(log, request: ConversionRequest, root, progress, start_btn, auto_view_var, auto_edit_var, on_view_xml, on_edit, set_last_xml):
+
     try:
         log("▶ Iniciando conversión... (ESTE PROCESO PODRÍA TARDAR UNOS MINUTOS)")
         log(f"  Entrada: {request.input_path}")
@@ -85,17 +87,21 @@ def _run_conversion(log, request: ConversionRequest, root, progress, start_btn, 
 
             if result.output_file:
                 log(f"📄 Archivo generado: {result.output_file}")
-                try:
-                    _open_with_default_app(Path(result.output_file))
-                    log("📂 Archivo abierto con la aplicación por defecto")
-                except Exception as e:
-                    log(f"⚠ No se pudo abrir automáticamente: {e}")
 
+            """
             if auto_open_var.get():
                 log("🔁 Apertura automática activada")
                 root.after(0, on_view_xml)
                 root.after(0, on_edit)
+            """
+            if auto_view_var.get():
+                log("👁 Visualización automática activada")
+                root.after(0, on_view_xml)
 
+            if auto_edit_var.get():
+                log("✏ Apertura en editor activada")
+                root.after(0, on_edit)
+                
         else:
             set_last_xml(None)
             log("❌ Error durante la conversión")
@@ -892,7 +898,11 @@ def run_transcription_gui():
     edit_btn = widgets["edit_btn"]
     progress = widgets["progress"]
     back_btn = widgets["back_btn"]
-    auto_open_var = widgets["auto_open_var"]
+    #auto_open_var = widgets["auto_open_var"]
+    auto_view_var = widgets["auto_view_var"]
+    auto_edit_var = widgets["auto_edit_var"]
+
+
     view_in_app_var = widgets["view_in_app_var"]
     view_in_system_var = widgets["view_in_system_var"]
     view_pdf_btn = widgets["view_pdf_btn"]
@@ -948,8 +958,9 @@ def run_transcription_gui():
             target=_run_conversion,
             args=(
                 log, request, root, progress, start_btn,
-                auto_open_var, on_view_xml, on_edit,
-                set_last_xml
+                #auto_open_var,         
+                auto_view_var, auto_edit_var,
+                on_view_xml, on_edit, set_last_xml
             ),
             daemon=True,
         )
