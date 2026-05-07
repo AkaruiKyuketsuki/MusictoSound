@@ -69,7 +69,6 @@ def _create_unique_output_dir(base_path: Path, folder_name: str) -> Path:
 # ==========================================================
 # Worker (hilo de conversión)
 # ==========================================================
-#def _run_conversion(log, request: ConversionRequest, root, progress, start_btn, auto_open_var, on_view_xml, on_edit, set_last_xml):
 def _run_conversion(log, request: ConversionRequest, root, progress, start_btn, auto_view_var, auto_edit_var, on_view_xml, on_edit, set_last_xml):
 
     try:
@@ -88,12 +87,6 @@ def _run_conversion(log, request: ConversionRequest, root, progress, start_btn, 
             if result.output_file:
                 log(f"📄 Archivo generado: {result.output_file}")
 
-            """
-            if auto_open_var.get():
-                log("🔁 Apertura automática activada")
-                root.after(0, on_view_xml)
-                root.after(0, on_edit)
-            """
             if auto_view_var.get():
                 log("👁 Visualización automática activada")
                 root.after(0, on_view_xml)
@@ -148,7 +141,7 @@ def run_gui():
 # ==========================================================
 # Controlador de la vista Coral
 # ==========================================================
-def run_coral_gui():
+def run_coral_gui(preloaded_xml: Path = None):
 
     widgets = build_coral_view_window()
 
@@ -194,6 +187,16 @@ def run_coral_gui():
     generate_voice_btn = widgets["generate_voice_btn"]
     
     language_var = widgets["language_var"]
+
+    if preloaded_xml:
+        xml_path_var.set(str(preloaded_xml))
+        log(f"Archivo cargado automáticamente: {preloaded_xml}")
+
+        # Ajustar carpeta automáticamente
+        base_path_var.set(str(preloaded_xml.parent))
+
+        # Ejecutar análisis automáticamente tras cargar interfaz
+        #root.after(200, analyze)
 
     log("Módulo generador coral listo.")
     current_output_dir = None
@@ -898,10 +901,10 @@ def run_transcription_gui():
     edit_btn = widgets["edit_btn"]
     progress = widgets["progress"]
     back_btn = widgets["back_btn"]
-    #auto_open_var = widgets["auto_open_var"]
+
     auto_view_var = widgets["auto_view_var"]
     auto_edit_var = widgets["auto_edit_var"]
-
+    analyze_btn = widgets["analyze_btn"]
 
     view_in_app_var = widgets["view_in_app_var"]
     view_in_system_var = widgets["view_in_system_var"]
@@ -987,20 +990,6 @@ def run_transcription_gui():
             log(f"❌ No se pudo abrir el PDF: {e}")
             
     # ------------------------------------------------------
-    """
-    def on_open_output():
-        outdir = outdir_var.get().strip() or "output"
-        path = Path(outdir)
-        if not path.exists():
-            log(f"⚠ La carpeta no existe: {path}")
-            return
-        try:
-            _open_with_default_app(path)
-            log(f"📂 Carpeta abierta: {path}")
-        except Exception as e:
-            log(f"❌ No se pudo abrir la carpeta: {e}")
-        
-    """
     def on_open_output():
         path_str = outdir_var.get().strip()
 
@@ -1082,7 +1071,19 @@ def run_transcription_gui():
             log(f"🎵 Abriendo partitura para edición: {xml_path.name}")
         except Exception as e:
             log(f"❌ No se pudo abrir el editor: {e}")
+    # ------------------------------------------------------
+    def go_to_analysis():
+        if not last_generated_xml or not last_generated_xml.exists():
+            log("⚠ No hay ninguna partitura generada todavía.")
+            return
 
+        xml_path = last_generated_xml
+
+        # Cerrar ventana actual
+        root.destroy()
+
+        # Abrir vista coral con el XML ya cargado
+        run_coral_gui(xml_path)
     # ------------------------------------------------------
     def go_back():
         root.destroy()
@@ -1096,5 +1097,6 @@ def run_transcription_gui():
     view_xml_btn.config(command=on_view_xml)
     edit_btn.config(command=on_edit)
     view_pdf_btn.config(command=on_view_pdf)
+    analyze_btn.config(command=go_to_analysis)
     
     root.mainloop()

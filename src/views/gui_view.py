@@ -16,7 +16,6 @@ def build_window():
     # INPUT FILE
     row1 = ttk.Frame(frm)
     row1.pack(fill="x", pady=6)
-    #ttk.Label(row1, text="Archivo(pdf):", width=10).pack(side="left")
     ttk.Label(row1, text="Archivo(pdf):", width=20, anchor="w").pack(side="left", padx=(0,5))
     infile_var = tk.StringVar()
     ttk.Entry(row1, textvariable=infile_var, width=90).pack(side="left", padx=6)
@@ -43,7 +42,6 @@ def build_window():
     # OUTPUT DIR
     row2 = ttk.Frame(frm)
     row2.pack(fill="x", pady=6)
-    #ttk.Label(row2, text="Carpeta de salida:", width=10).pack(side="left")
     ttk.Label(row2, text="Carpeta de salida:", width=20, anchor="w").pack(side="left", padx=(0,5))
     outdir_var = tk.StringVar()
     ttk.Entry(row2, textvariable=outdir_var, width=90).pack(side="left", padx=6)
@@ -76,9 +74,6 @@ def build_window():
     start_btn = ttk.Button(bfrm, text="Iniciar Trascipción")
     start_btn.pack(side="left", padx=5)
 
-    #open_btn = ttk.Button(bfrm, text="Abrir carpeta salida")
-    #open_btn.pack(side="left", padx=5)
-
     view_xml_btn = ttk.Button(bfrm, text="Visualizar XML generado")
     view_xml_btn.pack(side="left", padx=5)
 
@@ -88,25 +83,18 @@ def build_window():
     edit_btn = ttk.Button(bfrm, text="Editar XML")
     edit_btn.pack(side="left", padx=5)
 
+    analyze_btn = ttk.Button(bfrm, text="Ir a análisis coral")
+    analyze_btn.pack(side="left", padx=5)
+
     quit_btn = ttk.Button(bfrm, text="Salir", command=root.destroy)
     quit_btn.pack(side="right", padx=5)
 
     # AUTO OPEN OPTIONS
-    #auto_open_var = tk.BooleanVar(value=True)
     auto_view_var = tk.BooleanVar(value=True)
     auto_edit_var = tk.BooleanVar(value=True)
 
     view_in_app_var = tk.BooleanVar(value=False)
     view_in_system_var = tk.BooleanVar(value=False)
-
-    """
-    auto_open_chk = ttk.Checkbutton(
-        frm,
-        text="Abrir automáticamente la partitura generada al finalizar",
-        variable=auto_open_var
-    )
-    auto_open_chk.pack(anchor="w", pady=(0, 6))
-    """
 
     auto_edit_chk = ttk.Checkbutton(
         frm,
@@ -173,10 +161,10 @@ def build_window():
         "back_btn": back_btn,
         "edit_btn": edit_btn,
         "log": log,
-        #"auto_open_var": auto_open_var,
         "auto_view_var": auto_view_var,
         "auto_edit_var": auto_edit_var,
         "view_in_app_var": view_in_app_var,
         "view_in_system_var": view_in_system_var,
         "progress": progress,
+        "analyze_btn": analyze_btn,
     }
