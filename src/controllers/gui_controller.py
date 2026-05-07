@@ -46,6 +46,15 @@ def _open_with_default_app(path: Path):
     else:
         subprocess.Popen(["xdg-open", str(path)])
 
+# -----------------------------------------------------
+def _find_latest_xml(output_dir: Path):
+    xml_files = list(output_dir.glob("*.xml")) + list(output_dir.glob("*.mxl"))
+
+    if not xml_files:
+        return None
+
+    return max(xml_files, key=lambda p: p.stat().st_mtime)      
+
 # ==========================================================
 # Crear carpeta única coral_output, coral_output_2, etc.
 # ==========================================================
@@ -80,7 +89,17 @@ def _run_conversion(log, request: ConversionRequest, root, progress, start_btn, 
         result = convert_score(request)
 
         if result.success:
-            set_last_xml(result.output_file)
+            #set_last_xml(result.output_file)
+            xml_path = None
+
+            if request.mode == ConversionMode.FULL_AUTOMATIC:
+                xml_path = result.output_file
+
+            elif request.mode == ConversionMode.MANUAL_ASSISTED:
+                xml_path = _find_latest_xml(Path(request.output_dir))
+                
+            set_last_xml(xml_path)
+
             log("✅ Proceso de conversión finalizado")
             log(result.message)
 
@@ -1071,6 +1090,7 @@ def run_transcription_gui():
             log(f"🎵 Abriendo partitura para edición: {xml_path.name}")
         except Exception as e:
             log(f"❌ No se pudo abrir el editor: {e}")
+ 
     # ------------------------------------------------------
     def go_to_analysis():
         if not last_generated_xml or not last_generated_xml.exists():
