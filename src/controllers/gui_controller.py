@@ -80,7 +80,7 @@ def _run_conversion(log, request: ConversionRequest, root, progress, start_btn, 
 
         if result.success:
             set_last_xml(result.output_file)
-            log("✅ Conversión finalizada correctamente")
+            log("✅ Proceso de conversión finalizado")
             log(result.message)
 
             if result.output_file:

@@ -1,0 +1,484 @@
+2026-04-23 19:53:13,105 ERROR [Abril- Toldrá-1]              IOUtils.java:278  | Unmapping is not supported.
+java.lang.reflect.InaccessibleObjectException: Unable to make public jdk.internal.ref.Cleaner java.nio.DirectByteBuffer.cleaner() accessible: module java.base does not "opens java.nio" to unnamed module @3b6ddd1d
+	at java.base/java.lang.reflect.AccessibleObject.throwInaccessibleObjectException(Unknown Source)
+	at java.base/java.lang.reflect.AccessibleObject.checkCanSetAccessible(Unknown Source)
+	at java.base/java.lang.reflect.AccessibleObject.checkCanSetAccessible(Unknown Source)
+	at java.base/java.lang.reflect.Method.checkCanSetAccessible(Unknown Source)
+	at java.base/java.lang.reflect.Method.setAccessible(Unknown Source)
+	at org.apache.pdfbox.io.IOUtils.unmapper(IOUtils.java:244)
+	at java.base/java.security.AccessController.doPrivileged(Unknown Source)
+	at org.apache.pdfbox.io.IOUtils.<clinit>(IOUtils.java:69)
+	at org.apache.pdfbox.Loader.loadPDF(Loader.java:378)
+	at org.audiveris.omr.image.ImageLoading.getPdfLoader(ImageLoading.java:159)
+	at org.audiveris.omr.image.ImageLoading.getLoader(ImageLoading.java:209)
+	at org.audiveris.omr.sheet.Book.createStubs(Book.java:554)
+	at org.audiveris.omr.CLI$ProcessingTask.processBook(CLI.java:830)
+	at org.audiveris.omr.CLI$CliTask.call(CLI.java:504)
+	at org.audiveris.omr.Main.runBatchTasks(Main.java:371)
+	at org.audiveris.omr.Main.main(Main.java:260)
+	at Audiveris.main(Audiveris.java:50)
+2026-04-23 19:53:13,149 INFO [Abril- Toldrá-1]                 Book.java:559  | 7 sheets in C:\Users\34690\Documents\1. Universidad\TFG\canciones_idiomas_varios\pdf\Abril- Toldrá-1.pdf
+2026-04-23 19:53:13,307 INFO []                 Book.java:2528 | Stored /book.xml
+2026-04-23 19:53:13,307 INFO []                 Book.java:2488 | Book stored as output\Abril- Toldrá-1.omr
+2026-04-23 19:53:13,313 INFO []                 Book.java:1930 | Book reaching PAGE on sheets:[#1#2#3#4#5#6#7]
+2026-04-23 19:53:13,315 INFO [Abril- Toldrá-1#1]       StepMonitoring.java:98   | LOAD
+2026-04-23 19:53:13,509 WARN [Abril- Toldrá-1#1]      PostScriptTable.java:74   | No PostScript name data is provided for the font Maestro
+2026-04-23 19:53:13,636 INFO [Abril- Toldrá-1#1]            SheetStub.java:1273 | Loaded image #1 2480x3508 from C:\Users\34690\Documents\1. Universidad\TFG\canciones_idiomas_varios\pdf\Abril- Toldrá-1.pdf
+2026-04-23 19:53:13,640 INFO [Abril- Toldrá-1#1]       StepMonitoring.java:98   | BINARY
+2026-04-23 19:53:14,009 INFO [Abril- Toldrá-1#1]       StepMonitoring.java:98   | SCALE
+2026-04-23 19:53:14,026 INFO [Abril- Toldrá-1#1]         ScaleBuilder.java:241  | Beam  guessed height: 10 -- 0.50 of 21 interline
+2026-04-23 19:53:14,027 INFO [Abril- Toldrá-1#1]         ScaleBuilder.java:264  | Beam measured height: 11 -- 0.33 of [6..21] range at 138% of needed quorum
+2026-04-23 19:53:14,027 INFO [Abril- Toldrá-1#1]            ScaleStep.java:65   | Scale{ interline(20,21,21) line(2,2,2) beam(11)}
+2026-04-23 19:53:14,028 INFO [Abril- Toldrá-1#1]       StepMonitoring.java:98   | GRID
+2026-04-23 19:53:14,375 INFO [Abril- Toldrá-1#1]       LinesRetriever.java:1500 | Global slope: 0.00000
+2026-04-23 19:53:14,412 INFO [Abril- Toldrá-1#1]    ClustersRetriever.java:328  | Retrieved raw line clusters: 10 of sizes [5] with interline(20,21,21)
+2026-04-23 19:53:14,548 INFO [Abril- Toldrá-1#1]            PeakGraph.java:310  | Systems: #1[1, 2, 3, 4, 5] #2[6, 7, 8, 9, 10]
+2026-04-23 19:53:14,607 INFO [Abril- Toldrá-1#1]        BarsRetriever.java:1304 | System#1
+2026-04-23 19:53:14,608 INFO [Abril- Toldrá-1#1]        BarsRetriever.java:1307 |    PartGroup{bracket number:1 barline:false staves:1-3}
+2026-04-23 19:53:14,608 INFO [Abril- Toldrá-1#1]        BarsRetriever.java:1304 | System#2
+2026-04-23 19:53:14,609 INFO [Abril- Toldrá-1#1]        BarsRetriever.java:1307 |    PartGroup{bracket number:1 barline:false staves:6-8}
+2026-04-23 19:53:14,732 INFO [Abril- Toldrá-1#1]        SystemManager.java:134  | Indentation detected for system #1
+2026-04-23 19:53:14,732 INFO [Abril- Toldrá-1#1]        SystemManager.java:779  | 4 parts along 2 systems
+2026-04-23 19:53:14,733 INFO [Abril- Toldrá-1#1]                 Book.java:542  | Created scores: [{Score 1}]
+2026-04-23 19:53:14,733 INFO [Abril- Toldrá-1#1]       StepMonitoring.java:98   | HEADERS
+2026-04-23 19:53:14,969 INFO [Abril- Toldrá-1#1]      BasicClassifier.java:286  | Classifier loaded XML norms.
+2026-04-23 19:53:14,972 INFO [Abril- Toldrá-1#1]   AbstractClassifier.java:396  | Classifier data loaded from default uri jar:file:/C:/Program%20Files/Audiveris/app/audiveris.jar!/res/basic-classifier.zip
+2026-04-23 19:53:15,769 INFO [Abril- Toldrá-1#1]       StepMonitoring.java:98   | STEM_SEEDS
+2026-04-23 19:53:15,820 INFO [Abril- Toldrá-1#1]        StemSeedsStep.java:86   | stem(2 max:3)
+2026-04-23 19:53:15,863 INFO [Abril- Toldrá-1#1]       StepMonitoring.java:98   | BEAMS
+2026-04-23 19:53:18,224 INFO [Abril- Toldrá-1#1]       StepMonitoring.java:98   | LEDGERS
+2026-04-23 19:53:18,377 INFO [Abril- Toldrá-1#1]       StepMonitoring.java:98   | HEADS
+2026-04-23 19:53:21,267 INFO [Abril- Toldrá-1#1]        HeadSeedTally.java:235  | Scale information: HeadSeeds{NOTEHEAD_BLACK[L:-0.5,R:-0.5]}
+2026-04-23 19:53:21,267 INFO [Abril- Toldrá-1#1]       StepMonitoring.java:98   | STEMS
+2026-04-23 19:53:21,797 INFO [Abril- Toldrá-1#1]       StepMonitoring.java:98   | REDUCTION
+2026-04-23 19:53:21,927 INFO [Abril- Toldrá-1#1]        ReductionStep.java:105  | Stems free length median value: 74 pixels, 3.5 interlines
+2026-04-23 19:53:21,932 INFO [Abril- Toldrá-1#1]       StepMonitoring.java:98   | CUE_BEAMS
+2026-04-23 19:53:21,933 INFO [Abril- Toldrá-1#1]         CueBeamsStep.java:81   | Step CUE_BEAMS is skipped because small heads switch is off
+2026-04-23 19:53:21,934 INFO [Abril- Toldrá-1#1]       StepMonitoring.java:98   | TEXTS
+2026-04-23 19:53:22,957 INFO [Abril- Toldrá-1#1]       StepMonitoring.java:98   | MEASURES
+2026-04-23 19:53:22,967 INFO [Abril- Toldrá-1#1]                 Page.java:307  | 8 raw measures: [4 in system#1, 4 in system#2]
+2026-04-23 19:53:22,968 INFO [Abril- Toldrá-1#1]       StepMonitoring.java:98   | CHORDS
+2026-04-23 19:53:22,985 INFO [Abril- Toldrá-1#1]       StepMonitoring.java:98   | CURVES
+2026-04-23 19:53:23,658 INFO [Abril- Toldrá-1#1]         SlursBuilder.java:240  | Slurs: 1
+2026-04-23 19:53:23,684 INFO [Abril- Toldrá-1#1]      SegmentsBuilder.java:155  | Segments: 23
+2026-04-23 19:53:23,694 INFO [Abril- Toldrá-1#1]       StepMonitoring.java:98   | SYMBOLS
+2026-04-23 19:53:23,973 INFO [Abril- Toldrá-1#1]       StepMonitoring.java:98   | LINKS
+2026-04-23 19:53:24,017 INFO [Abril- Toldrá-1#1]       StepMonitoring.java:98   | RHYTHMS
+2026-04-23 19:53:24,053 INFO [Abril- Toldrá-1#1]                Voice.java:257  | Measure{#3P4} Voice{#2 excess:1/8} too long
+2026-04-23 19:53:24,055 INFO [Abril- Toldrá-1#1]                Voice.java:257  | Measure{#3P4} Voice{#6 excess:1/8} too long
+2026-04-23 19:53:24,056 INFO [Abril- Toldrá-1#1]          StackRhythm.java:224  | S1 MeasureStack#3 no correct rhythm
+2026-04-23 19:53:24,071 INFO [Abril- Toldrá-1#1]        MeasureRhythm.java:1045 | Measure{#6P4} No timeOffset for HeadChordInter#3365{(0.962/0.962) staff:9 slot#6 dur:1/8}
+2026-04-23 19:53:24,071 INFO [Abril- Toldrá-1#1]                Voice.java:257  | Measure{#6P4} Voice{#6 excess:3/8} too long
+2026-04-23 19:53:24,071 INFO [Abril- Toldrá-1#1]          StackRhythm.java:224  | S2 MeasureStack#6 no correct rhythm
+2026-04-23 19:53:24,082 INFO [Abril- Toldrá-1#1]       StepMonitoring.java:98   | PAGE
+2026-04-23 19:53:24,090 INFO [Abril- Toldrá-1#1]                Voice.java:257  | Measure{#3P6} Voice{#2 excess:1/8} too long
+2026-04-23 19:53:24,091 INFO [Abril- Toldrá-1#1]                Voice.java:257  | Measure{#3P6} Voice{#6 excess:1/8} too long
+2026-04-23 19:53:24,091 INFO [Abril- Toldrá-1#1]                Voice.java:257  | Measure{#6P6} Voice{#6 excess:3/8} too long
+2026-04-23 19:53:24,093 INFO [Abril- Toldrá-1#1]                 Book.java:2547 | Book{Abril- Toldrá-1} storing
+2026-04-23 19:53:24,143 INFO [Abril- Toldrá-1#1]                 Book.java:2528 | Stored /book.xml
+2026-04-23 19:53:24,252 INFO [Abril- Toldrá-1#1]           DataHolder.java:348  | Stored /sheet#1/BINARY.png
+2026-04-23 19:53:24,777 INFO [Abril- Toldrá-1#1]                Sheet.java:1583 | Stored /sheet#1/sheet#1.xml
+2026-04-23 19:53:24,778 INFO [Abril- Toldrá-1#1]                 Book.java:2488 | Book stored as output\Abril- Toldrá-1.omr
+2026-04-23 19:53:24,784 INFO [Abril- Toldrá-1#1]            SheetStub.java:1660 | Disposed sheet#1
+2026-04-23 19:53:24,851 INFO [Abril- Toldrá-1#1]                 Book.java:2015 | End of Stub#1 memory: 37,813,632
+2026-04-23 19:53:24,852 INFO [Abril- Toldrá-1#2]       StepMonitoring.java:98   | LOAD
+2026-04-23 19:53:24,880 WARN [Abril- Toldrá-1#2]      PostScriptTable.java:74   | No PostScript name data is provided for the font Maestro
+2026-04-23 19:53:24,959 INFO [Abril- Toldrá-1#2]            SheetStub.java:1273 | Loaded image #2 2480x3508 from C:\Users\34690\Documents\1. Universidad\TFG\canciones_idiomas_varios\pdf\Abril- Toldrá-1.pdf
+2026-04-23 19:53:24,960 INFO [Abril- Toldrá-1#2]       StepMonitoring.java:98   | BINARY
+2026-04-23 19:53:25,779 INFO [Abril- Toldrá-1#2]       StepMonitoring.java:98   | SCALE
+2026-04-23 19:53:25,847 INFO [Abril- Toldrá-1#2]         ScaleBuilder.java:241  | Beam  guessed height: 10 -- 0.50 of 21 interline
+2026-04-23 19:53:25,847 INFO [Abril- Toldrá-1#2]         ScaleBuilder.java:264  | Beam measured height: 11 -- 0.33 of [6..21] range at 173% of needed quorum
+2026-04-23 19:53:25,847 INFO [Abril- Toldrá-1#2]            ScaleStep.java:65   | Scale{ interline(20,21,21) line(2,2,2) beam(11)}
+2026-04-23 19:53:25,847 INFO [Abril- Toldrá-1#2]       StepMonitoring.java:98   | GRID
+2026-04-23 19:53:26,074 INFO [Abril- Toldrá-1#2]       LinesRetriever.java:1500 | Global slope: 0.00000
+2026-04-23 19:53:26,091 INFO [Abril- Toldrá-1#2]    ClustersRetriever.java:328  | Retrieved raw line clusters: 10 of sizes [5] with interline(20,21,21)
+2026-04-23 19:53:26,175 INFO [Abril- Toldrá-1#2]            PeakGraph.java:310  | Systems: #1[1, 2, 3, 4, 5] #2[6, 7, 8, 9, 10]
+2026-04-23 19:53:26,195 INFO [Abril- Toldrá-1#2]        BarsRetriever.java:1304 | System#1
+2026-04-23 19:53:26,196 INFO [Abril- Toldrá-1#2]        BarsRetriever.java:1307 |    PartGroup{bracket number:1 barline:false staves:1-3}
+2026-04-23 19:53:26,196 INFO [Abril- Toldrá-1#2]        BarsRetriever.java:1304 | System#2
+2026-04-23 19:53:26,196 INFO [Abril- Toldrá-1#2]        BarsRetriever.java:1307 |    PartGroup{bracket number:1 barline:false staves:6-8}
+2026-04-23 19:53:26,307 INFO [Abril- Toldrá-1#2]        SystemManager.java:779  | 4 parts along 2 systems
+2026-04-23 19:53:26,308 INFO [Abril- Toldrá-1#2]       StepMonitoring.java:98   | HEADERS
+2026-04-23 19:53:26,549 INFO [Abril- Toldrá-1#2]       StepMonitoring.java:98   | STEM_SEEDS
+2026-04-23 19:53:26,575 INFO [Abril- Toldrá-1#2]        StemSeedsStep.java:86   | stem(2 max:3)
+2026-04-23 19:53:26,591 INFO [Abril- Toldrá-1#2]       StepMonitoring.java:98   | BEAMS
+2026-04-23 19:53:28,767 INFO [Abril- Toldrá-1#2]       StepMonitoring.java:98   | LEDGERS
+2026-04-23 19:53:28,821 INFO [Abril- Toldrá-1#2]       StepMonitoring.java:98   | HEADS
+2026-04-23 19:53:31,427 INFO [Abril- Toldrá-1#2]        HeadSeedTally.java:235  | Scale information: HeadSeeds{NOTEHEAD_VOID[R:-0.5] NOTEHEAD_BLACK[L:-0.5,R:-0.5]}
+2026-04-23 19:53:31,428 INFO [Abril- Toldrá-1#2]       StepMonitoring.java:98   | STEMS
+2026-04-23 19:53:31,846 INFO [Abril- Toldrá-1#2]       StepMonitoring.java:98   | REDUCTION
+2026-04-23 19:53:31,896 INFO [Abril- Toldrá-1#2]        ReductionStep.java:105  | Stems free length median value: 73 pixels, 3.5 interlines
+2026-04-23 19:53:31,899 INFO [Abril- Toldrá-1#2]       StepMonitoring.java:98   | CUE_BEAMS
+2026-04-23 19:53:31,899 INFO [Abril- Toldrá-1#2]         CueBeamsStep.java:81   | Step CUE_BEAMS is skipped because small heads switch is off
+2026-04-23 19:53:31,899 INFO [Abril- Toldrá-1#2]       StepMonitoring.java:98   | TEXTS
+2026-04-23 19:53:32,729 INFO [Abril- Toldrá-1#2]       StepMonitoring.java:98   | MEASURES
+2026-04-23 19:53:32,732 INFO [Abril- Toldrá-1#2]                 Page.java:307  | 7 raw measures: [4 in system#1, 3 in system#2]
+2026-04-23 19:53:32,733 INFO [Abril- Toldrá-1#2]       StepMonitoring.java:98   | CHORDS
+2026-04-23 19:53:32,737 INFO [Abril- Toldrá-1#2]       StepMonitoring.java:98   | CURVES
+2026-04-23 19:53:33,305 INFO [Abril- Toldrá-1#2]         SlursBuilder.java:240  | Slurs: 2
+2026-04-23 19:53:33,310 INFO [Abril- Toldrá-1#2]      SegmentsBuilder.java:155  | Segments: 14
+2026-04-23 19:53:33,311 INFO [Abril- Toldrá-1#2]       StepMonitoring.java:98   | SYMBOLS
+2026-04-23 19:53:33,563 INFO [Abril- Toldrá-1#2]       StepMonitoring.java:98   | LINKS
+2026-04-23 19:53:33,571 INFO [Abril- Toldrá-1#2]             KeyInter.java:1298 | Key built KeyInter#3924{(0.639) staff:10 KEY_FLAT_1 pitch:2.0 fifths:-1}
+2026-04-23 19:53:33,592 INFO [Abril- Toldrá-1#2]       StepMonitoring.java:98   | RHYTHMS
+2026-04-23 19:53:33,593 INFO [Abril- Toldrá-1#2]           PageRhythm.java:199  | {Page#2.1} Time value reused from sheet#1
+2026-04-23 19:53:33,598 INFO [Abril- Toldrá-1#2]        MeasureRhythm.java:1045 | Measure{#1P4} No timeOffset for HeadChordInter#3429{(0.948/0.948) staff:4 slot#6 dur:1/8}
+2026-04-23 19:53:33,599 INFO [Abril- Toldrá-1#2]                Voice.java:257  | Measure{#1P4} Voice{#5 excess:3/8} too long
+2026-04-23 19:53:33,599 INFO [Abril- Toldrá-1#2]          StackRhythm.java:224  | S1 MeasureStack#1 no correct rhythm
+2026-04-23 19:53:33,617 INFO [Abril- Toldrá-1#2]                Voice.java:257  | Measure{#5P4} Voice{#5 excess:3/8} too long
+2026-04-23 19:53:33,618 INFO [Abril- Toldrá-1#2]                Voice.java:257  | Measure{#5P4} Voice{#6 excess:3/8} too long
+2026-04-23 19:53:33,618 INFO [Abril- Toldrá-1#2]          StackRhythm.java:224  | S2 MeasureStack#5 no correct rhythm
+2026-04-23 19:53:33,624 INFO [Abril- Toldrá-1#2]                Voice.java:257  | Measure{#7P4} Voice{#5 excess:1/8} too long
+2026-04-23 19:53:33,625 INFO [Abril- Toldrá-1#2]          StackRhythm.java:224  | S2 MeasureStack#7 no correct rhythm
+2026-04-23 19:53:33,625 INFO [Abril- Toldrá-1#2]       StepMonitoring.java:98   | PAGE
+2026-04-23 19:53:33,627 INFO [Abril- Toldrá-1#2]                Voice.java:257  | Measure{#1P9} Voice{#5 excess:3/8} too long
+2026-04-23 19:53:33,627 INFO [Abril- Toldrá-1#2]                Voice.java:257  | Measure{#5P9} Voice{#5 excess:3/8} too long
+2026-04-23 19:53:33,628 INFO [Abril- Toldrá-1#2]                Voice.java:257  | Measure{#5P9} Voice{#6 excess:3/8} too long
+2026-04-23 19:53:33,628 INFO [Abril- Toldrá-1#2]                Voice.java:257  | Measure{#7P9} Voice{#5 excess:1/8} too long
+2026-04-23 19:53:33,629 INFO [Abril- Toldrá-1#2]                 Book.java:2547 | Book{Abril- Toldrá-1} storing
+2026-04-23 19:53:33,676 INFO [Abril- Toldrá-1#2]                 Book.java:2528 | Stored /book.xml
+2026-04-23 19:53:33,783 INFO [Abril- Toldrá-1#2]           DataHolder.java:348  | Stored /sheet#2/BINARY.png
+2026-04-23 19:53:34,145 INFO [Abril- Toldrá-1#2]                Sheet.java:1583 | Stored /sheet#2/sheet#2.xml
+2026-04-23 19:53:34,145 INFO [Abril- Toldrá-1#2]                 Book.java:2488 | Book stored as output\Abril- Toldrá-1.omr
+2026-04-23 19:53:34,151 INFO [Abril- Toldrá-1#2]            SheetStub.java:1660 | Disposed sheet#2
+2026-04-23 19:53:34,205 INFO [Abril- Toldrá-1#2]                 Book.java:2015 | End of Stub#2 memory: 37,846,632
+2026-04-23 19:53:34,206 INFO [Abril- Toldrá-1#3]       StepMonitoring.java:98   | LOAD
+2026-04-23 19:53:34,221 WARN [Abril- Toldrá-1#3]      PostScriptTable.java:74   | No PostScript name data is provided for the font Maestro
+2026-04-23 19:53:34,289 INFO [Abril- Toldrá-1#3]            SheetStub.java:1273 | Loaded image #3 2480x3508 from C:\Users\34690\Documents\1. Universidad\TFG\canciones_idiomas_varios\pdf\Abril- Toldrá-1.pdf
+2026-04-23 19:53:34,291 INFO [Abril- Toldrá-1#3]       StepMonitoring.java:98   | BINARY
+2026-04-23 19:53:34,619 INFO [Abril- Toldrá-1#3]       StepMonitoring.java:98   | SCALE
+2026-04-23 19:53:34,621 INFO [Abril- Toldrá-1#3]         ScaleBuilder.java:241  | Beam  guessed height: 10 -- 0.50 of 21 interline
+2026-04-23 19:53:34,621 INFO [Abril- Toldrá-1#3]         ScaleBuilder.java:264  | Beam measured height: 11 -- 0.33 of [6..21] range at 227% of needed quorum
+2026-04-23 19:53:34,621 INFO [Abril- Toldrá-1#3]            ScaleStep.java:65   | Scale{ interline(20,21,21) line(2,2,2) beam(11)}
+2026-04-23 19:53:34,622 INFO [Abril- Toldrá-1#3]       StepMonitoring.java:98   | GRID
+2026-04-23 19:53:34,678 INFO [Abril- Toldrá-1#3]       LinesRetriever.java:1500 | Global slope: 0.00000
+2026-04-23 19:53:34,688 INFO [Abril- Toldrá-1#3]    ClustersRetriever.java:328  | Retrieved raw line clusters: 10 of sizes [5] with interline(20,21,21)
+2026-04-23 19:53:34,758 INFO [Abril- Toldrá-1#3]            PeakGraph.java:310  | Systems: #1[1, 2, 3, 4, 5] #2[6, 7, 8, 9, 10]
+2026-04-23 19:53:34,771 INFO [Abril- Toldrá-1#3]        BarsRetriever.java:1304 | System#1
+2026-04-23 19:53:34,771 INFO [Abril- Toldrá-1#3]        BarsRetriever.java:1307 |    PartGroup{bracket number:1 barline:false staves:1-3}
+2026-04-23 19:53:34,772 INFO [Abril- Toldrá-1#3]        BarsRetriever.java:1304 | System#2
+2026-04-23 19:53:34,772 INFO [Abril- Toldrá-1#3]        BarsRetriever.java:1307 |    PartGroup{bracket number:1 barline:false staves:6-8}
+2026-04-23 19:53:34,862 INFO [Abril- Toldrá-1#3]        SystemManager.java:779  | 4 parts along 2 systems
+2026-04-23 19:53:34,863 INFO [Abril- Toldrá-1#3]       StepMonitoring.java:98   | HEADERS
+2026-04-23 19:53:34,942 INFO [Abril- Toldrá-1#3]       StepMonitoring.java:98   | STEM_SEEDS
+2026-04-23 19:53:34,967 INFO [Abril- Toldrá-1#3]        StemSeedsStep.java:86   | stem(2 max:3)
+2026-04-23 19:53:34,972 INFO [Abril- Toldrá-1#3]       StepMonitoring.java:98   | BEAMS
+2026-04-23 19:53:37,140 INFO [Abril- Toldrá-1#3]       StepMonitoring.java:98   | LEDGERS
+2026-04-23 19:53:37,225 INFO [Abril- Toldrá-1#3]       StepMonitoring.java:98   | HEADS
+2026-04-23 19:53:39,954 INFO [Abril- Toldrá-1#3]        HeadSeedTally.java:235  | Scale information: HeadSeeds{NOTEHEAD_VOID[R:-0.6] NOTEHEAD_BLACK[L:-0.5,R:-0.5]}
+2026-04-23 19:53:39,954 INFO [Abril- Toldrá-1#3]       StepMonitoring.java:98   | STEMS
+2026-04-23 19:53:40,336 INFO [Abril- Toldrá-1#3]       StepMonitoring.java:98   | REDUCTION
+2026-04-23 19:53:40,367 INFO [Abril- Toldrá-1#3]        ReductionStep.java:105  | Stems free length median value: 74 pixels, 3.5 interlines
+2026-04-23 19:53:40,368 INFO [Abril- Toldrá-1#3]       StepMonitoring.java:98   | CUE_BEAMS
+2026-04-23 19:53:40,369 INFO [Abril- Toldrá-1#3]         CueBeamsStep.java:81   | Step CUE_BEAMS is skipped because small heads switch is off
+2026-04-23 19:53:40,369 INFO [Abril- Toldrá-1#3]       StepMonitoring.java:98   | TEXTS
+2026-04-23 19:53:41,089 INFO [Abril- Toldrá-1#3]       StepMonitoring.java:98   | MEASURES
+2026-04-23 19:53:41,090 INFO [Abril- Toldrá-1#3]                 Page.java:307  | 6 raw measures: [3 in system#1, 3 in system#2]
+2026-04-23 19:53:41,090 INFO [Abril- Toldrá-1#3]       StepMonitoring.java:98   | CHORDS
+2026-04-23 19:53:41,092 INFO [Abril- Toldrá-1#3]       StepMonitoring.java:98   | CURVES
+2026-04-23 19:53:41,468 INFO [Abril- Toldrá-1#3]         SlursBuilder.java:240  | Slurs: 0
+2026-04-23 19:53:41,470 INFO [Abril- Toldrá-1#3]      SegmentsBuilder.java:155  | Segments: 4
+2026-04-23 19:53:41,471 INFO [Abril- Toldrá-1#3]       StepMonitoring.java:98   | SYMBOLS
+2026-04-23 19:53:41,601 INFO [Abril- Toldrá-1#3]       StepMonitoring.java:98   | LINKS
+2026-04-23 19:53:41,624 INFO [Abril- Toldrá-1#3]       StepMonitoring.java:98   | RHYTHMS
+2026-04-23 19:53:41,625 INFO [Abril- Toldrá-1#3]           PageRhythm.java:199  | {Page#3.1} Time value reused from sheet#2
+2026-04-23 19:53:41,630 INFO [Abril- Toldrá-1#3]        MeasureRhythm.java:1045 | Measure{#1P4} No timeOffset for HeadChordInter#3693{(0.958/0.958) staff:4 slot#6 dur:1/8}
+2026-04-23 19:53:41,631 INFO [Abril- Toldrá-1#3]                Voice.java:257  | Measure{#1P4} Voice{#5 excess:3/8} too long
+2026-04-23 19:53:41,631 INFO [Abril- Toldrá-1#3]          StackRhythm.java:224  | S1 MeasureStack#1 no correct rhythm
+2026-04-23 19:53:41,647 INFO [Abril- Toldrá-1#3]       StepMonitoring.java:98   | PAGE
+2026-04-23 19:53:41,649 INFO [Abril- Toldrá-1#3]                Voice.java:257  | Measure{#1P9} Voice{#5 excess:3/8} too long
+2026-04-23 19:53:41,649 INFO [Abril- Toldrá-1#3]                 Book.java:2547 | Book{Abril- Toldrá-1} storing
+2026-04-23 19:53:41,694 INFO [Abril- Toldrá-1#3]                 Book.java:2528 | Stored /book.xml
+2026-04-23 19:53:41,762 INFO [Abril- Toldrá-1#3]           DataHolder.java:348  | Stored /sheet#3/BINARY.png
+2026-04-23 19:53:42,084 INFO [Abril- Toldrá-1#3]                Sheet.java:1583 | Stored /sheet#3/sheet#3.xml
+2026-04-23 19:53:42,084 INFO [Abril- Toldrá-1#3]                 Book.java:2488 | Book stored as output\Abril- Toldrá-1.omr
+2026-04-23 19:53:42,089 INFO [Abril- Toldrá-1#3]            SheetStub.java:1660 | Disposed sheet#3
+2026-04-23 19:53:42,147 INFO [Abril- Toldrá-1#3]                 Book.java:2015 | End of Stub#3 memory: 37,870,824
+2026-04-23 19:53:42,148 INFO [Abril- Toldrá-1#4]       StepMonitoring.java:98   | LOAD
+2026-04-23 19:53:42,169 WARN [Abril- Toldrá-1#4]      PostScriptTable.java:74   | No PostScript name data is provided for the font Maestro
+2026-04-23 19:53:42,205 INFO [Abril- Toldrá-1#4]            SheetStub.java:1273 | Loaded image #4 2480x3508 from C:\Users\34690\Documents\1. Universidad\TFG\canciones_idiomas_varios\pdf\Abril- Toldrá-1.pdf
+2026-04-23 19:53:42,205 INFO [Abril- Toldrá-1#4]       StepMonitoring.java:98   | BINARY
+2026-04-23 19:53:42,510 INFO [Abril- Toldrá-1#4]       StepMonitoring.java:98   | SCALE
+2026-04-23 19:53:42,512 INFO [Abril- Toldrá-1#4]         ScaleBuilder.java:241  | Beam  guessed height: 10 -- 0.50 of 21 interline
+2026-04-23 19:53:42,513 INFO [Abril- Toldrá-1#4]         ScaleBuilder.java:264  | Beam measured height: 11 -- 0.33 of [6..21] range at 164% of needed quorum
+2026-04-23 19:53:42,513 INFO [Abril- Toldrá-1#4]            ScaleStep.java:65   | Scale{ interline(20,21,21) line(2,2,2) beam(11)}
+2026-04-23 19:53:42,513 INFO [Abril- Toldrá-1#4]       StepMonitoring.java:98   | GRID
+2026-04-23 19:53:42,558 INFO [Abril- Toldrá-1#4]       LinesRetriever.java:1500 | Global slope: 0.00000
+2026-04-23 19:53:42,565 INFO [Abril- Toldrá-1#4]    ClustersRetriever.java:328  | Retrieved raw line clusters: 10 of sizes [5] with interline(20,21,21)
+2026-04-23 19:53:42,592 INFO [Abril- Toldrá-1#4]            PeakGraph.java:310  | Systems: #1[1, 2, 3, 4, 5] #2[6, 7, 8, 9, 10]
+2026-04-23 19:53:42,604 INFO [Abril- Toldrá-1#4]        BarsRetriever.java:1304 | System#1
+2026-04-23 19:53:42,604 INFO [Abril- Toldrá-1#4]        BarsRetriever.java:1307 |    PartGroup{bracket number:1 barline:false staves:1-3}
+2026-04-23 19:53:42,604 INFO [Abril- Toldrá-1#4]        BarsRetriever.java:1304 | System#2
+2026-04-23 19:53:42,604 INFO [Abril- Toldrá-1#4]        BarsRetriever.java:1307 |    PartGroup{bracket number:1 barline:false staves:6-8}
+2026-04-23 19:53:42,688 INFO [Abril- Toldrá-1#4]        SystemManager.java:779  | 4 parts along 2 systems
+2026-04-23 19:53:42,688 INFO [Abril- Toldrá-1#4]       StepMonitoring.java:98   | HEADERS
+2026-04-23 19:53:42,785 INFO [Abril- Toldrá-1#4]       StepMonitoring.java:98   | STEM_SEEDS
+2026-04-23 19:53:42,806 INFO [Abril- Toldrá-1#4]        StemSeedsStep.java:86   | stem(2 max:3)
+2026-04-23 19:53:42,810 INFO [Abril- Toldrá-1#4]       StepMonitoring.java:98   | BEAMS
+2026-04-23 19:53:44,879 INFO [Abril- Toldrá-1#4]       StepMonitoring.java:98   | LEDGERS
+2026-04-23 19:53:44,932 INFO [Abril- Toldrá-1#4]       StepMonitoring.java:98   | HEADS
+2026-04-23 19:53:47,576 INFO [Abril- Toldrá-1#4]        HeadSeedTally.java:235  | Scale information: HeadSeeds{NOTEHEAD_BLACK[L:-0.6,R:-0.5]}
+2026-04-23 19:53:47,577 INFO [Abril- Toldrá-1#4]       StepMonitoring.java:98   | STEMS
+2026-04-23 19:53:47,802 INFO [Abril- Toldrá-1#4]       StepMonitoring.java:98   | REDUCTION
+2026-04-23 19:53:47,830 INFO [Abril- Toldrá-1#4]        ReductionStep.java:105  | Stems free length median value: 74 pixels, 3.5 interlines
+2026-04-23 19:53:47,832 INFO [Abril- Toldrá-1#4]       StepMonitoring.java:98   | CUE_BEAMS
+2026-04-23 19:53:47,832 INFO [Abril- Toldrá-1#4]         CueBeamsStep.java:81   | Step CUE_BEAMS is skipped because small heads switch is off
+2026-04-23 19:53:47,833 INFO [Abril- Toldrá-1#4]       StepMonitoring.java:98   | TEXTS
+2026-04-23 19:53:48,559 INFO [Abril- Toldrá-1#4]       StepMonitoring.java:98   | MEASURES
+2026-04-23 19:53:48,561 INFO [Abril- Toldrá-1#4]                 Page.java:307  | 7 raw measures: [3 in system#1, 4 in system#2]
+2026-04-23 19:53:48,561 INFO [Abril- Toldrá-1#4]       StepMonitoring.java:98   | CHORDS
+2026-04-23 19:53:48,566 INFO [Abril- Toldrá-1#4]       StepMonitoring.java:98   | CURVES
+2026-04-23 19:53:48,919 INFO [Abril- Toldrá-1#4]         SlursBuilder.java:240  | Slurs: 0
+2026-04-23 19:53:48,922 INFO [Abril- Toldrá-1#4]      SegmentsBuilder.java:155  | Segments: 12
+2026-04-23 19:53:48,928 INFO [Abril- Toldrá-1#4]       StepMonitoring.java:98   | SYMBOLS
+2026-04-23 19:53:49,139 INFO [Abril- Toldrá-1#4]       StepMonitoring.java:98   | LINKS
+2026-04-23 19:53:49,156 INFO [Abril- Toldrá-1#4]       StepMonitoring.java:98   | RHYTHMS
+2026-04-23 19:53:49,157 INFO [Abril- Toldrá-1#4]           PageRhythm.java:199  | {Page#4.1} Time value reused from sheet#2
+2026-04-23 19:53:49,171 INFO [Abril- Toldrá-1#4]       StepMonitoring.java:98   | PAGE
+2026-04-23 19:53:49,173 INFO [Abril- Toldrá-1#4]                 Book.java:2547 | Book{Abril- Toldrá-1} storing
+2026-04-23 19:53:49,220 INFO [Abril- Toldrá-1#4]                 Book.java:2528 | Stored /book.xml
+2026-04-23 19:53:49,292 INFO [Abril- Toldrá-1#4]           DataHolder.java:348  | Stored /sheet#4/BINARY.png
+2026-04-23 19:53:49,517 INFO [Abril- Toldrá-1#4]                Sheet.java:1583 | Stored /sheet#4/sheet#4.xml
+2026-04-23 19:53:49,517 INFO [Abril- Toldrá-1#4]                 Book.java:2488 | Book stored as output\Abril- Toldrá-1.omr
+2026-04-23 19:53:49,528 INFO [Abril- Toldrá-1#4]            SheetStub.java:1660 | Disposed sheet#4
+2026-04-23 19:53:49,601 INFO [Abril- Toldrá-1#4]                 Book.java:2015 | End of Stub#4 memory: 37,915,696
+2026-04-23 19:53:49,601 INFO [Abril- Toldrá-1#5]       StepMonitoring.java:98   | LOAD
+2026-04-23 19:53:49,618 WARN [Abril- Toldrá-1#5]      PostScriptTable.java:74   | No PostScript name data is provided for the font Maestro
+2026-04-23 19:53:49,649 INFO [Abril- Toldrá-1#5]            SheetStub.java:1273 | Loaded image #5 2480x3508 from C:\Users\34690\Documents\1. Universidad\TFG\canciones_idiomas_varios\pdf\Abril- Toldrá-1.pdf
+2026-04-23 19:53:49,650 INFO [Abril- Toldrá-1#5]       StepMonitoring.java:98   | BINARY
+2026-04-23 19:53:49,938 INFO [Abril- Toldrá-1#5]       StepMonitoring.java:98   | SCALE
+2026-04-23 19:53:49,939 INFO [Abril- Toldrá-1#5]         ScaleBuilder.java:241  | Beam  guessed height: 10 -- 0.50 of 21 interline
+2026-04-23 19:53:49,939 INFO [Abril- Toldrá-1#5]         ScaleBuilder.java:264  | Beam measured height: 11 -- 0.33 of [6..21] range at 198% of needed quorum
+2026-04-23 19:53:49,939 INFO [Abril- Toldrá-1#5]            ScaleStep.java:65   | Scale{ interline(20,21,21) line(2,2,2) beam(11)}
+2026-04-23 19:53:49,939 INFO [Abril- Toldrá-1#5]       StepMonitoring.java:98   | GRID
+2026-04-23 19:53:49,991 INFO [Abril- Toldrá-1#5]       LinesRetriever.java:1500 | Global slope: 0.00000
+2026-04-23 19:53:49,999 INFO [Abril- Toldrá-1#5]    ClustersRetriever.java:328  | Retrieved raw line clusters: 10 of sizes [5] with interline(20,21,21)
+2026-04-23 19:53:50,036 INFO [Abril- Toldrá-1#5]            PeakGraph.java:310  | Systems: #1[1, 2, 3, 4, 5] #2[6, 7, 8, 9, 10]
+2026-04-23 19:53:50,050 INFO [Abril- Toldrá-1#5]        BarsRetriever.java:1304 | System#1
+2026-04-23 19:53:50,050 INFO [Abril- Toldrá-1#5]        BarsRetriever.java:1307 |    PartGroup{bracket number:1 barline:false staves:1-3}
+2026-04-23 19:53:50,050 INFO [Abril- Toldrá-1#5]        BarsRetriever.java:1304 | System#2
+2026-04-23 19:53:50,050 INFO [Abril- Toldrá-1#5]        BarsRetriever.java:1307 |    PartGroup{bracket number:1 barline:false staves:6-8}
+2026-04-23 19:53:50,134 INFO [Abril- Toldrá-1#5]        SystemManager.java:779  | 4 parts along 2 systems
+2026-04-23 19:53:50,134 INFO [Abril- Toldrá-1#5]       StepMonitoring.java:98   | HEADERS
+2026-04-23 19:53:50,256 INFO [Abril- Toldrá-1#5]       StepMonitoring.java:98   | STEM_SEEDS
+2026-04-23 19:53:50,278 INFO [Abril- Toldrá-1#5]        StemSeedsStep.java:86   | stem(2 max:3)
+2026-04-23 19:53:50,282 INFO [Abril- Toldrá-1#5]       StepMonitoring.java:98   | BEAMS
+2026-04-23 19:53:52,358 INFO [Abril- Toldrá-1#5]       StepMonitoring.java:98   | LEDGERS
+2026-04-23 19:53:52,427 INFO [Abril- Toldrá-1#5]       StepMonitoring.java:98   | HEADS
+2026-04-23 19:53:55,116 INFO [Abril- Toldrá-1#5]        HeadSeedTally.java:235  | Scale information: HeadSeeds{NOTEHEAD_BLACK[L:-0.5,R:-0.5]}
+2026-04-23 19:53:55,117 INFO [Abril- Toldrá-1#5]       StepMonitoring.java:98   | STEMS
+2026-04-23 19:53:55,439 INFO [Abril- Toldrá-1#5]       StepMonitoring.java:98   | REDUCTION
+2026-04-23 19:53:55,487 INFO [Abril- Toldrá-1#5]        ReductionStep.java:105  | Stems free length median value: 74 pixels, 3.5 interlines
+2026-04-23 19:53:55,489 INFO [Abril- Toldrá-1#5]       StepMonitoring.java:98   | CUE_BEAMS
+2026-04-23 19:53:55,489 INFO [Abril- Toldrá-1#5]         CueBeamsStep.java:81   | Step CUE_BEAMS is skipped because small heads switch is off
+2026-04-23 19:53:55,489 INFO [Abril- Toldrá-1#5]       StepMonitoring.java:98   | TEXTS
+2026-04-23 19:53:56,337 INFO [Abril- Toldrá-1#5]       StepMonitoring.java:98   | MEASURES
+2026-04-23 19:53:56,339 INFO [Abril- Toldrá-1#5]                 Page.java:307  | 7 raw measures: [3 in system#1, 4 in system#2]
+2026-04-23 19:53:56,339 INFO [Abril- Toldrá-1#5]       StepMonitoring.java:98   | CHORDS
+2026-04-23 19:53:56,341 INFO [Abril- Toldrá-1#5]       StepMonitoring.java:98   | CURVES
+2026-04-23 19:53:56,702 INFO [Abril- Toldrá-1#5]         SlursBuilder.java:240  | Slurs: 1
+2026-04-23 19:53:56,705 INFO [Abril- Toldrá-1#5]      SegmentsBuilder.java:155  | Segments: 15
+2026-04-23 19:53:56,708 INFO [Abril- Toldrá-1#5]       StepMonitoring.java:98   | SYMBOLS
+2026-04-23 19:53:56,852 INFO [Abril- Toldrá-1#5]       StepMonitoring.java:98   | LINKS
+2026-04-23 19:53:56,872 INFO [Abril- Toldrá-1#5]       StepMonitoring.java:98   | RHYTHMS
+2026-04-23 19:53:56,872 INFO [Abril- Toldrá-1#5]           PageRhythm.java:199  | {Page#5.1} Time value reused from sheet#2
+2026-04-23 19:53:56,888 INFO [Abril- Toldrá-1#5]       StepMonitoring.java:98   | PAGE
+2026-04-23 19:53:56,889 INFO [Abril- Toldrá-1#5]                 Book.java:2547 | Book{Abril- Toldrá-1} storing
+2026-04-23 19:53:56,934 INFO [Abril- Toldrá-1#5]                 Book.java:2528 | Stored /book.xml
+2026-04-23 19:53:56,994 INFO [Abril- Toldrá-1#5]           DataHolder.java:348  | Stored /sheet#5/BINARY.png
+2026-04-23 19:53:57,259 INFO [Abril- Toldrá-1#5]                Sheet.java:1583 | Stored /sheet#5/sheet#5.xml
+2026-04-23 19:53:57,259 INFO [Abril- Toldrá-1#5]                 Book.java:2488 | Book stored as output\Abril- Toldrá-1.omr
+2026-04-23 19:53:57,270 INFO [Abril- Toldrá-1#5]            SheetStub.java:1660 | Disposed sheet#5
+2026-04-23 19:53:57,327 INFO [Abril- Toldrá-1#5]                 Book.java:2015 | End of Stub#5 memory: 37,960,936
+2026-04-23 19:53:57,328 INFO [Abril- Toldrá-1#6]       StepMonitoring.java:98   | LOAD
+2026-04-23 19:53:57,341 WARN [Abril- Toldrá-1#6]      PostScriptTable.java:74   | No PostScript name data is provided for the font Maestro
+2026-04-23 19:53:57,379 INFO [Abril- Toldrá-1#6]            SheetStub.java:1273 | Loaded image #6 2480x3508 from C:\Users\34690\Documents\1. Universidad\TFG\canciones_idiomas_varios\pdf\Abril- Toldrá-1.pdf
+2026-04-23 19:53:57,380 INFO [Abril- Toldrá-1#6]       StepMonitoring.java:98   | BINARY
+2026-04-23 19:53:57,680 INFO [Abril- Toldrá-1#6]       StepMonitoring.java:98   | SCALE
+2026-04-23 19:53:57,681 INFO [Abril- Toldrá-1#6]         ScaleBuilder.java:241  | Beam  guessed height: 10 -- 0.50 of 21 interline
+2026-04-23 19:53:57,682 INFO [Abril- Toldrá-1#6]         ScaleBuilder.java:264  | Beam measured height: 11 -- 0.33 of [6..21] range at 191% of needed quorum
+2026-04-23 19:53:57,682 INFO [Abril- Toldrá-1#6]            ScaleStep.java:65   | Scale{ interline(20,21,21) line(2,2,2) beam(11)}
+2026-04-23 19:53:57,682 INFO [Abril- Toldrá-1#6]       StepMonitoring.java:98   | GRID
+2026-04-23 19:53:57,728 INFO [Abril- Toldrá-1#6]       LinesRetriever.java:1500 | Global slope: 0.00000
+2026-04-23 19:53:57,735 INFO [Abril- Toldrá-1#6]    ClustersRetriever.java:328  | Retrieved raw line clusters: 10 of sizes [5] with interline(20,21,21)
+2026-04-23 19:53:57,776 INFO [Abril- Toldrá-1#6]            PeakGraph.java:310  | Systems: #1[1, 2, 3, 4, 5] #2[6, 7, 8, 9, 10]
+2026-04-23 19:53:57,784 INFO [Abril- Toldrá-1#6]        BarsRetriever.java:1304 | System#1
+2026-04-23 19:53:57,784 INFO [Abril- Toldrá-1#6]        BarsRetriever.java:1307 |    PartGroup{bracket number:1 barline:false staves:1-3}
+2026-04-23 19:53:57,784 INFO [Abril- Toldrá-1#6]        BarsRetriever.java:1304 | System#2
+2026-04-23 19:53:57,784 INFO [Abril- Toldrá-1#6]        BarsRetriever.java:1307 |    PartGroup{bracket number:1 barline:false staves:6-8}
+2026-04-23 19:53:57,859 INFO [Abril- Toldrá-1#6]        SystemManager.java:779  | 4 parts along 2 systems
+2026-04-23 19:53:57,860 INFO [Abril- Toldrá-1#6]       StepMonitoring.java:98   | HEADERS
+2026-04-23 19:53:57,956 INFO [Abril- Toldrá-1#6]       StepMonitoring.java:98   | STEM_SEEDS
+2026-04-23 19:53:57,976 INFO [Abril- Toldrá-1#6]        StemSeedsStep.java:86   | stem(2 max:3)
+2026-04-23 19:53:57,980 INFO [Abril- Toldrá-1#6]       StepMonitoring.java:98   | BEAMS
+2026-04-23 19:53:59,990 INFO [Abril- Toldrá-1#6]       StepMonitoring.java:98   | LEDGERS
+2026-04-23 19:54:00,054 INFO [Abril- Toldrá-1#6]       StepMonitoring.java:98   | HEADS
+2026-04-23 19:54:02,500 INFO [Abril- Toldrá-1#6]        HeadSeedTally.java:235  | Scale information: HeadSeeds{NOTEHEAD_VOID[R:-0.5] NOTEHEAD_BLACK[L:-0.5,R:-0.5]}
+2026-04-23 19:54:02,501 INFO [Abril- Toldrá-1#6]       StepMonitoring.java:98   | STEMS
+2026-04-23 19:54:02,688 INFO [Abril- Toldrá-1#6]       StepMonitoring.java:98   | REDUCTION
+2026-04-23 19:54:02,711 INFO [Abril- Toldrá-1#6]        ReductionStep.java:105  | Stems free length median value: 74 pixels, 3.5 interlines
+2026-04-23 19:54:02,713 INFO [Abril- Toldrá-1#6]       StepMonitoring.java:98   | CUE_BEAMS
+2026-04-23 19:54:02,714 INFO [Abril- Toldrá-1#6]         CueBeamsStep.java:81   | Step CUE_BEAMS is skipped because small heads switch is off
+2026-04-23 19:54:02,714 INFO [Abril- Toldrá-1#6]       StepMonitoring.java:98   | TEXTS
+2026-04-23 19:54:03,439 INFO [Abril- Toldrá-1#6]       StepMonitoring.java:98   | MEASURES
+2026-04-23 19:54:03,440 INFO [Abril- Toldrá-1#6]                 Page.java:307  | 7 raw measures: [3 in system#1, 4 in system#2]
+2026-04-23 19:54:03,440 INFO [Abril- Toldrá-1#6]       StepMonitoring.java:98   | CHORDS
+2026-04-23 19:54:03,441 INFO [Abril- Toldrá-1#6]       StepMonitoring.java:98   | CURVES
+2026-04-23 19:54:03,743 INFO [Abril- Toldrá-1#6]         SlursBuilder.java:240  | Slurs: 5
+2026-04-23 19:54:03,746 INFO [Abril- Toldrá-1#6]      SegmentsBuilder.java:155  | Segments: 8
+2026-04-23 19:54:03,747 INFO [Abril- Toldrá-1#6]       StepMonitoring.java:98   | SYMBOLS
+2026-04-23 19:54:03,871 INFO [Abril- Toldrá-1#6]       StepMonitoring.java:98   | LINKS
+2026-04-23 19:54:03,891 INFO [Abril- Toldrá-1#6]       StepMonitoring.java:98   | RHYTHMS
+2026-04-23 19:54:03,893 INFO [Abril- Toldrá-1#6]           PageRhythm.java:199  | {Page#6.1} Time value reused from sheet#2
+2026-04-23 19:54:03,899 INFO [Abril- Toldrá-1#6]       StepMonitoring.java:98   | PAGE
+2026-04-23 19:54:03,900 INFO [Abril- Toldrá-1#6]                 Book.java:2547 | Book{Abril- Toldrá-1} storing
+2026-04-23 19:54:03,942 INFO [Abril- Toldrá-1#6]                 Book.java:2528 | Stored /book.xml
+2026-04-23 19:54:03,995 INFO [Abril- Toldrá-1#6]           DataHolder.java:348  | Stored /sheet#6/BINARY.png
+2026-04-23 19:54:04,226 INFO [Abril- Toldrá-1#6]                Sheet.java:1583 | Stored /sheet#6/sheet#6.xml
+2026-04-23 19:54:04,226 INFO [Abril- Toldrá-1#6]                 Book.java:2488 | Book stored as output\Abril- Toldrá-1.omr
+2026-04-23 19:54:04,236 INFO [Abril- Toldrá-1#6]            SheetStub.java:1660 | Disposed sheet#6
+2026-04-23 19:54:04,304 INFO [Abril- Toldrá-1#6]                 Book.java:2015 | End of Stub#6 memory: 37,990,696
+2026-04-23 19:54:04,305 INFO [Abril- Toldrá-1#7]       StepMonitoring.java:98   | LOAD
+2026-04-23 19:54:04,319 WARN [Abril- Toldrá-1#7]      PostScriptTable.java:74   | No PostScript name data is provided for the font Maestro
+2026-04-23 19:54:04,345 INFO [Abril- Toldrá-1#7]            SheetStub.java:1273 | Loaded image #7 2480x3508 from C:\Users\34690\Documents\1. Universidad\TFG\canciones_idiomas_varios\pdf\Abril- Toldrá-1.pdf
+2026-04-23 19:54:04,346 INFO [Abril- Toldrá-1#7]       StepMonitoring.java:98   | BINARY
+2026-04-23 19:54:04,628 INFO [Abril- Toldrá-1#7]       StepMonitoring.java:98   | SCALE
+2026-04-23 19:54:04,630 INFO [Abril- Toldrá-1#7]         ScaleBuilder.java:241  | Beam  guessed height: 10 -- 0.50 of 21 interline
+2026-04-23 19:54:04,630 INFO [Abril- Toldrá-1#7]         ScaleBuilder.java:264  | Beam measured height: 11 -- 0.33 of [6..21] range at 138% of needed quorum
+2026-04-23 19:54:04,630 INFO [Abril- Toldrá-1#7]            ScaleStep.java:65   | Scale{ interline(20,21,21) line(2,2,2) beam(11)}
+2026-04-23 19:54:04,630 INFO [Abril- Toldrá-1#7]       StepMonitoring.java:98   | GRID
+2026-04-23 19:54:04,673 INFO [Abril- Toldrá-1#7]       LinesRetriever.java:1500 | Global slope: 0.00000
+2026-04-23 19:54:04,679 INFO [Abril- Toldrá-1#7]    ClustersRetriever.java:328  | Retrieved raw line clusters: 10 of sizes [5] with interline(20,21,21)
+2026-04-23 19:54:04,715 INFO [Abril- Toldrá-1#7]            PeakGraph.java:310  | Systems: #1[1, 2, 3, 4, 5] #2[6, 7, 8, 9, 10]
+2026-04-23 19:54:04,721 INFO [Abril- Toldrá-1#7]        BarsRetriever.java:1304 | System#1
+2026-04-23 19:54:04,721 INFO [Abril- Toldrá-1#7]        BarsRetriever.java:1307 |    PartGroup{bracket number:1 barline:false staves:1-3}
+2026-04-23 19:54:04,721 INFO [Abril- Toldrá-1#7]        BarsRetriever.java:1304 | System#2
+2026-04-23 19:54:04,721 INFO [Abril- Toldrá-1#7]        BarsRetriever.java:1307 |    PartGroup{bracket number:1 barline:false staves:6-8}
+2026-04-23 19:54:04,815 INFO [Abril- Toldrá-1#7]        SystemManager.java:779  | 4 parts along 2 systems
+2026-04-23 19:54:04,815 INFO [Abril- Toldrá-1#7]       StepMonitoring.java:98   | HEADERS
+2026-04-23 19:54:04,907 INFO [Abril- Toldrá-1#7]       StepMonitoring.java:98   | STEM_SEEDS
+2026-04-23 19:54:04,929 INFO [Abril- Toldrá-1#7]        StemSeedsStep.java:86   | stem(2 max:3)
+2026-04-23 19:54:04,933 INFO [Abril- Toldrá-1#7]       StepMonitoring.java:98   | BEAMS
+2026-04-23 19:54:06,986 INFO [Abril- Toldrá-1#7]       StepMonitoring.java:98   | LEDGERS
+2026-04-23 19:54:07,054 INFO [Abril- Toldrá-1#7]       StepMonitoring.java:98   | HEADS
+2026-04-23 19:54:09,648 INFO [Abril- Toldrá-1#7]        HeadSeedTally.java:235  | Scale information: HeadSeeds{NOTEHEAD_VOID[R:-0.5] NOTEHEAD_BLACK[L:-0.5,R:-0.5]}
+2026-04-23 19:54:09,649 INFO [Abril- Toldrá-1#7]       StepMonitoring.java:98   | STEMS
+2026-04-23 19:54:09,890 INFO [Abril- Toldrá-1#7]       StepMonitoring.java:98   | REDUCTION
+2026-04-23 19:54:09,932 INFO [Abril- Toldrá-1#7]        ReductionStep.java:105  | Stems free length median value: 74 pixels, 3.5 interlines
+2026-04-23 19:54:09,934 INFO [Abril- Toldrá-1#7]       StepMonitoring.java:98   | CUE_BEAMS
+2026-04-23 19:54:09,934 INFO [Abril- Toldrá-1#7]         CueBeamsStep.java:81   | Step CUE_BEAMS is skipped because small heads switch is off
+2026-04-23 19:54:09,934 INFO [Abril- Toldrá-1#7]       StepMonitoring.java:98   | TEXTS
+2026-04-23 19:54:10,952 INFO [Abril- Toldrá-1#7]       StepMonitoring.java:98   | MEASURES
+2026-04-23 19:54:10,954 INFO [Abril- Toldrá-1#7]                 Page.java:307  | 8 raw measures: [3 in system#1, 5 in system#2]
+2026-04-23 19:54:10,954 INFO [Abril- Toldrá-1#7]       StepMonitoring.java:98   | CHORDS
+2026-04-23 19:54:10,956 INFO [Abril- Toldrá-1#7]       StepMonitoring.java:98   | CURVES
+2026-04-23 19:54:11,342 INFO [Abril- Toldrá-1#7]         SlursBuilder.java:240  | Slurs: 7
+2026-04-23 19:54:11,345 INFO [Abril- Toldrá-1#7]      SegmentsBuilder.java:155  | Segments: 14
+2026-04-23 19:54:11,345 INFO [Abril- Toldrá-1#7]       StepMonitoring.java:98   | SYMBOLS
+2026-04-23 19:54:11,479 INFO [Abril- Toldrá-1#7]       StepMonitoring.java:98   | LINKS
+2026-04-23 19:54:11,496 INFO [Abril- Toldrá-1#7]       StepMonitoring.java:98   | RHYTHMS
+2026-04-23 19:54:11,496 INFO [Abril- Toldrá-1#7]           PageRhythm.java:199  | {Page#7.1} Time value reused from sheet#2
+2026-04-23 19:54:11,501 INFO [Abril- Toldrá-1#7]                Voice.java:257  | Measure{#4P3} Voice{#1 excess:3/32} too long
+2026-04-23 19:54:11,502 INFO [Abril- Toldrá-1#7]                Voice.java:257  | Measure{#4P4} Voice{#1 excess:1/4} too long
+2026-04-23 19:54:11,502 INFO [Abril- Toldrá-1#7]                Voice.java:257  | Measure{#4P4} Voice{#3 excess:1/4} too long
+2026-04-23 19:54:11,502 INFO [Abril- Toldrá-1#7]                Voice.java:257  | Measure{#4P4} Voice{#6 excess:1/4} too long
+2026-04-23 19:54:11,502 INFO [Abril- Toldrá-1#7]          StackRhythm.java:224  | S2 MeasureStack#4 no correct rhythm
+2026-04-23 19:54:11,504 INFO [Abril- Toldrá-1#7]                Voice.java:257  | Measure{#7P4} Voice{#1 excess:1/8} too long
+2026-04-23 19:54:11,504 INFO [Abril- Toldrá-1#7]          StackRhythm.java:224  | S2 MeasureStack#7 no correct rhythm
+2026-04-23 19:54:11,504 INFO [Abril- Toldrá-1#7]       StepMonitoring.java:98   | PAGE
+2026-04-23 19:54:11,505 INFO [Abril- Toldrá-1#7]                Voice.java:257  | Measure{#4P3} Voice{#1 excess:3/32} too long
+2026-04-23 19:54:11,505 INFO [Abril- Toldrá-1#7]                Voice.java:257  | Measure{#4P9} Voice{#1 excess:1/4} too long
+2026-04-23 19:54:11,505 INFO [Abril- Toldrá-1#7]                Voice.java:257  | Measure{#4P9} Voice{#3 excess:1/4} too long
+2026-04-23 19:54:11,505 INFO [Abril- Toldrá-1#7]                Voice.java:257  | Measure{#4P9} Voice{#6 excess:1/4} too long
+2026-04-23 19:54:11,505 INFO [Abril- Toldrá-1#7]                Voice.java:257  | Measure{#7P9} Voice{#1 excess:1/8} too long
+2026-04-23 19:54:11,506 INFO [Abril- Toldrá-1#7]                 Book.java:2547 | Book{Abril- Toldrá-1} storing
+2026-04-23 19:54:11,560 INFO [Abril- Toldrá-1#7]                 Book.java:2528 | Stored /book.xml
+2026-04-23 19:54:11,617 INFO [Abril- Toldrá-1#7]           DataHolder.java:348  | Stored /sheet#7/BINARY.png
+2026-04-23 19:54:11,874 INFO [Abril- Toldrá-1#7]                Sheet.java:1583 | Stored /sheet#7/sheet#7.xml
+2026-04-23 19:54:11,875 INFO [Abril- Toldrá-1#7]                 Book.java:2488 | Book stored as output\Abril- Toldrá-1.omr
+2026-04-23 19:54:11,881 INFO [Abril- Toldrá-1#7]            SheetStub.java:1660 | Disposed sheet#7
+2026-04-23 19:54:11,934 INFO [Abril- Toldrá-1#7]                 Book.java:2015 | End of Stub#7 memory: 38,026,512
+2026-04-23 19:54:11,935 INFO [Abril- Toldrá-1]                 Book.java:2022 | Book processed.
+2026-04-23 19:54:12,285 INFO [Abril- Toldrá-1]            SheetStub.java:997  | Loaded /sheet#1/sheet#1.xml
+2026-04-23 19:54:12,493 INFO [Abril- Toldrá-1]            SheetStub.java:997  | Loaded /sheet#2/sheet#2.xml
+2026-04-23 19:54:12,643 INFO [Abril- Toldrá-1]            SheetStub.java:997  | Loaded /sheet#3/sheet#3.xml
+2026-04-23 19:54:12,793 INFO [Abril- Toldrá-1]            SheetStub.java:997  | Loaded /sheet#4/sheet#4.xml
+2026-04-23 19:54:12,943 INFO [Abril- Toldrá-1]            SheetStub.java:997  | Loaded /sheet#5/sheet#5.xml
+2026-04-23 19:54:13,073 INFO [Abril- Toldrá-1]            SheetStub.java:997  | Loaded /sheet#6/sheet#6.xml
+2026-04-23 19:54:13,231 INFO [Abril- Toldrá-1]            SheetStub.java:997  | Loaded /sheet#7/sheet#7.xml
+2026-04-23 19:54:13,585 INFO [Abril- Toldrá-1]      PartwiseBuilder.java:2688 | Exporting sheet(s): [#1#2#3#4#5#6#7]
+2026-04-23 19:54:13,586 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#1 System#1 Part#6{name:Soprano staves[1] configs:[5]} dummyPart id: 1
+2026-04-23 19:54:13,593 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#1 System#2 Part#4{ staves[6] configs:[5]} dummyPart id: 1
+2026-04-23 19:54:13,593 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#1 System#1 Part#6{name:Soprano staves[1] configs:[5]} dummyPart id: 2
+2026-04-23 19:54:13,594 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#1 System#2 Part#4{ staves[6] configs:[5]} dummyPart id: 2
+2026-04-23 19:54:13,594 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#1 System#1 Part#6{name:Soprano staves[1] configs:[5]} dummyPart id: 3
+2026-04-23 19:54:13,595 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#1 System#2 Part#4{ staves[6] configs:[5]} dummyPart id: 3
+2026-04-23 19:54:13,595 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#1 System#1 Part#6{name:Soprano staves[1] configs:[5]} dummyPart id: 4
+2026-04-23 19:54:13,599 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#1 System#1 Part#6{name:Soprano staves[1] configs:[5]} dummyPart id: 5
+2026-04-23 19:54:13,602 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#1 System#2 Part#4{ staves[6] configs:[5]} dummyPart id: 6
+2026-04-23 19:54:13,603 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#1 System#2 Part#4{ staves[6] configs:[5]} dummyPart id: 7
+2026-04-23 19:54:13,616 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#2 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 4
+2026-04-23 19:54:13,617 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#2 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 4
+2026-04-23 19:54:13,617 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#2 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 5
+2026-04-23 19:54:13,618 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#2 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 5
+2026-04-23 19:54:13,618 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#2 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 6
+2026-04-23 19:54:13,619 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#2 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 6
+2026-04-23 19:54:13,619 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#2 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 7
+2026-04-23 19:54:13,620 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#2 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 7
+2026-04-23 19:54:13,620 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#2 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 8
+2026-04-23 19:54:13,620 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#2 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 8
+2026-04-23 19:54:13,627 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#3 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 4
+2026-04-23 19:54:13,628 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#3 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 4
+2026-04-23 19:54:13,629 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#3 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 5
+2026-04-23 19:54:13,629 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#3 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 5
+2026-04-23 19:54:13,630 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#3 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 6
+2026-04-23 19:54:13,631 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#3 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 6
+2026-04-23 19:54:13,631 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#3 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 7
+2026-04-23 19:54:13,631 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#3 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 7
+2026-04-23 19:54:13,632 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#3 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 8
+2026-04-23 19:54:13,632 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#3 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 8
+2026-04-23 19:54:13,642 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#4 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 4
+2026-04-23 19:54:13,643 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#4 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 4
+2026-04-23 19:54:13,644 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#4 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 5
+2026-04-23 19:54:13,644 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#4 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 5
+2026-04-23 19:54:13,644 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#4 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 6
+2026-04-23 19:54:13,645 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#4 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 6
+2026-04-23 19:54:13,645 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#4 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 7
+2026-04-23 19:54:13,646 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#4 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 7
+2026-04-23 19:54:13,646 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#4 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 8
+2026-04-23 19:54:13,647 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#4 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 8
+2026-04-23 19:54:13,659 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#5 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 4
+2026-04-23 19:54:13,659 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#5 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 4
+2026-04-23 19:54:13,660 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#5 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 5
+2026-04-23 19:54:13,660 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#5 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 5
+2026-04-23 19:54:13,660 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#5 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 6
+2026-04-23 19:54:13,661 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#5 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 6
+2026-04-23 19:54:13,662 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#5 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 7
+2026-04-23 19:54:13,662 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#5 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 7
+2026-04-23 19:54:13,663 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#5 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 8
+2026-04-23 19:54:13,664 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#5 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 8
+2026-04-23 19:54:13,674 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#6 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 4
+2026-04-23 19:54:13,674 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#6 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 4
+2026-04-23 19:54:13,674 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#6 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 5
+2026-04-23 19:54:13,675 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#6 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 5
+2026-04-23 19:54:13,675 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#6 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 6
+2026-04-23 19:54:13,675 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#6 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 6
+2026-04-23 19:54:13,675 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#6 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 7
+2026-04-23 19:54:13,676 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#6 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 7
+2026-04-23 19:54:13,676 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#6 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 8
+2026-04-23 19:54:13,676 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#6 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 8
+2026-04-23 19:54:13,685 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#7 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 4
+2026-04-23 19:54:13,686 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#7 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 4
+2026-04-23 19:54:13,686 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#7 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 5
+2026-04-23 19:54:13,686 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#7 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 5
+2026-04-23 19:54:13,686 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#7 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 6
+2026-04-23 19:54:13,687 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#7 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 6
+2026-04-23 19:54:13,687 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#7 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 7
+2026-04-23 19:54:13,687 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#7 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 7
+2026-04-23 19:54:13,687 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#7 System#1 Part#1{name:S staves[1] configs:[5]} dummyPart id: 8
+2026-04-23 19:54:13,688 INFO [Abril- Toldrá-1]                 Part.java:351  | Sheet#7 System#2 Part#1{name:S staves[6] configs:[5]} dummyPart id: 8
+2026-04-23 19:54:13,870 INFO [Abril- Toldrá-1]        ScoreExporter.java:164  | Score Abril- Toldrá-1 exported to output\Abril- Toldrá-1.mxl
+2026-04-23 19:54:13,937 INFO [Abril- Toldrá-1]                 Book.java:2528 | Stored /book.xml
+2026-04-23 19:54:14,147 INFO [Abril- Toldrá-1]                Sheet.java:1583 | Stored /sheet#1/sheet#1.xml
+2026-04-23 19:54:14,147 INFO [Abril- Toldrá-1]                 Book.java:2488 | Book stored as output\Abril- Toldrá-1.omr
+2026-04-23 19:54:14,152 INFO [Abril- Toldrá-1]                Score.java:181  | Closing {Score 1}

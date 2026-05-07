@@ -5,7 +5,6 @@ from tkinter import ttk, filedialog, scrolledtext
 def build_window():
     root = tk.Tk()
     root.title("MusictoSound - Conversor de partituras")
-    #root.geometry("800x480")
     root.state("zoomed")
 
     frm = ttk.Frame(root, padding=12)
@@ -16,9 +15,12 @@ def build_window():
     # INPUT FILE
     row1 = ttk.Frame(frm)
     row1.pack(fill="x", pady=6)
-    ttk.Label(row1, text="Archivo:", width=10).pack(side="left")
+    #ttk.Label(row1, text="Archivo(pdf):", width=10).pack(side="left")
+    ttk.Label(row1, text="Archivo(pdf):").pack(side="left", padx=(0,5))
     infile_var = tk.StringVar()
     ttk.Entry(row1, textvariable=infile_var, width=60).pack(side="left", padx=6)
+    #ttk.Entry(row1, textvariable=infile_var).pack(side="left",padx=6,fill="x",expand=True)
+
     def browse_file():
         p = filedialog.askopenfilename(
             filetypes=[("PDF files", "*.pdf"), ("All files", "*.*")]
@@ -30,7 +32,9 @@ def build_window():
     # OUTPUT DIR
     row2 = ttk.Frame(frm)
     row2.pack(fill="x", pady=6)
-    ttk.Label(row2, text="Salida:", width=10).pack(side="left")
+    #ttk.Label(row2, text="Carpeta de salida:", width=10).pack(side="left")
+    ttk.Label(row2, text="Carpeta de salida:").pack(side="left", padx=(0,5))
+
     outdir_var = tk.StringVar()
     ttk.Entry(row2, textvariable=outdir_var, width=60).pack(side="left", padx=6)
     def browse_folder():
@@ -55,19 +59,19 @@ def build_window():
     bfrm = ttk.Frame(frm)
     bfrm.pack(fill="x", pady=10)
 
-    start_btn = ttk.Button(bfrm, text="Iniciar")
+    start_btn = ttk.Button(bfrm, text="Iniciar Trascipción")
     start_btn.pack(side="left", padx=5)
 
     open_btn = ttk.Button(bfrm, text="Abrir carpeta salida")
     open_btn.pack(side="left", padx=5)
 
-    view_xml_btn = ttk.Button(bfrm, text="Visualizar XML")
+    view_xml_btn = ttk.Button(bfrm, text="Visualizar XML generado")
     view_xml_btn.pack(side="left", padx=5)
 
     back_btn = ttk.Button(bfrm, text="Volver")
     back_btn.pack(side="right", padx=5)
 
-    edit_btn = ttk.Button(bfrm, text="Edición")
+    edit_btn = ttk.Button(bfrm, text="Editar XML")
     edit_btn.pack(side="left", padx=5)
 
     quit_btn = ttk.Button(bfrm, text="Salir", command=root.destroy)
@@ -81,7 +85,7 @@ def build_window():
 
     auto_open_chk = ttk.Checkbutton(
         frm,
-        text="Abrir automáticamente la partitura al finalizar",
+        text="Abrir automáticamente la partitura generada al finalizar",
         variable=auto_open_var
     )
     auto_open_chk.pack(anchor="w", pady=(0, 6))
