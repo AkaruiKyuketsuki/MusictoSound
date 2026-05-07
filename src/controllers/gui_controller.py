@@ -895,6 +895,7 @@ def run_transcription_gui():
     auto_open_var = widgets["auto_open_var"]
     view_in_app_var = widgets["view_in_app_var"]
     view_in_system_var = widgets["view_in_system_var"]
+    view_pdf_btn = widgets["view_pdf_btn"]
 
 
     log("Interfaz gráfica lista.")
@@ -943,13 +944,6 @@ def run_transcription_gui():
             last_generated_xml = Path(path) if path else None
 
         # Lanzar conversión en hilo
-        """
-        thread = threading.Thread(
-            target=_run_conversion,
-            args=(log, request, root, progress, start_btn, auto_open_var, on_view_xml, on_edit,),
-            daemon=True,
-        )
-        """
         thread = threading.Thread(
             target=_run_conversion,
             args=(
@@ -962,6 +956,27 @@ def run_transcription_gui():
         thread.start()
 
     # ------------------------------------------------------
+    def on_view_pdf():
+        path = infile_var.get().strip()
+
+        if not path:
+            log("⚠ No hay PDF seleccionado.")
+            return
+
+        pdf_path = Path(path)
+
+        if not pdf_path.is_file():
+            log(f"❌ El archivo no existe: {pdf_path}")
+            return
+
+        try:
+            _open_with_default_app(pdf_path)
+            log(f"📄 Abriendo PDF original: {pdf_path.name}")
+        except Exception as e:
+            log(f"❌ No se pudo abrir el PDF: {e}")
+            
+    # ------------------------------------------------------
+    """
     def on_open_output():
         outdir = outdir_var.get().strip() or "output"
         path = Path(outdir)
@@ -973,8 +988,30 @@ def run_transcription_gui():
             log(f"📂 Carpeta abierta: {path}")
         except Exception as e:
             log(f"❌ No se pudo abrir la carpeta: {e}")
+        
+    """
+    def on_open_output():
+        path_str = outdir_var.get().strip()
 
+        if not path_str:
+            log("⚠ No hay carpeta de salida seleccionada.")
+            return
 
+        path = Path(path_str)
+
+        if not path.exists():
+            log(f"❌ La carpeta no existe: {path}")
+            return
+
+        if not path.is_dir():
+            log(f"⚠ La ruta no es una carpeta válida: {path}")
+            return
+
+        try:
+            _open_with_default_app(path)
+            log(f"📂 Carpeta abierta: {path}")
+        except Exception as e:
+            log(f"❌ No se pudo abrir la carpeta: {e}")
     # ------------------------------------------------------
     def on_view_xml():
         outdir = Path(outdir_var.get().strip() or "output")
@@ -982,17 +1019,6 @@ def run_transcription_gui():
         if not outdir.exists():
             log(f"⚠ La carpeta de salida no existe: {outdir}")
             return
-
-        """
-        xml_files = list(outdir.glob("*.xml")) + list(outdir.glob("*.mxl"))
-
-        if not xml_files:
-            log("⚠ No se ha encontrado ningún archivo MusicXML para visualizar")
-            return
-
-        # Elegir el archivo más reciente (última transcripción)
-        xml_path = max(xml_files, key=lambda p: p.stat().st_mtime)
-        """
 
         if not last_generated_xml or not last_generated_xml.exists():
             log("⚠ No hay ninguna partitura generada todavía.")
@@ -1034,18 +1060,6 @@ def run_transcription_gui():
             log(f"⚠ La carpeta de salida no existe: {outdir}")
             return
 
-        # Solo buscamos archivos editables
-        """
-        xml_files = list(outdir.glob("*.mxl")) + list(outdir.glob("*.xml"))
-
-        if not xml_files:
-            log("⚠ No se ha encontrado ningún archivo MusicXML para editar")
-            return
-
-        # Usar el más reciente
-        xml_path = max(xml_files, key=lambda p: p.stat().st_mtime)
-        """
-
         if not last_generated_xml or not last_generated_xml.exists():
             log("⚠ No hay ninguna partitura generada todavía.")
             return
@@ -1070,5 +1084,6 @@ def run_transcription_gui():
     open_btn.config(command=on_open_output)
     view_xml_btn.config(command=on_view_xml)
     edit_btn.config(command=on_edit)
+    view_pdf_btn.config(command=on_view_pdf)
     
     root.mainloop()

@@ -1,6 +1,7 @@
 # src/views/gui_view.py  (Tkinter GUI)
 import tkinter as tk
 from tkinter import ttk, filedialog, scrolledtext
+import os
 
 def build_window():
     root = tk.Tk()
@@ -16,9 +17,9 @@ def build_window():
     row1 = ttk.Frame(frm)
     row1.pack(fill="x", pady=6)
     #ttk.Label(row1, text="Archivo(pdf):", width=10).pack(side="left")
-    ttk.Label(row1, text="Archivo(pdf):").pack(side="left", padx=(0,5))
+    ttk.Label(row1, text="Archivo(pdf):", width=20, anchor="w").pack(side="left", padx=(0,5))
     infile_var = tk.StringVar()
-    ttk.Entry(row1, textvariable=infile_var, width=60).pack(side="left", padx=6)
+    ttk.Entry(row1, textvariable=infile_var, width=90).pack(side="left", padx=6)
     #ttk.Entry(row1, textvariable=infile_var).pack(side="left",padx=6,fill="x",expand=True)
 
     def browse_file():
@@ -27,21 +28,34 @@ def build_window():
         )
         if p:
             infile_var.set(p)
+
+            # Autocompletar carpeta de salida
+            folder = os.path.dirname(p)
+
+            # Solo rellenar si está vacío (para no machacar al usuario)
+            if not outdir_var.get().strip():
+                outdir_var.set(folder)
+
     ttk.Button(row1, text="Examinar", command=browse_file).pack(side="left")
+    view_pdf_btn = ttk.Button(row1, text="Ver pdf original")
+    view_pdf_btn.pack(side="left", padx=5)
 
     # OUTPUT DIR
     row2 = ttk.Frame(frm)
     row2.pack(fill="x", pady=6)
     #ttk.Label(row2, text="Carpeta de salida:", width=10).pack(side="left")
-    ttk.Label(row2, text="Carpeta de salida:").pack(side="left", padx=(0,5))
-
+    ttk.Label(row2, text="Carpeta de salida:", width=20, anchor="w").pack(side="left", padx=(0,5))
     outdir_var = tk.StringVar()
-    ttk.Entry(row2, textvariable=outdir_var, width=60).pack(side="left", padx=6)
+    ttk.Entry(row2, textvariable=outdir_var, width=90).pack(side="left", padx=6)
+
     def browse_folder():
         p = filedialog.askdirectory()
         if p:
             outdir_var.set(p)
+
     ttk.Button(row2, text="Examinar", command=browse_folder).pack(side="left")
+    open_btn = ttk.Button(row2, text="Abrir carpeta")
+    open_btn.pack(side="left", padx=5)
 
     # MODE SELECTION
     mode_var = tk.StringVar(value="auto")
@@ -62,8 +76,8 @@ def build_window():
     start_btn = ttk.Button(bfrm, text="Iniciar Trascipción")
     start_btn.pack(side="left", padx=5)
 
-    open_btn = ttk.Button(bfrm, text="Abrir carpeta salida")
-    open_btn.pack(side="left", padx=5)
+    #open_btn = ttk.Button(bfrm, text="Abrir carpeta salida")
+    #open_btn.pack(side="left", padx=5)
 
     view_xml_btn = ttk.Button(bfrm, text="Visualizar XML generado")
     view_xml_btn.pack(side="left", padx=5)
@@ -136,6 +150,7 @@ def build_window():
         "mode_var": mode_var,
         "start_btn": start_btn,
         "open_btn": open_btn,
+        "view_pdf_btn": view_pdf_btn,
         "view_xml_btn": view_xml_btn,
         "back_btn": back_btn,
         "edit_btn": edit_btn,
