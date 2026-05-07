@@ -17,8 +17,12 @@ def show_comparison_view(
     """
     Muestra dos imágenes lado a lado con scroll vertical sincronizado.
     """ 
-    current_page = 0
+    #current_page = 0
+    current_page_left = 0
+    current_page_right = 0
     num_pages = min(len(left_images), len(right_images))
+
+    sync_pages = True  # 🔒 activado por defecto
 
     zoom_level = 0.6  # 60% al abrir
     overlay_mode = False
@@ -77,6 +81,37 @@ def show_comparison_view(
     page_label = ttk.Label(toolbar, text=f"Página 1 / {num_pages}")
     page_label.pack(side="left", padx=8)
 
+    def toggle_sync():
+        nonlocal sync_pages
+        sync_pages = not sync_pages
+
+        if sync_pages:
+            sync_btn.config(text="🔒 Sincronizado")
+
+            if global_controls:
+                global_controls.pack(side="left", padx=4)
+
+            if left_controls:
+                left_controls.pack_forget()
+
+            if right_controls:
+                right_controls.pack_forget()
+
+        else:
+            sync_btn.config(text="🔓 Independiente")
+
+            if global_controls:
+                global_controls.pack_forget()
+
+            if left_controls:
+                left_controls.pack(fill="x", pady=(0, 4))
+
+            if right_controls:
+                right_controls.pack(fill="x", pady=(0, 4))
+                
+    sync_btn = ttk.Button(toolbar, text="🔒 Sincronizado", command=toggle_sync)
+    sync_btn.pack(side="left", padx=8)        
+
     def zoom_in():
         nonlocal zoom_level
         zoom_level = min(zoom_level * 1.2, 3.0)
@@ -106,21 +141,40 @@ def show_comparison_view(
             toggle_overlay()
 
     def prev_page():
-        nonlocal current_page
-        if current_page > 0:
-            current_page -= 1
-            reset_page_state()
-            update_images()
+        nonlocal current_page_left, current_page_right
 
+        if sync_pages:
+            if current_page_left > 0:
+                current_page_left -= 1
+                current_page_right -= 1
+        else:
+            # No hace nada: ambos aunque estén desincronizados
+            return
+
+        reset_page_state()
+        update_images()
+    
     def next_page():
-        nonlocal current_page
-        if current_page < num_pages - 1:
-            current_page += 1
-            reset_page_state()
-            update_images()
+        nonlocal current_page_left, current_page_right
 
-    ttk.Button(toolbar, text="◀ Página", command=prev_page).pack(side="left", padx=4)
-    ttk.Button(toolbar, text="Página ▶", command=next_page).pack(side="left", padx=4)
+        if sync_pages:
+            if current_page_left < num_pages - 1:
+                current_page_left += 1
+                current_page_right += 1
+        else:
+            if current_page_left < num_pages - 1:
+                current_page_left += 1
+            if current_page_right < num_pages - 1:
+                current_page_right += 1
+
+        reset_page_state()
+        update_images()
+                  
+    global_controls = ttk.Frame(toolbar)
+    global_controls.pack(side="left", padx=4)
+
+    ttk.Button(global_controls, text="◀ Página", command=prev_page).pack(side="left", padx=2)
+    ttk.Button(global_controls, text="Página ▶", command=next_page).pack(side="left", padx=2)
 
 
 
@@ -159,6 +213,7 @@ def show_comparison_view(
             title_left_label.config(text="Comparación por superposición")
 
             right_frame.grid_remove()
+            sync_btn.pack_forget()
 
             container.columnconfigure(0, weight=1)
             container.columnconfigure(1, weight=0)
@@ -173,6 +228,16 @@ def show_comparison_view(
 
 
         else:
+
+            if sync_pages:
+                if global_controls:
+                    global_controls.pack(side="left", padx=4)
+            else:
+                if left_controls:
+                    left_controls.pack(fill="x", pady=(0, 4))
+                if right_controls:
+                    right_controls.pack(fill="x", pady=(0, 4))
+                    
             red_offset_x = 0
             red_offset_y = 0
             red_scale = 1.0
@@ -189,6 +254,7 @@ def show_comparison_view(
             title_left_label.config(text=title_left)
 
             right_frame.grid(row=0, column=1, sticky="nsew")
+            sync_btn.pack(side="left", padx=8)
 
             container.columnconfigure(0, weight=1)
             container.columnconfigure(1, weight=1)
@@ -199,9 +265,6 @@ def show_comparison_view(
 
         update_images()
 
-
-
-    #ttk.Button(toolbar, text="Superponer", command=toggle_overlay).pack(side="left", padx=8)
     overlay_btn = ttk.Button(toolbar, text="Superponer")
     overlay_btn.pack(side="left", padx=8)
 
@@ -216,10 +279,7 @@ def show_comparison_view(
     # Frames izquierdo y derecho
     # =========================
     left_frame = ttk.Frame(container)
-    #left_frame.pack(side="left", fill="both", expand=True)
-
     right_frame = ttk.Frame(container)
-    #right_frame.pack(side="left", fill="both", expand=True)
 
     container.columnconfigure(0, weight=1)
     container.columnconfigure(1, weight=1)
@@ -232,15 +292,76 @@ def show_comparison_view(
     # =========================
     # Títulos
     # =========================
-    #ttk.Label(left_frame, text=title_left, font=("Segoe UI", 10, "bold")).pack(pady=4)
     title_left_label = ttk.Label(
         left_frame,
         text=title_left,
         font=("Segoe UI", 10, "bold")
     )
     title_left_label.pack(pady=4)
+    left_top_frame = ttk.Frame(left_frame)
+    left_top_frame.pack(fill="x")
+
+    left_controls = ttk.Frame(left_top_frame)
+    left_controls.pack(fill="x", pady=(0, 4))
+
+    left_controls_inner = ttk.Frame(left_controls)
+    left_controls_inner.pack(anchor="center")
+
+    def prev_left():
+        nonlocal current_page_left
+        if current_page_left > 0:
+            current_page_left -= 1
+            reset_page_state()
+            update_images()
+
+    def next_left():
+        nonlocal current_page_left
+        if current_page_left < num_pages - 1:
+            current_page_left += 1
+            reset_page_state()
+            update_images()
+
+    #ttk.Button(left_controls, text="◀", command=prev_left).pack(side="left")
+    #ttk.Button(left_controls, text="▶", command=next_left).pack(side="left")
+    ttk.Button(left_controls_inner, text="◀", command=prev_left).pack(side="left")
+    ttk.Button(left_controls_inner, text="▶", command=next_left).pack(side="left")
+
+    # -------------------------------------------------------------------------
 
     ttk.Label(right_frame, text=title_right, font=("Segoe UI", 10, "bold")).pack(pady=4)
+    
+    right_top_frame = ttk.Frame(right_frame)
+    right_top_frame.pack(fill="x")
+
+    right_controls = ttk.Frame(right_top_frame)
+    right_controls.pack(fill="x", pady=(0, 4))
+
+    right_controls_inner = ttk.Frame(right_controls)
+    right_controls_inner.pack(anchor="center")
+
+    def prev_right():
+        nonlocal current_page_right
+        if current_page_right > 0:
+            current_page_right -= 1
+            reset_page_state()
+            update_images()
+
+    def next_right():
+        nonlocal current_page_right
+        if current_page_right < num_pages - 1:
+            current_page_right += 1
+            reset_page_state()
+            update_images()
+
+    #ttk.Button(right_controls, text="◀", command=prev_right).pack(side="left")
+    #ttk.Button(right_controls, text="▶", command=next_right).pack(side="left")
+
+    ttk.Button(right_controls_inner, text="◀", command=prev_right).pack(side="left")
+    ttk.Button(right_controls_inner, text="▶", command=next_right).pack(side="left")
+
+    left_controls.pack_forget()
+    right_controls.pack_forget()
+    # -----------------------------------------------------------
 
     # =========================
     # Canvas + Scrollbars
@@ -251,11 +372,14 @@ def show_comparison_view(
     scrollbar_left = ttk.Scrollbar(left_frame, orient="vertical")
     scrollbar_right = ttk.Scrollbar(right_frame, orient="vertical")
 
-    canvas_left.pack(side="left", fill="both", expand=True)
+    #canvas_left.pack(side="left", fill="both", expand=True)
+    canvas_left.pack(fill="both", expand=True)
     scrollbar_left.pack(side="right", fill="y")
 
-    canvas_right.pack(side="left", fill="both", expand=True)
+    #canvas_right.pack(side="left", fill="both", expand=True)
+    canvas_right.pack(fill="both", expand=True)
     scrollbar_right.pack(side="right", fill="y")
+    
 
     # =========================
     # Frames internos
@@ -265,14 +389,6 @@ def show_comparison_view(
 
     canvas_left.create_window((0, 0), window=inner_left, anchor="nw")
     canvas_right.create_window((0, 0), window=inner_right, anchor="nw")
-
-    # =========================
-    # Imágenes
-    # =========================
-    #tk_left = ImageTk.PhotoImage(left_image)
-    #tk_right = ImageTk.PhotoImage(right_image)
-    #ttk.Label(inner_left, image=tk_left).pack(pady=10)
-    #ttk.Label(inner_right, image=tk_right).pack(pady=10)
 
     # =========================
     # Imágenes con zoom
@@ -287,10 +403,11 @@ def show_comparison_view(
         return Image.blend(img1, img2, alpha)
 
 
-    #left_resized = resize_image(left_image, zoom_level)
-    left_resized = resize_image(left_images[current_page], zoom_level)
-    #right_resized = resize_image(right_image, zoom_level)
-    right_resized = resize_image(right_images[current_page], zoom_level)
+    #left_resized = resize_image(left_images[current_page], zoom_level)
+    #right_resized = resize_image(right_images[current_page], zoom_level)
+
+    left_resized = resize_image(left_images[current_page_left], zoom_level)
+    right_resized = resize_image(right_images[current_page_right], zoom_level)
 
 
     tk_left = ImageTk.PhotoImage(left_resized)
@@ -354,12 +471,23 @@ def show_comparison_view(
         nonlocal tk_left, tk_right
         nonlocal blue_image_id, red_image_id, handle_id, scale_handle_id, scale_buttons_window_id
 
-        #left_resized = resize_image(left_image, zoom_level)
-        left_resized = resize_image(left_images[current_page], zoom_level)
-        #right_resized = resize_image(right_image, zoom_level)
-        right_resized = resize_image(right_images[current_page], zoom_level)
+        #left_resized = resize_image(left_images[current_page], zoom_level)
+        #right_resized = resize_image(right_images[current_page], zoom_level)
+        
+        left_resized = resize_image(left_images[current_page_left], zoom_level)
+        right_resized = resize_image(right_images[current_page_right], zoom_level)
 
         if overlay_mode:
+
+            # Ocultar controles de páginas en modo superposición
+            if left_controls:
+                left_controls.pack_forget()
+
+            if right_controls:
+                right_controls.pack_forget()
+
+            if global_controls:
+                global_controls.pack_forget()
 
             left_label.configure(image="")
             right_label.configure(image="")
@@ -371,8 +499,8 @@ def show_comparison_view(
             )
 
             right_resized = resize_image(
-                #right_image,
-                right_images[current_page],
+                #right_images[current_page],
+                right_images[current_page_right],
                 zoom_level * red_scale
             )
 
@@ -455,7 +583,14 @@ def show_comparison_view(
 
         canvas_left.configure(scrollregion=canvas_left.bbox("all"))
         canvas_right.configure(scrollregion=canvas_right.bbox("all"))
-        page_label.config(text=f"Página {current_page + 1} / {num_pages}")
+        #page_label.config(text=f"Página {current_page + 1} / {num_pages}")
+        
+        if sync_pages:
+            page_label.config(text=f"Páginas {current_page_left + 1} / {num_pages}")
+        else:
+            page_label.config(
+                text=f"Izq: {current_page_left + 1} | Der: {current_page_right + 1}"
+            )
 
 
     # Evitar garbage collection
