@@ -543,7 +543,7 @@ def build_coral_view_window():
     download_wav_btn.pack(side="left", padx=20, ipady=6)
 
     download_mix_btn = ttk.Button(buttons_row, text="Descargar mezcla MIDI")
-    download_mix_btn.pack(side="left", padx=20, ipady=6)
+    download_mix_btn.pack(side="left", padx=(300,20), ipady=6)
 
     download_mix_wav_btn = ttk.Button(buttons_row, text="Descargar mezcla WAV")
     download_mix_wav_btn.pack(side="left", padx=20, ipady=6)
