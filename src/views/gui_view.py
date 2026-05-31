@@ -1,11 +1,12 @@
 # src/views/gui_view.py  (Tkinter GUI)
 import tkinter as tk
 from tkinter import ttk, filedialog, scrolledtext
+import os
 
 def build_window():
     root = tk.Tk()
     root.title("MusictoSound - Conversor de partituras")
-    root.geometry("800x480")
+    root.state("zoomed")
 
     frm = ttk.Frame(root, padding=12)
     frm.pack(fill=tk.BOTH, expand=True)
@@ -15,28 +16,44 @@ def build_window():
     # INPUT FILE
     row1 = ttk.Frame(frm)
     row1.pack(fill="x", pady=6)
-    ttk.Label(row1, text="Archivo:", width=10).pack(side="left")
+    ttk.Label(row1, text="Archivo(pdf):", width=20, anchor="w").pack(side="left", padx=(0,5))
     infile_var = tk.StringVar()
-    ttk.Entry(row1, textvariable=infile_var, width=60).pack(side="left", padx=6)
+    ttk.Entry(row1, textvariable=infile_var, width=90).pack(side="left", padx=6)
+    #ttk.Entry(row1, textvariable=infile_var).pack(side="left",padx=6,fill="x",expand=True)
+
     def browse_file():
         p = filedialog.askopenfilename(
             filetypes=[("PDF files", "*.pdf"), ("All files", "*.*")]
         )
         if p:
             infile_var.set(p)
+
+            # Autocompletar carpeta de salida
+            folder = os.path.dirname(p)
+
+            # Solo rellenar si está vacío (para no machacar al usuario)
+            if not outdir_var.get().strip():
+                outdir_var.set(folder)
+
     ttk.Button(row1, text="Examinar", command=browse_file).pack(side="left")
+    view_pdf_btn = ttk.Button(row1, text="Ver pdf original")
+    view_pdf_btn.pack(side="left", padx=5)
 
     # OUTPUT DIR
     row2 = ttk.Frame(frm)
     row2.pack(fill="x", pady=6)
-    ttk.Label(row2, text="Salida:", width=10).pack(side="left")
+    ttk.Label(row2, text="Carpeta de salida:", width=20, anchor="w").pack(side="left", padx=(0,5))
     outdir_var = tk.StringVar()
-    ttk.Entry(row2, textvariable=outdir_var, width=60).pack(side="left", padx=6)
+    ttk.Entry(row2, textvariable=outdir_var, width=90).pack(side="left", padx=6)
+
     def browse_folder():
         p = filedialog.askdirectory()
         if p:
             outdir_var.set(p)
+
     ttk.Button(row2, text="Examinar", command=browse_folder).pack(side="left")
+    open_btn = ttk.Button(row2, text="Abrir carpeta")
+    open_btn.pack(side="left", padx=5)
 
     # MODE SELECTION
     mode_var = tk.StringVar(value="auto")
@@ -54,36 +71,44 @@ def build_window():
     bfrm = ttk.Frame(frm)
     bfrm.pack(fill="x", pady=10)
 
-    start_btn = ttk.Button(bfrm, text="Iniciar")
+    start_btn = ttk.Button(bfrm, text="Iniciar Trascipción")
     start_btn.pack(side="left", padx=5)
 
-    open_btn = ttk.Button(bfrm, text="Abrir carpeta salida")
-    open_btn.pack(side="left", padx=5)
-
-    view_xml_btn = ttk.Button(bfrm, text="Visualizar XML")
+    view_xml_btn = ttk.Button(bfrm, text="Visualizar XML generado")
     view_xml_btn.pack(side="left", padx=5)
 
     back_btn = ttk.Button(bfrm, text="Volver")
     back_btn.pack(side="right", padx=5)
 
-    edit_btn = ttk.Button(bfrm, text="Edición")
+    edit_btn = ttk.Button(bfrm, text="Editar XML")
     edit_btn.pack(side="left", padx=5)
+
+    analyze_btn = ttk.Button(bfrm, text="Ir a análisis coral")
+    analyze_btn.pack(side="left", padx=5)
 
     quit_btn = ttk.Button(bfrm, text="Salir", command=root.destroy)
     quit_btn.pack(side="right", padx=5)
 
     # AUTO OPEN OPTIONS
-    auto_open_var = tk.BooleanVar(value=True)
+    auto_view_var = tk.BooleanVar(value=True)
+    auto_edit_var = tk.BooleanVar(value=True)
+
     view_in_app_var = tk.BooleanVar(value=False)
     view_in_system_var = tk.BooleanVar(value=False)
 
-
-    auto_open_chk = ttk.Checkbutton(
+    auto_edit_chk = ttk.Checkbutton(
         frm,
-        text="Abrir automáticamente la partitura al finalizar",
-        variable=auto_open_var
+        text="Abrir automáticamente el xml generado en el editor",
+        variable=auto_edit_var
     )
-    auto_open_chk.pack(anchor="w", pady=(0, 6))
+    auto_edit_chk.pack(anchor="w", pady=(0, 6))
+
+    auto_view_chk = ttk.Checkbutton(
+        frm,
+        text="Abrir automáticamente el xml generado en el visor",
+        variable=auto_view_var
+    )
+    auto_view_chk.pack(anchor="w")
 
     def on_view_in_app_toggle():
         if view_in_app_var.get():
@@ -131,12 +156,15 @@ def build_window():
         "mode_var": mode_var,
         "start_btn": start_btn,
         "open_btn": open_btn,
+        "view_pdf_btn": view_pdf_btn,
         "view_xml_btn": view_xml_btn,
         "back_btn": back_btn,
         "edit_btn": edit_btn,
         "log": log,
-        "auto_open_var": auto_open_var,
+        "auto_view_var": auto_view_var,
+        "auto_edit_var": auto_edit_var,
         "view_in_app_var": view_in_app_var,
         "view_in_system_var": view_in_system_var,
         "progress": progress,
+        "analyze_btn": analyze_btn,
     }

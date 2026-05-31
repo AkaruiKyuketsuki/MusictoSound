@@ -1,0 +1,195 @@
+2026-04-28 18:25:57,538 ERROR [can-she-excuse_dowland_con 2ª letra]              IOUtils.java:278  | Unmapping is not supported.
+java.lang.reflect.InaccessibleObjectException: Unable to make public jdk.internal.ref.Cleaner java.nio.DirectByteBuffer.cleaner() accessible: module java.base does not "opens java.nio" to unnamed module @3b6ddd1d
+	at java.base/java.lang.reflect.AccessibleObject.throwInaccessibleObjectException(Unknown Source)
+	at java.base/java.lang.reflect.AccessibleObject.checkCanSetAccessible(Unknown Source)
+	at java.base/java.lang.reflect.AccessibleObject.checkCanSetAccessible(Unknown Source)
+	at java.base/java.lang.reflect.Method.checkCanSetAccessible(Unknown Source)
+	at java.base/java.lang.reflect.Method.setAccessible(Unknown Source)
+	at org.apache.pdfbox.io.IOUtils.unmapper(IOUtils.java:244)
+	at java.base/java.security.AccessController.doPrivileged(Unknown Source)
+	at org.apache.pdfbox.io.IOUtils.<clinit>(IOUtils.java:69)
+	at org.apache.pdfbox.Loader.loadPDF(Loader.java:378)
+	at org.audiveris.omr.image.ImageLoading.getPdfLoader(ImageLoading.java:159)
+	at org.audiveris.omr.image.ImageLoading.getLoader(ImageLoading.java:209)
+	at org.audiveris.omr.sheet.Book.createStubs(Book.java:554)
+	at org.audiveris.omr.CLI$ProcessingTask.processBook(CLI.java:830)
+	at org.audiveris.omr.CLI$CliTask.call(CLI.java:504)
+	at org.audiveris.omr.Main.runBatchTasks(Main.java:371)
+	at org.audiveris.omr.Main.main(Main.java:260)
+	at Audiveris.main(Audiveris.java:50)
+2026-04-28 18:25:57,572 WARN [can-she-excuse_dowland_con 2ª letra]            COSParser.java:1352 | found wrong object number. expected [56] found [63]
+2026-04-28 18:25:57,573 WARN [can-she-excuse_dowland_con 2ª letra]            COSParser.java:1352 | found wrong object number. expected [59] found [63]
+2026-04-28 18:25:57,573 WARN [can-she-excuse_dowland_con 2ª letra]            COSParser.java:1352 | found wrong object number. expected [62] found [63]
+2026-04-28 18:25:57,599 INFO [can-she-excuse_dowland_con 2ª letra]                 Book.java:559  | 3 sheets in C:\Users\34690\Documents\1. Universidad\TFG\PRUEBAS DE USUARIO\can-she-excuse_dowland_con 2ª letra.pdf
+2026-04-28 18:25:57,787 INFO []                 Book.java:2528 | Stored /book.xml
+2026-04-28 18:25:57,788 INFO []                 Book.java:2488 | Book stored as output\can-she-excuse_dowland_con 2ª letra.omr
+2026-04-28 18:25:57,795 INFO []                 Book.java:1930 | Book reaching PAGE on sheets:[#1#2#3]
+2026-04-28 18:25:57,797 INFO [can-she-excuse_dowland_con 2ª letra#1]       StepMonitoring.java:98   | LOAD
+2026-04-28 18:25:57,826 WARN [can-she-excuse_dowland_con 2ª letra#1]            COSParser.java:1352 | found wrong object number. expected [56] found [63]
+2026-04-28 18:25:57,827 WARN [can-she-excuse_dowland_con 2ª letra#1]            COSParser.java:1352 | found wrong object number. expected [59] found [63]
+2026-04-28 18:25:57,827 WARN [can-she-excuse_dowland_con 2ª letra#1]            COSParser.java:1352 | found wrong object number. expected [62] found [63]
+2026-04-28 18:25:58,278 INFO [can-she-excuse_dowland_con 2ª letra#1]            SheetStub.java:1273 | Loaded image #1 2480x3507 from C:\Users\34690\Documents\1. Universidad\TFG\PRUEBAS DE USUARIO\can-she-excuse_dowland_con 2ª letra.pdf
+2026-04-28 18:25:58,285 INFO [can-she-excuse_dowland_con 2ª letra#1]       StepMonitoring.java:98   | BINARY
+2026-04-28 18:25:58,829 INFO [can-she-excuse_dowland_con 2ª letra#1]       StepMonitoring.java:98   | SCALE
+2026-04-28 18:25:58,855 INFO [can-she-excuse_dowland_con 2ª letra#1]         ScaleBuilder.java:241  | Beam  guessed height: 10 -- 0.50 of 19 interline
+2026-04-28 18:25:58,857 INFO [can-she-excuse_dowland_con 2ª letra#1]         ScaleBuilder.java:264  | Beam measured height:  7 -- 0.14 of [5..19] range at 106% of needed quorum
+2026-04-28 18:25:58,858 INFO [can-she-excuse_dowland_con 2ª letra#1]            ScaleStep.java:65   | Scale{ interline(18,19,19) line(1,2,3) beam(7)}
+2026-04-28 18:25:58,859 INFO [can-she-excuse_dowland_con 2ª letra#1]       StepMonitoring.java:98   | GRID
+2026-04-28 18:25:59,505 INFO [can-she-excuse_dowland_con 2ª letra#1]       LinesRetriever.java:1500 | Global slope: 0.00000
+2026-04-28 18:25:59,580 INFO [can-she-excuse_dowland_con 2ª letra#1]    ClustersRetriever.java:328  | Retrieved raw line clusters: 8 of sizes [5] with interline(18,19,19)
+2026-04-28 18:26:00,181 INFO [can-she-excuse_dowland_con 2ª letra#1]            PeakGraph.java:310  | Systems: #1[1, 2, 3, 4] #2[5, 6, 7, 8]
+2026-04-28 18:26:00,269 INFO [can-she-excuse_dowland_con 2ª letra#1]        BarsRetriever.java:1304 | System#1
+2026-04-28 18:26:00,269 INFO [can-she-excuse_dowland_con 2ª letra#1]        BarsRetriever.java:1307 |    PartGroup{bracket number:1 barline:false staves:1-4}
+2026-04-28 18:26:00,269 INFO [can-she-excuse_dowland_con 2ª letra#1]        BarsRetriever.java:1304 | System#2
+2026-04-28 18:26:00,269 INFO [can-she-excuse_dowland_con 2ª letra#1]        BarsRetriever.java:1307 |    PartGroup{bracket number:1 barline:false staves:5-8}
+2026-04-28 18:26:02,371 INFO [can-she-excuse_dowland_con 2ª letra#1]        SystemManager.java:134  | Indentation detected for system #1
+2026-04-28 18:26:02,372 INFO [can-she-excuse_dowland_con 2ª letra#1]        SystemManager.java:779  | 4 parts along 2 systems
+2026-04-28 18:26:02,374 INFO [can-she-excuse_dowland_con 2ª letra#1]                 Book.java:542  | Created scores: [{Score 1}]
+2026-04-28 18:26:02,375 INFO [can-she-excuse_dowland_con 2ª letra#1]       StepMonitoring.java:98   | HEADERS
+2026-04-28 18:26:02,684 INFO [can-she-excuse_dowland_con 2ª letra#1]      BasicClassifier.java:286  | Classifier loaded XML norms.
+2026-04-28 18:26:02,690 INFO [can-she-excuse_dowland_con 2ª letra#1]   AbstractClassifier.java:396  | Classifier data loaded from default uri jar:file:/C:/Program%20Files/Audiveris/app/audiveris.jar!/res/basic-classifier.zip
+2026-04-28 18:26:03,766 INFO [can-she-excuse_dowland_con 2ª letra#1]       StepMonitoring.java:98   | STEM_SEEDS
+2026-04-28 18:26:03,810 INFO [can-she-excuse_dowland_con 2ª letra#1]        StemSeedsStep.java:86   | stem(3 max:4)
+2026-04-28 18:26:03,902 INFO [can-she-excuse_dowland_con 2ª letra#1]       StepMonitoring.java:98   | BEAMS
+2026-04-28 18:26:06,161 INFO [can-she-excuse_dowland_con 2ª letra#1]       StepMonitoring.java:98   | LEDGERS
+2026-04-28 18:26:08,978 INFO [can-she-excuse_dowland_con 2ª letra#1]       StepMonitoring.java:98   | HEADS
+2026-04-28 18:26:12,130 INFO [can-she-excuse_dowland_con 2ª letra#1]        HeadSeedTally.java:235  | Scale information: HeadSeeds{NOTEHEAD_VOID[R:0.1] NOTEHEAD_BLACK[L:0.5,R:0.0]}
+2026-04-28 18:26:12,130 INFO [can-she-excuse_dowland_con 2ª letra#1]       StepMonitoring.java:98   | STEMS
+2026-04-28 18:26:13,510 INFO [can-she-excuse_dowland_con 2ª letra#1]       StepMonitoring.java:98   | REDUCTION
+2026-04-28 18:26:13,604 INFO [can-she-excuse_dowland_con 2ª letra#1]        ReductionStep.java:105  | Stems free length median value: 66 pixels, 3.5 interlines
+2026-04-28 18:26:13,611 INFO [can-she-excuse_dowland_con 2ª letra#1]       StepMonitoring.java:98   | CUE_BEAMS
+2026-04-28 18:26:13,611 INFO [can-she-excuse_dowland_con 2ª letra#1]         CueBeamsStep.java:81   | Step CUE_BEAMS is skipped because small heads switch is off
+2026-04-28 18:26:13,612 INFO [can-she-excuse_dowland_con 2ª letra#1]       StepMonitoring.java:98   | TEXTS
+2026-04-28 18:26:18,754 INFO [can-she-excuse_dowland_con 2ª letra#1]       StepMonitoring.java:98   | MEASURES
+2026-04-28 18:26:18,764 INFO [can-she-excuse_dowland_con 2ª letra#1]                 Page.java:307  | 6 raw measures: [3 in system#1, 3 in system#2]
+2026-04-28 18:26:18,765 INFO [can-she-excuse_dowland_con 2ª letra#1]       StepMonitoring.java:98   | CHORDS
+2026-04-28 18:26:18,777 INFO [can-she-excuse_dowland_con 2ª letra#1]       StepMonitoring.java:98   | CURVES
+2026-04-28 18:26:19,846 INFO [can-she-excuse_dowland_con 2ª letra#1]         SlursBuilder.java:240  | Slurs: 2
+2026-04-28 18:26:19,857 INFO [can-she-excuse_dowland_con 2ª letra#1]      SegmentsBuilder.java:155  | Segments: 5
+2026-04-28 18:26:19,864 INFO [can-she-excuse_dowland_con 2ª letra#1]       StepMonitoring.java:98   | SYMBOLS
+2026-04-28 18:26:20,576 INFO [can-she-excuse_dowland_con 2ª letra#1]       StepMonitoring.java:98   | LINKS
+2026-04-28 18:26:20,584 INFO [can-she-excuse_dowland_con 2ª letra#1]        SymbolsLinker.java:258  | No chord linked to OctaveShiftInter#5714{(0.281) staff:1 OTTAVA ALTA}
+2026-04-28 18:26:20,585 INFO [can-she-excuse_dowland_con 2ª letra#1]        SymbolsLinker.java:258  | No chord linked to OctaveShiftInter#5717{(0.288) staff:1 OTTAVA ALTA}
+2026-04-28 18:26:20,655 INFO [can-she-excuse_dowland_con 2ª letra#1]       StepMonitoring.java:98   | RHYTHMS
+2026-04-28 18:26:20,732 INFO [can-she-excuse_dowland_con 2ª letra#1]       StepMonitoring.java:98   | PAGE
+2026-04-28 18:26:20,742 INFO [can-she-excuse_dowland_con 2ª letra#1]                 Book.java:2547 | Book{can-she-excuse_dowland_con 2ª letra} storing
+2026-04-28 18:26:20,795 INFO [can-she-excuse_dowland_con 2ª letra#1]                 Book.java:2528 | Stored /book.xml
+2026-04-28 18:26:20,923 INFO [can-she-excuse_dowland_con 2ª letra#1]           DataHolder.java:348  | Stored /sheet#1/BINARY.png
+2026-04-28 18:26:22,052 INFO [can-she-excuse_dowland_con 2ª letra#1]                Sheet.java:1583 | Stored /sheet#1/sheet#1.xml
+2026-04-28 18:26:22,053 INFO [can-she-excuse_dowland_con 2ª letra#1]                 Book.java:2488 | Book stored as output\can-she-excuse_dowland_con 2ª letra.omr
+2026-04-28 18:26:22,057 INFO [can-she-excuse_dowland_con 2ª letra#1]            SheetStub.java:1660 | Disposed sheet#1
+2026-04-28 18:26:22,118 INFO [can-she-excuse_dowland_con 2ª letra#1]                 Book.java:2015 | End of Stub#1 memory: 36,658,240
+2026-04-28 18:26:22,119 INFO [can-she-excuse_dowland_con 2ª letra#2]       StepMonitoring.java:98   | LOAD
+2026-04-28 18:26:22,123 WARN [can-she-excuse_dowland_con 2ª letra#2]            COSParser.java:1352 | found wrong object number. expected [56] found [63]
+2026-04-28 18:26:22,123 WARN [can-she-excuse_dowland_con 2ª letra#2]            COSParser.java:1352 | found wrong object number. expected [59] found [63]
+2026-04-28 18:26:22,123 WARN [can-she-excuse_dowland_con 2ª letra#2]            COSParser.java:1352 | found wrong object number. expected [62] found [63]
+2026-04-28 18:26:22,333 INFO [can-she-excuse_dowland_con 2ª letra#2]            SheetStub.java:1273 | Loaded image #2 2480x3507 from C:\Users\34690\Documents\1. Universidad\TFG\PRUEBAS DE USUARIO\can-she-excuse_dowland_con 2ª letra.pdf
+2026-04-28 18:26:22,334 INFO [can-she-excuse_dowland_con 2ª letra#2]       StepMonitoring.java:98   | BINARY
+2026-04-28 18:26:22,760 INFO [can-she-excuse_dowland_con 2ª letra#2]       StepMonitoring.java:98   | SCALE
+2026-04-28 18:26:22,779 INFO [can-she-excuse_dowland_con 2ª letra#2]         ScaleBuilder.java:241  | Beam  guessed height: 10 -- 0.50 of 19 interline
+2026-04-28 18:26:22,779 INFO [can-she-excuse_dowland_con 2ª letra#2]         ScaleBuilder.java:264  | Beam measured height:  9 -- 0.29 of [5..19] range at 114% of needed quorum
+2026-04-28 18:26:22,779 INFO [can-she-excuse_dowland_con 2ª letra#2]            ScaleStep.java:65   | Scale{ interline(18,19,19) line(1,2,3) beam(9)}
+2026-04-28 18:26:22,780 INFO [can-she-excuse_dowland_con 2ª letra#2]       StepMonitoring.java:98   | GRID
+2026-04-28 18:26:23,003 INFO [can-she-excuse_dowland_con 2ª letra#2]       LinesRetriever.java:1500 | Global slope: 0.00000
+2026-04-28 18:26:23,020 INFO [can-she-excuse_dowland_con 2ª letra#2]    ClustersRetriever.java:328  | Retrieved raw line clusters: 8 of sizes [5] with interline(18,19,19)
+2026-04-28 18:26:23,562 INFO [can-she-excuse_dowland_con 2ª letra#2]            PeakGraph.java:310  | Systems: #1[1, 2, 3, 4] #2[5, 6, 7, 8]
+2026-04-28 18:26:23,620 INFO [can-she-excuse_dowland_con 2ª letra#2]        BarsRetriever.java:1304 | System#1
+2026-04-28 18:26:23,620 INFO [can-she-excuse_dowland_con 2ª letra#2]        BarsRetriever.java:1307 |    PartGroup{bracket number:1 barline:false staves:1-4}
+2026-04-28 18:26:23,621 INFO [can-she-excuse_dowland_con 2ª letra#2]        BarsRetriever.java:1304 | System#2
+2026-04-28 18:26:23,621 INFO [can-she-excuse_dowland_con 2ª letra#2]        BarsRetriever.java:1307 |    PartGroup{bracket number:1 barline:false staves:5-8}
+2026-04-28 18:26:24,440 INFO [can-she-excuse_dowland_con 2ª letra#2]        SystemManager.java:779  | 4 parts along 2 systems
+2026-04-28 18:26:24,441 INFO [can-she-excuse_dowland_con 2ª letra#2]       StepMonitoring.java:98   | HEADERS
+2026-04-28 18:26:24,573 INFO [can-she-excuse_dowland_con 2ª letra#2]       StepMonitoring.java:98   | STEM_SEEDS
+2026-04-28 18:26:24,595 INFO [can-she-excuse_dowland_con 2ª letra#2]        StemSeedsStep.java:86   | stem(3 max:4)
+2026-04-28 18:26:24,615 INFO [can-she-excuse_dowland_con 2ª letra#2]       StepMonitoring.java:98   | BEAMS
+2026-04-28 18:26:26,243 INFO [can-she-excuse_dowland_con 2ª letra#2]       StepMonitoring.java:98   | LEDGERS
+2026-04-28 18:26:27,364 INFO [can-she-excuse_dowland_con 2ª letra#2]       StepMonitoring.java:98   | HEADS
+2026-04-28 18:26:29,547 INFO [can-she-excuse_dowland_con 2ª letra#2]        HeadSeedTally.java:235  | Scale information: HeadSeeds{NOTEHEAD_BLACK[L:0.5,R:-0.0]}
+2026-04-28 18:26:29,548 INFO [can-she-excuse_dowland_con 2ª letra#2]       StepMonitoring.java:98   | STEMS
+2026-04-28 18:26:30,101 INFO [can-she-excuse_dowland_con 2ª letra#2]       StepMonitoring.java:98   | REDUCTION
+2026-04-28 18:26:30,118 INFO [can-she-excuse_dowland_con 2ª letra#2]        ReductionStep.java:105  | Stems free length median value: 65 pixels, 3.4 interlines
+2026-04-28 18:26:30,120 INFO [can-she-excuse_dowland_con 2ª letra#2]       StepMonitoring.java:98   | CUE_BEAMS
+2026-04-28 18:26:30,120 INFO [can-she-excuse_dowland_con 2ª letra#2]         CueBeamsStep.java:81   | Step CUE_BEAMS is skipped because small heads switch is off
+2026-04-28 18:26:30,120 INFO [can-she-excuse_dowland_con 2ª letra#2]       StepMonitoring.java:98   | TEXTS
+2026-04-28 18:26:32,650 INFO [can-she-excuse_dowland_con 2ª letra#2]       StepMonitoring.java:98   | MEASURES
+2026-04-28 18:26:32,651 INFO [can-she-excuse_dowland_con 2ª letra#2]                 Page.java:307  | 7 raw measures: [4 in system#1, 3 in system#2]
+2026-04-28 18:26:32,652 INFO [can-she-excuse_dowland_con 2ª letra#2]       StepMonitoring.java:98   | CHORDS
+2026-04-28 18:26:32,654 INFO [can-she-excuse_dowland_con 2ª letra#2]       StepMonitoring.java:98   | CURVES
+2026-04-28 18:26:33,024 INFO [can-she-excuse_dowland_con 2ª letra#2]         SlursBuilder.java:240  | Slurs: 7
+2026-04-28 18:26:33,027 INFO [can-she-excuse_dowland_con 2ª letra#2]      SegmentsBuilder.java:155  | Segments: 3
+2026-04-28 18:26:33,027 INFO [can-she-excuse_dowland_con 2ª letra#2]       StepMonitoring.java:98   | SYMBOLS
+2026-04-28 18:26:33,233 INFO [can-she-excuse_dowland_con 2ª letra#2]       StepMonitoring.java:98   | LINKS
+2026-04-28 18:26:33,239 INFO [can-she-excuse_dowland_con 2ª letra#2]             KeyInter.java:1165 | No effective key before AlterInter#6358{(0.800) staff:3 NATURAL pitch:3.0}
+2026-04-28 18:26:33,239 INFO [can-she-excuse_dowland_con 2ª letra#2]             KeyInter.java:1165 | No effective key before AlterInter#6376{(0.800) staff:4 NATURAL pitch:1.0}
+2026-04-28 18:26:33,250 INFO [can-she-excuse_dowland_con 2ª letra#2]             KeyInter.java:1165 | No effective key before AlterInter#6405{(0.800) staff:7 NATURAL pitch:-1.0}
+2026-04-28 18:26:33,257 INFO [can-she-excuse_dowland_con 2ª letra#2]       StepMonitoring.java:98   | RHYTHMS
+2026-04-28 18:26:33,258 INFO [can-she-excuse_dowland_con 2ª letra#2]           PageRhythm.java:199  | {Page#2.1} Time value reused from sheet#1
+2026-04-28 18:26:33,277 INFO [can-she-excuse_dowland_con 2ª letra#2]        MeasureRhythm.java:1045 | Measure{#6P3} No timeOffset for HeadChordInter#6010{(0.957/0.957) staff:7 slot#8 dur:1/16}
+2026-04-28 18:26:33,279 INFO [can-she-excuse_dowland_con 2ª letra#2]          StackRhythm.java:224  | S2 MeasureStack#6 no correct rhythm
+2026-04-28 18:26:33,281 INFO [can-she-excuse_dowland_con 2ª letra#2]       StepMonitoring.java:98   | PAGE
+2026-04-28 18:26:33,284 INFO [can-she-excuse_dowland_con 2ª letra#2]                 Book.java:2547 | Book{can-she-excuse_dowland_con 2ª letra} storing
+2026-04-28 18:26:33,336 INFO [can-she-excuse_dowland_con 2ª letra#2]                 Book.java:2528 | Stored /book.xml
+2026-04-28 18:26:33,404 INFO [can-she-excuse_dowland_con 2ª letra#2]           DataHolder.java:348  | Stored /sheet#2/BINARY.png
+2026-04-28 18:26:33,929 INFO [can-she-excuse_dowland_con 2ª letra#2]                Sheet.java:1583 | Stored /sheet#2/sheet#2.xml
+2026-04-28 18:26:33,929 INFO [can-she-excuse_dowland_con 2ª letra#2]                 Book.java:2488 | Book stored as output\can-she-excuse_dowland_con 2ª letra.omr
+2026-04-28 18:26:33,933 INFO [can-she-excuse_dowland_con 2ª letra#2]            SheetStub.java:1660 | Disposed sheet#2
+2026-04-28 18:26:33,997 INFO [can-she-excuse_dowland_con 2ª letra#2]                 Book.java:2015 | End of Stub#2 memory: 43,895,328
+2026-04-28 18:26:33,997 INFO [can-she-excuse_dowland_con 2ª letra#3]       StepMonitoring.java:98   | LOAD
+2026-04-28 18:26:33,999 WARN [can-she-excuse_dowland_con 2ª letra#3]            COSParser.java:1352 | found wrong object number. expected [56] found [63]
+2026-04-28 18:26:33,999 WARN [can-she-excuse_dowland_con 2ª letra#3]            COSParser.java:1352 | found wrong object number. expected [59] found [63]
+2026-04-28 18:26:33,999 WARN [can-she-excuse_dowland_con 2ª letra#3]            COSParser.java:1352 | found wrong object number. expected [62] found [63]
+2026-04-28 18:26:34,048 INFO [can-she-excuse_dowland_con 2ª letra#3]            SheetStub.java:1273 | Loaded image #3 2480x3507 from C:\Users\34690\Documents\1. Universidad\TFG\PRUEBAS DE USUARIO\can-she-excuse_dowland_con 2ª letra.pdf
+2026-04-28 18:26:34,049 INFO [can-she-excuse_dowland_con 2ª letra#3]       StepMonitoring.java:98   | BINARY
+2026-04-28 18:26:34,332 INFO [can-she-excuse_dowland_con 2ª letra#3]       StepMonitoring.java:98   | SCALE
+2026-04-28 18:26:34,334 INFO [can-she-excuse_dowland_con 2ª letra#3]         ScaleBuilder.java:241  | Beam  guessed height: 10 -- 0.50 of 19 interline
+2026-04-28 18:26:34,335 INFO [can-she-excuse_dowland_con 2ª letra#3]         ScaleBuilder.java:264  | Beam measured height:  9 -- 0.29 of [5..19] range at 271% of needed quorum
+2026-04-28 18:26:34,335 INFO [can-she-excuse_dowland_con 2ª letra#3]            ScaleStep.java:65   | Scale{ interline(18,19,19) line(1,2,3) beam(9)}
+2026-04-28 18:26:34,335 INFO [can-she-excuse_dowland_con 2ª letra#3]       StepMonitoring.java:98   | GRID
+2026-04-28 18:26:34,408 INFO [can-she-excuse_dowland_con 2ª letra#3]       LinesRetriever.java:1500 | Global slope: 0.00000
+2026-04-28 18:26:34,425 INFO [can-she-excuse_dowland_con 2ª letra#3]    ClustersRetriever.java:328  | Retrieved raw line clusters: 8 of sizes [5] with interline(18,19,19)
+2026-04-28 18:26:34,604 INFO [can-she-excuse_dowland_con 2ª letra#3]            PeakGraph.java:310  | Systems: #1[1, 2, 3, 4] #2[5, 6, 7, 8]
+2026-04-28 18:26:34,626 INFO [can-she-excuse_dowland_con 2ª letra#3]        BarsRetriever.java:1304 | System#1
+2026-04-28 18:26:34,626 INFO [can-she-excuse_dowland_con 2ª letra#3]        BarsRetriever.java:1307 |    PartGroup{bracket number:1 barline:false staves:1-4}
+2026-04-28 18:26:34,626 INFO [can-she-excuse_dowland_con 2ª letra#3]        BarsRetriever.java:1304 | System#2
+2026-04-28 18:26:34,626 INFO [can-she-excuse_dowland_con 2ª letra#3]        BarsRetriever.java:1307 |    PartGroup{bracket number:1 barline:false staves:5-8}
+2026-04-28 18:26:35,008 INFO [can-she-excuse_dowland_con 2ª letra#3]        SystemManager.java:779  | 4 parts along 2 systems
+2026-04-28 18:26:35,009 INFO [can-she-excuse_dowland_con 2ª letra#3]       StepMonitoring.java:98   | HEADERS
+2026-04-28 18:26:35,121 INFO [can-she-excuse_dowland_con 2ª letra#3]       StepMonitoring.java:98   | STEM_SEEDS
+2026-04-28 18:26:35,141 INFO [can-she-excuse_dowland_con 2ª letra#3]        StemSeedsStep.java:86   | stem(3 max:4)
+2026-04-28 18:26:35,149 INFO [can-she-excuse_dowland_con 2ª letra#3]       StepMonitoring.java:98   | BEAMS
+2026-04-28 18:26:36,760 INFO [can-she-excuse_dowland_con 2ª letra#3]       StepMonitoring.java:98   | LEDGERS
+2026-04-28 18:26:37,255 INFO [can-she-excuse_dowland_con 2ª letra#3]       StepMonitoring.java:98   | HEADS
+2026-04-28 18:26:39,531 INFO [can-she-excuse_dowland_con 2ª letra#3]        HeadSeedTally.java:235  | Scale information: HeadSeeds{NOTEHEAD_BLACK[L:0.5,R:0.1]}
+2026-04-28 18:26:39,532 INFO [can-she-excuse_dowland_con 2ª letra#3]       StepMonitoring.java:98   | STEMS
+2026-04-28 18:26:40,075 INFO [can-she-excuse_dowland_con 2ª letra#3]       StepMonitoring.java:98   | REDUCTION
+2026-04-28 18:26:40,105 INFO [can-she-excuse_dowland_con 2ª letra#3]        ReductionStep.java:105  | Stems free length median value: 66 pixels, 3.5 interlines
+2026-04-28 18:26:40,108 INFO [can-she-excuse_dowland_con 2ª letra#3]       StepMonitoring.java:98   | CUE_BEAMS
+2026-04-28 18:26:40,108 INFO [can-she-excuse_dowland_con 2ª letra#3]         CueBeamsStep.java:81   | Step CUE_BEAMS is skipped because small heads switch is off
+2026-04-28 18:26:40,108 INFO [can-she-excuse_dowland_con 2ª letra#3]       StepMonitoring.java:98   | TEXTS
+2026-04-28 18:26:42,236 INFO [can-she-excuse_dowland_con 2ª letra#3]       StepMonitoring.java:98   | MEASURES
+2026-04-28 18:26:42,237 INFO [can-she-excuse_dowland_con 2ª letra#3]                 Page.java:307  | 7 raw measures: [4 in system#1, 3 in system#2]
+2026-04-28 18:26:42,237 INFO [can-she-excuse_dowland_con 2ª letra#3]       StepMonitoring.java:98   | CHORDS
+2026-04-28 18:26:42,240 INFO [can-she-excuse_dowland_con 2ª letra#3]       StepMonitoring.java:98   | CURVES
+2026-04-28 18:26:42,565 INFO [can-she-excuse_dowland_con 2ª letra#3]         SlursBuilder.java:240  | Slurs: 1
+2026-04-28 18:26:42,566 INFO [can-she-excuse_dowland_con 2ª letra#3]      SegmentsBuilder.java:155  | Segments: 1
+2026-04-28 18:26:42,567 INFO [can-she-excuse_dowland_con 2ª letra#3]       StepMonitoring.java:98   | SYMBOLS
+2026-04-28 18:26:42,738 INFO [can-she-excuse_dowland_con 2ª letra#3]       StepMonitoring.java:98   | LINKS
+2026-04-28 18:26:42,742 INFO [can-she-excuse_dowland_con 2ª letra#3]             KeyInter.java:1165 | No effective key before AlterInter#5870{(0.800) staff:3 NATURAL pitch:-1.0}
+2026-04-28 18:26:42,754 INFO [can-she-excuse_dowland_con 2ª letra#3]             KeyInter.java:1165 | No effective key before AlterInter#5968{(0.800) staff:7 NATURAL pitch:-1.0}
+2026-04-28 18:26:42,767 INFO [can-she-excuse_dowland_con 2ª letra#3]       StepMonitoring.java:98   | RHYTHMS
+2026-04-28 18:26:42,767 INFO [can-she-excuse_dowland_con 2ª letra#3]           PageRhythm.java:199  | {Page#3.1} Time value reused from sheet#1
+2026-04-28 18:26:42,795 INFO [can-she-excuse_dowland_con 2ª letra#3]       StepMonitoring.java:98   | PAGE
+2026-04-28 18:26:42,797 INFO [can-she-excuse_dowland_con 2ª letra#3]                 Book.java:2547 | Book{can-she-excuse_dowland_con 2ª letra} storing
+2026-04-28 18:26:42,847 INFO [can-she-excuse_dowland_con 2ª letra#3]                 Book.java:2528 | Stored /book.xml
+2026-04-28 18:26:42,930 INFO [can-she-excuse_dowland_con 2ª letra#3]           DataHolder.java:348  | Stored /sheet#3/BINARY.png
+2026-04-28 18:26:43,393 INFO [can-she-excuse_dowland_con 2ª letra#3]                Sheet.java:1583 | Stored /sheet#3/sheet#3.xml
+2026-04-28 18:26:43,393 INFO [can-she-excuse_dowland_con 2ª letra#3]                 Book.java:2488 | Book stored as output\can-she-excuse_dowland_con 2ª letra.omr
+2026-04-28 18:26:43,405 INFO [can-she-excuse_dowland_con 2ª letra#3]            SheetStub.java:1660 | Disposed sheet#3
+2026-04-28 18:26:43,462 INFO [can-she-excuse_dowland_con 2ª letra#3]                 Book.java:2015 | End of Stub#3 memory: 44,258,952
+2026-04-28 18:26:43,462 INFO [can-she-excuse_dowland_con 2ª letra]                 Book.java:2022 | Book processed.
+2026-04-28 18:26:44,227 INFO [can-she-excuse_dowland_con 2ª letra]            SheetStub.java:997  | Loaded /sheet#1/sheet#1.xml
+2026-04-28 18:26:44,791 INFO [can-she-excuse_dowland_con 2ª letra]            SheetStub.java:997  | Loaded /sheet#2/sheet#2.xml
+2026-04-28 18:26:45,070 INFO [can-she-excuse_dowland_con 2ª letra]            SheetStub.java:997  | Loaded /sheet#3/sheet#3.xml
+2026-04-28 18:26:45,393 INFO [can-she-excuse_dowland_con 2ª letra]      PartwiseBuilder.java:2688 | Exporting sheet(s): [#1#2#3]
+2026-04-28 18:26:45,552 INFO [can-she-excuse_dowland_con 2ª letra]        ScoreExporter.java:164  | Score can-she-excuse_dowland_con 2ª letra exported to output\can-she-excuse_dowland_con 2ª letra.mxl
+2026-04-28 18:26:45,620 INFO [can-she-excuse_dowland_con 2ª letra]                Score.java:181  | Closing {Score 1}

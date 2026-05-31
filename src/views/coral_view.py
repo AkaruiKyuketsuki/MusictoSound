@@ -424,11 +424,61 @@ def build_coral_view_window():
     # -------------------------------
     # Voces detectadas
     # -------------------------------
+    #voices_frame = ttk.LabelFrame(content_frame, text="Voces detectadas", padding=20)
+    #voices_frame.pack(side="left", fill="both", expand=True, padx=(0, 10))
+
+    #voices_list_frame = ttk.Frame(voices_frame)
+    #voices_list_frame.pack(fill="both", expand=True)
+
+    # -------------------------------
+    # Voces detectadas
+    # -------------------------------
     voices_frame = ttk.LabelFrame(content_frame, text="Voces detectadas", padding=20)
     voices_frame.pack(side="left", fill="both", expand=True, padx=(0, 10))
 
-    voices_list_frame = ttk.Frame(voices_frame)
-    voices_list_frame.pack(fill="both", expand=True)
+    voices_canvas = tk.Canvas(voices_frame, highlightthickness=0)
+    voices_scrollbar = ttk.Scrollbar(
+        voices_frame,
+        orient="vertical",
+        command=voices_canvas.yview
+    )
+
+    voices_list_frame = ttk.Frame(voices_canvas)
+
+    voices_list_frame.bind(
+        "<Configure>",
+        lambda e: voices_canvas.configure(
+            scrollregion=voices_canvas.bbox("all")
+        )
+    )
+
+    voices_window = voices_canvas.create_window(
+        (0, 0),
+        window=voices_list_frame,
+        anchor="nw"
+    )
+
+    def resize_voices_frame(event):
+        voices_canvas.itemconfig(
+            voices_window,
+            width=event.width
+        )
+
+    voices_canvas.bind("<Configure>", resize_voices_frame)
+
+    voices_canvas.configure(yscrollcommand=voices_scrollbar.set)
+
+    voices_canvas.pack(side="left", fill="both", expand=True)
+    voices_scrollbar.pack(side="right", fill="y")
+
+    # -------------------------------
+    # Mezcla
+    # -------------------------------
+    #mix_frame = ttk.LabelFrame(content_frame, text="Mezcla", padding=20)
+    #mix_frame.pack(side="left", fill="both", expand=True)
+
+    #mix_list_frame = ttk.Frame(mix_frame)
+    #mix_list_frame.pack(fill="both", expand=True)
 
     # -------------------------------
     # Mezcla
@@ -436,8 +486,46 @@ def build_coral_view_window():
     mix_frame = ttk.LabelFrame(content_frame, text="Mezcla", padding=20)
     mix_frame.pack(side="left", fill="both", expand=True)
 
-    mix_list_frame = ttk.Frame(mix_frame)
-    mix_list_frame.pack(fill="both", expand=True)
+    mix_canvas = tk.Canvas(mix_frame, highlightthickness=0)
+    mix_scrollbar = ttk.Scrollbar(
+        mix_frame,
+        orient="vertical",
+        command=mix_canvas.yview
+    )
+
+    mix_list_frame = ttk.Frame(mix_canvas)
+
+    mix_list_frame.bind(
+        "<Configure>",
+        lambda e: mix_canvas.configure(
+            scrollregion=mix_canvas.bbox("all")
+        )
+    )
+
+    mix_window = mix_canvas.create_window(
+        (0, 0),
+        window=mix_list_frame,
+        anchor="nw"
+    )
+
+    def resize_mix_frame(event):
+        mix_canvas.itemconfig(
+            mix_window,
+            width=event.width
+        )
+
+    mix_canvas.bind("<Configure>", resize_mix_frame)
+
+    mix_canvas.configure(yscrollcommand=mix_scrollbar.set)
+
+    mix_canvas.pack(side="left", fill="both", expand=True)
+    mix_scrollbar.pack(side="right", fill="y")
+
+    # ===============================
+    # Altura inicial de los canvas (puede ajustarse)
+    # ===============================
+    voices_canvas.configure(height=180)
+    mix_canvas.configure(height=180)
 
     # ===============================
     # Botones principales
@@ -455,7 +543,7 @@ def build_coral_view_window():
     download_wav_btn.pack(side="left", padx=20, ipady=6)
 
     download_mix_btn = ttk.Button(buttons_row, text="Descargar mezcla MIDI")
-    download_mix_btn.pack(side="left", padx=20, ipady=6)
+    download_mix_btn.pack(side="left", padx=(300,20), ipady=6)
 
     download_mix_wav_btn = ttk.Button(buttons_row, text="Descargar mezcla WAV")
     download_mix_wav_btn.pack(side="left", padx=20, ipady=6)
@@ -601,13 +689,15 @@ def build_coral_view_window():
             # Checkbutton para habilitar/deshabilitar voz
             voice_enabled_var = tk.BooleanVar(value=True)
 
-            voice_check = ttk.Checkbutton(
-                mix_row,
-                text="Voz",
-                variable=voice_enabled_var
-            )
+            if has_lyrics:
 
-            voice_check.pack(side="left", padx=(10,0))
+                voice_check = ttk.Checkbutton(
+                    mix_row,
+                    text="Voz",
+                    variable=voice_enabled_var
+                )
+
+                voice_check.pack(side="left", padx=(10,0))
 
             voice_enable_vars[part_id] = voice_enabled_var
             pitch_vars[part_id] = pitch_var

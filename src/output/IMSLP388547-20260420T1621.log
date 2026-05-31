@@ -1,0 +1,127 @@
+2026-04-20 16:21:23,965 ERROR [IMSLP388547]              IOUtils.java:278  | Unmapping is not supported.
+java.lang.reflect.InaccessibleObjectException: Unable to make public jdk.internal.ref.Cleaner java.nio.DirectByteBuffer.cleaner() accessible: module java.base does not "opens java.nio" to unnamed module @3b6ddd1d
+	at java.base/java.lang.reflect.AccessibleObject.throwInaccessibleObjectException(Unknown Source)
+	at java.base/java.lang.reflect.AccessibleObject.checkCanSetAccessible(Unknown Source)
+	at java.base/java.lang.reflect.AccessibleObject.checkCanSetAccessible(Unknown Source)
+	at java.base/java.lang.reflect.Method.checkCanSetAccessible(Unknown Source)
+	at java.base/java.lang.reflect.Method.setAccessible(Unknown Source)
+	at org.apache.pdfbox.io.IOUtils.unmapper(IOUtils.java:244)
+	at java.base/java.security.AccessController.doPrivileged(Unknown Source)
+	at org.apache.pdfbox.io.IOUtils.<clinit>(IOUtils.java:69)
+	at org.apache.pdfbox.Loader.loadPDF(Loader.java:378)
+	at org.audiveris.omr.image.ImageLoading.getPdfLoader(ImageLoading.java:159)
+	at org.audiveris.omr.image.ImageLoading.getLoader(ImageLoading.java:209)
+	at org.audiveris.omr.sheet.Book.createStubs(Book.java:554)
+	at org.audiveris.omr.CLI$ProcessingTask.processBook(CLI.java:830)
+	at org.audiveris.omr.CLI$CliTask.call(CLI.java:504)
+	at org.audiveris.omr.Main.runBatchTasks(Main.java:371)
+	at org.audiveris.omr.Main.main(Main.java:260)
+	at Audiveris.main(Audiveris.java:50)
+2026-04-20 16:21:23,994 INFO [IMSLP388547]                 Book.java:559  | 1 sheet in C:\Users\34690\Documents\1. Universidad\TFG\canciones_idiomas_varios\pdf\IMSLP388547-PMLP628768-Ippolitov-Ivanov_17-1.pdf
+2026-04-20 16:21:24,105 INFO []                 Book.java:2528 | Stored /book.xml
+2026-04-20 16:21:24,105 INFO []                 Book.java:2488 | Book stored as output\IMSLP388547.omr
+2026-04-20 16:21:24,108 INFO []                 Book.java:1930 | Book reaching PAGE on sheets:[#1]
+2026-04-20 16:21:24,110 INFO [IMSLP388547]       StepMonitoring.java:98   | LOAD
+2026-04-20 16:21:24,250 INFO [IMSLP388547]            SheetStub.java:1273 | Loaded image #1 2550x3299 from C:\Users\34690\Documents\1. Universidad\TFG\canciones_idiomas_varios\pdf\IMSLP388547-PMLP628768-Ippolitov-Ivanov_17-1.pdf
+2026-04-20 16:21:24,254 INFO [IMSLP388547]       StepMonitoring.java:98   | BINARY
+2026-04-20 16:21:24,603 INFO [IMSLP388547]       StepMonitoring.java:98   | SCALE
+2026-04-20 16:21:24,618 INFO [IMSLP388547]         ScaleBuilder.java:222  | Significant beam peak detected: 8 pixels
+2026-04-20 16:21:24,618 INFO [IMSLP388547]            ScaleStep.java:65   | Scale{ interline(12,13,13) line(4,4,5) beam(8)}
+2026-04-20 16:21:24,619 INFO [IMSLP388547]       StepMonitoring.java:98   | GRID
+2026-04-20 16:21:25,064 INFO [IMSLP388547]       LinesRetriever.java:1500 | Global slope: 0.00076
+2026-04-20 16:21:25,130 INFO [IMSLP388547]    ClustersRetriever.java:844  | Pairing clusters CC502 & CC510
+2026-04-20 16:21:25,131 INFO [IMSLP388547]    ClustersRetriever.java:844  | Pairing clusters CC770 & CC775
+2026-04-20 16:21:25,131 INFO [IMSLP388547]    ClustersRetriever.java:844  | Pairing clusters CC913 & CC903
+2026-04-20 16:21:25,133 INFO [IMSLP388547]    ClustersRetriever.java:328  | Retrieved raw line clusters: 10 of sizes [5] with interline(12,13,13)
+2026-04-20 16:21:25,240 INFO [IMSLP388547]            PeakGraph.java:310  | Systems: #1[1, 2] #2[3] #3[4] #4[5] #5[6] #6[7] #7[8] #8[9, 10]
+2026-04-20 16:21:25,286 INFO [IMSLP388547]        BarsRetriever.java:1304 | System#1
+2026-04-20 16:21:25,286 INFO [IMSLP388547]        BarsRetriever.java:1307 |    PartGroup{bracket number:1 barline:true staves:1-2}
+2026-04-20 16:21:25,534 INFO [IMSLP388547]        SystemManager.java:134  | Indentation detected for system #2
+2026-04-20 16:21:25,534 INFO [IMSLP388547]        SystemManager.java:134  | Indentation detected for system #5
+2026-04-20 16:21:25,534 INFO [IMSLP388547]        SystemManager.java:134  | Indentation detected for system #7
+2026-04-20 16:21:25,535 INFO [IMSLP388547]        SystemManager.java:723  | 4 pages found in sheet
+2026-04-20 16:21:25,535 INFO [IMSLP388547]        SystemManager.java:779  | Page #1: 2 parts along 1 system
+2026-04-20 16:21:25,535 INFO [IMSLP388547]        SystemManager.java:779  | Page #2: 1 part along 3 systems
+2026-04-20 16:21:25,535 INFO [IMSLP388547]        SystemManager.java:779  | Page #3: 1 part along 2 systems
+2026-04-20 16:21:25,535 INFO [IMSLP388547]        SystemManager.java:779  | Page #4: 2 parts along 2 systems
+2026-04-20 16:21:25,535 INFO [IMSLP388547]                 Book.java:542  | Created scores: [{Score 1}, {Score 2}, {Score 3}, {Score 4}]
+2026-04-20 16:21:25,535 INFO [IMSLP388547]       StepMonitoring.java:98   | HEADERS
+2026-04-20 16:21:25,808 INFO [IMSLP388547]      BasicClassifier.java:286  | Classifier loaded XML norms.
+2026-04-20 16:21:25,811 INFO [IMSLP388547]   AbstractClassifier.java:396  | Classifier data loaded from default uri jar:file:/C:/Program%20Files/Audiveris/app/audiveris.jar!/res/basic-classifier.zip
+2026-04-20 16:21:26,375 WARN [IMSLP388547]          ClefBuilder.java:658  | Staff#3 no recognized header clef.
+2026-04-20 16:21:26,532 WARN [IMSLP388547]          ClefBuilder.java:658  | Staff#6 no recognized header clef.
+2026-04-20 16:21:26,535 WARN [IMSLP388547]          ClefBuilder.java:658  | Staff#7 no recognized header clef.
+2026-04-20 16:21:26,596 INFO [IMSLP388547]       StepMonitoring.java:98   | STEM_SEEDS
+2026-04-20 16:21:26,648 INFO [IMSLP388547]        StemSeedsStep.java:86   | stem(4 max:5)
+2026-04-20 16:21:26,731 INFO [IMSLP388547]       StepMonitoring.java:98   | BEAMS
+2026-04-20 16:21:28,656 INFO [IMSLP388547]       StaffProjector.java:665  | Too high serif for multiple rest in Staff#1 at x:1624
+2026-04-20 16:21:28,656 INFO [IMSLP388547]       StaffProjector.java:665  | Too high serif for multiple rest in Staff#1 at x:1803
+2026-04-20 16:21:28,748 INFO [IMSLP388547]       StaffProjector.java:665  | Too high serif for multiple rest in Staff#3 at x:774
+2026-04-20 16:21:28,810 INFO [IMSLP388547]       StaffProjector.java:665  | Too high serif for multiple rest in Staff#4 at x:1257
+2026-04-20 16:21:28,861 INFO [IMSLP388547]       StaffProjector.java:665  | Too high serif for multiple rest in Staff#5 at x:2118
+2026-04-20 16:21:28,862 INFO [IMSLP388547]       StaffProjector.java:665  | Too high serif for multiple rest in Staff#5 at x:2166
+2026-04-20 16:21:28,916 INFO [IMSLP388547]       StaffProjector.java:665  | Too high serif for multiple rest in Staff#6 at x:1274
+2026-04-20 16:21:28,916 INFO [IMSLP388547]       StaffProjector.java:665  | Too high serif for multiple rest in Staff#6 at x:1289
+2026-04-20 16:21:28,916 INFO [IMSLP388547]       StaffProjector.java:665  | Too high serif for multiple rest in Staff#6 at x:639
+2026-04-20 16:21:28,982 INFO [IMSLP388547]       StaffProjector.java:665  | Too high serif for multiple rest in Staff#7 at x:1030
+2026-04-20 16:21:28,982 INFO [IMSLP388547]       StaffProjector.java:665  | Too high serif for multiple rest in Staff#7 at x:1751
+2026-04-20 16:21:29,031 INFO [IMSLP388547]       StaffProjector.java:665  | Too high serif for multiple rest in Staff#8 at x:2160
+2026-04-20 16:21:29,125 INFO [IMSLP388547]       StaffProjector.java:665  | Too high serif for multiple rest in Staff#9 at x:1591
+2026-04-20 16:21:29,127 INFO [IMSLP388547]       StaffProjector.java:665  | Too high serif for multiple rest in Staff#10 at x:1041
+2026-04-20 16:21:29,131 INFO [IMSLP388547]       StepMonitoring.java:98   | LEDGERS
+2026-04-20 16:21:29,347 INFO [IMSLP388547]       StepMonitoring.java:98   | HEADS
+2026-04-20 16:21:31,714 INFO [IMSLP388547]        HeadSeedTally.java:235  | Scale information: HeadSeeds{NOTEHEAD_VOID[L:-0.8,R:-0.5] NOTEHEAD_BLACK[L:-0.7,R:-0.7]}
+2026-04-20 16:21:31,715 INFO [IMSLP388547]       StepMonitoring.java:98   | STEMS
+2026-04-20 16:21:32,514 INFO [IMSLP388547]           BeamLinker.java:1729 | Not linking shorter BeamInter#3124{(0.614) BEAM}
+2026-04-20 16:21:33,686 INFO [IMSLP388547]           BeamLinker.java:1729 | Not linking shorter BeamHookInter#3863{(0.556/0.753) BEAM_HOOK}
+2026-04-20 16:21:33,687 INFO [IMSLP388547]           BeamLinker.java:1729 | Not linking shorter BeamInter#3865{(0.531/0.734) BEAM}
+2026-04-20 16:21:34,001 WARN [IMSLP388547]            SheetStub.java:1412 | Error in performing [LOAD, BINARY, SCALE, GRID, HEADERS, STEM_SEEDS, BEAMS, LEDGERS, HEADS, STEMS, REDUCTION, CUE_BEAMS, TEXTS, MEASURES, CHORDS, CURVES, SYMBOLS, LINKS, RHYTHMS, PAGE] java.util.concurrent.ExecutionException: java.lang.RuntimeException: java.lang.NullPointerException: Cannot invoke "java.lang.Integer.intValue()" because the return value of "java.util.TreeMap.get(Object)" is null
+java.util.concurrent.ExecutionException: java.lang.RuntimeException: java.lang.NullPointerException: Cannot invoke "java.lang.Integer.intValue()" because the return value of "java.util.TreeMap.get(Object)" is null
+	at java.base/java.util.concurrent.FutureTask.report(Unknown Source)
+	at java.base/java.util.concurrent.FutureTask.get(Unknown Source)
+	at org.audiveris.omr.sheet.SheetStub.doOneStep(SheetStub.java:516)
+	at org.audiveris.omr.sheet.SheetStub.reachStep(SheetStub.java:1394)
+	at org.audiveris.omr.sheet.Book.reachBookStep(Book.java:1993)
+	at org.audiveris.omr.sheet.Book.transcribe(Book.java:2589)
+	at org.audiveris.omr.sheet.Book.export(Book.java:593)
+	at org.audiveris.omr.CLI$ProcessingTask.processBook(CLI.java:896)
+	at org.audiveris.omr.CLI$CliTask.call(CLI.java:504)
+	at org.audiveris.omr.Main.runBatchTasks(Main.java:371)
+	at org.audiveris.omr.Main.main(Main.java:260)
+	at Audiveris.main(Audiveris.java:50)
+Caused by: java.lang.RuntimeException: java.lang.NullPointerException: Cannot invoke "java.lang.Integer.intValue()" because the return value of "java.util.TreeMap.get(Object)" is null
+	at org.audiveris.omr.step.AbstractSystemStep.doitPerSystem(AbstractSystemStep.java:186)
+	at org.audiveris.omr.step.AbstractSystemStep.doit(AbstractSystemStep.java:125)
+	at org.audiveris.omr.step.OmrStep.doit(OmrStep.java:138)
+	at org.audiveris.omr.sheet.SheetStub.lambda$doOneStep$0(SheetStub.java:500)
+	at java.base/java.util.concurrent.FutureTask.run(Unknown Source)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.NullPointerException: Cannot invoke "java.lang.Integer.intValue()" because the return value of "java.util.TreeMap.get(Object)" is null
+	at org.audiveris.omr.sheet.stem.StemBuilder.getLength(StemBuilder.java:606)
+	at org.audiveris.omr.sheet.stem.StemBuilder.headHasLength(StemBuilder.java:762)
+	at org.audiveris.omr.sheet.stem.HeadLinker$SLinker$CLinker.canLink(HeadLinker.java:899)
+	at org.audiveris.omr.sheet.stem.HeadLinker.linkSides(HeadLinker.java:332)
+	at org.audiveris.omr.sheet.stem.HeadLinker.linkSides(HeadLinker.java:397)
+	at org.audiveris.omr.sheet.stem.HeadLinker.linkSides(HeadLinker.java:397)
+	at org.audiveris.omr.sheet.stem.StemsRetriever.linkStems(StemsRetriever.java:682)
+	at org.audiveris.omr.sheet.stem.StemsRetriever.process(StemsRetriever.java:705)
+	at org.audiveris.omr.sheet.stem.StemsStep.doSystem(StemsStep.java:106)
+	at org.audiveris.omr.sheet.stem.StemsStep.doSystem(StemsStep.java:39)
+	at org.audiveris.omr.step.AbstractSystemStep.lambda$doitPerSystem$0(AbstractSystemStep.java:159)
+	at org.audiveris.omr.step.AbstractSystemStep.doitPerSystem(AbstractSystemStep.java:179)
+	... 7 common frames omitted
+2026-04-20 16:21:34,002 INFO [IMSLP388547]                 Book.java:2547 | Book{IMSLP388547} storing
+2026-04-20 16:21:34,061 INFO [IMSLP388547]                 Book.java:2528 | Stored /book.xml
+2026-04-20 16:21:34,133 INFO [IMSLP388547]           DataHolder.java:348  | Stored /sheet#1/BINARY.png
+2026-04-20 16:21:35,788 INFO [IMSLP388547]                Sheet.java:1583 | Stored /sheet#1/sheet#1.xml
+2026-04-20 16:21:35,788 INFO [IMSLP388547]                 Book.java:2488 | Book stored as output\IMSLP388547.omr
+2026-04-20 16:21:35,791 INFO [IMSLP388547]            SheetStub.java:1660 | Disposed sheet
+2026-04-20 16:21:35,842 INFO [IMSLP388547]                 Book.java:2015 | End of Stub#1 memory: 30,929,576
+2026-04-20 16:21:35,842 INFO [IMSLP388547]                 Book.java:2022 | Book processed.
+2026-04-20 16:21:35,843 INFO [IMSLP388547]                 Book.java:596  | Could not export since transcription did not complete successfully
+2026-04-20 16:21:35,865 INFO [IMSLP388547]                Score.java:181  | Closing {Score 1}
+2026-04-20 16:21:35,865 INFO [IMSLP388547]                Score.java:181  | Closing {Score 2}
+2026-04-20 16:21:35,865 INFO [IMSLP388547]                Score.java:181  | Closing {Score 3}
+2026-04-20 16:21:35,865 INFO [IMSLP388547]                Score.java:181  | Closing {Score 4}

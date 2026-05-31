@@ -46,6 +46,15 @@ def _open_with_default_app(path: Path):
     else:
         subprocess.Popen(["xdg-open", str(path)])
 
+# -----------------------------------------------------
+def _find_latest_xml(output_dir: Path):
+    xml_files = list(output_dir.glob("*.xml")) + list(output_dir.glob("*.mxl"))
+
+    if not xml_files:
+        return None
+
+    return max(xml_files, key=lambda p: p.stat().st_mtime)      
+
 # ==========================================================
 # Crear carpeta única coral_output, coral_output_2, etc.
 # ==========================================================
@@ -69,7 +78,8 @@ def _create_unique_output_dir(base_path: Path, folder_name: str) -> Path:
 # ==========================================================
 # Worker (hilo de conversión)
 # ==========================================================
-def _run_conversion(log, request: ConversionRequest, root, progress, start_btn, auto_open_var, on_view_xml, on_edit,):
+def _run_conversion(log, request: ConversionRequest, root, progress, start_btn, auto_view_var, auto_edit_var, on_view_xml, on_edit, set_last_xml):
+
     try:
         log("▶ Iniciando conversión... (ESTE PROCESO PODRÍA TARDAR UNOS MINUTOS)")
         log(f"  Entrada: {request.input_path}")
@@ -79,23 +89,33 @@ def _run_conversion(log, request: ConversionRequest, root, progress, start_btn, 
         result = convert_score(request)
 
         if result.success:
-            log("✅ Conversión finalizada correctamente")
+            #set_last_xml(result.output_file)
+            xml_path = None
+
+            if request.mode == ConversionMode.FULL_AUTOMATIC:
+                xml_path = result.output_file
+
+            elif request.mode == ConversionMode.MANUAL_ASSISTED:
+                xml_path = _find_latest_xml(Path(request.output_dir))
+                
+            set_last_xml(xml_path)
+
+            log("✅ Proceso de conversión finalizado")
             log(result.message)
 
             if result.output_file:
                 log(f"📄 Archivo generado: {result.output_file}")
-                try:
-                    _open_with_default_app(Path(result.output_file))
-                    log("📂 Archivo abierto con la aplicación por defecto")
-                except Exception as e:
-                    log(f"⚠ No se pudo abrir automáticamente: {e}")
 
-            if auto_open_var.get():
-                log("🔁 Apertura automática activada")
+            if auto_view_var.get():
+                log("👁 Visualización automática activada")
                 root.after(0, on_view_xml)
-                root.after(0, on_edit)
 
+            if auto_edit_var.get():
+                log("✏ Apertura en editor activada")
+                root.after(0, on_edit)
+                
         else:
+            set_last_xml(None)
             log("❌ Error durante la conversión")
             log(result.message)
 
@@ -140,7 +160,7 @@ def run_gui():
 # ==========================================================
 # Controlador de la vista Coral
 # ==========================================================
-def run_coral_gui():
+def run_coral_gui(preloaded_xml: Path = None):
 
     widgets = build_coral_view_window()
 
@@ -186,6 +206,16 @@ def run_coral_gui():
     generate_voice_btn = widgets["generate_voice_btn"]
     
     language_var = widgets["language_var"]
+
+    if preloaded_xml:
+        xml_path_var.set(str(preloaded_xml))
+        log(f"Archivo cargado automáticamente: {preloaded_xml}")
+
+        # Ajustar carpeta automáticamente
+        base_path_var.set(str(preloaded_xml.parent))
+
+        # Ejecutar análisis automáticamente tras cargar interfaz
+        #root.after(200, analyze)
 
     log("Módulo generador coral listo.")
     current_output_dir = None
@@ -890,12 +920,18 @@ def run_transcription_gui():
     edit_btn = widgets["edit_btn"]
     progress = widgets["progress"]
     back_btn = widgets["back_btn"]
-    auto_open_var = widgets["auto_open_var"]
+
+    auto_view_var = widgets["auto_view_var"]
+    auto_edit_var = widgets["auto_edit_var"]
+    analyze_btn = widgets["analyze_btn"]
+
     view_in_app_var = widgets["view_in_app_var"]
     view_in_system_var = widgets["view_in_system_var"]
+    view_pdf_btn = widgets["view_pdf_btn"]
 
 
     log("Interfaz gráfica lista.")
+    last_generated_xml = None
 
     # ------------------------------------------------------
     def on_start():
@@ -935,29 +971,66 @@ def run_transcription_gui():
         progress.start(10)   # velocidad de animación
         start_btn.config(state="disabled")
 
+        def set_last_xml(path):
+            nonlocal last_generated_xml
+            last_generated_xml = Path(path) if path else None
 
         # Lanzar conversión en hilo
         thread = threading.Thread(
             target=_run_conversion,
-            args=(log, request, root, progress, start_btn, auto_open_var, on_view_xml, on_edit,),
+            args=(
+                log, request, root, progress, start_btn,
+                #auto_open_var,         
+                auto_view_var, auto_edit_var,
+                on_view_xml, on_edit, set_last_xml
+            ),
             daemon=True,
         )
         thread.start()
 
     # ------------------------------------------------------
-    def on_open_output():
-        outdir = outdir_var.get().strip() or "output"
-        path = Path(outdir)
-        if not path.exists():
-            log(f"⚠ La carpeta no existe: {path}")
+    def on_view_pdf():
+        path = infile_var.get().strip()
+
+        if not path:
+            log("⚠ No hay PDF seleccionado.")
             return
+
+        pdf_path = Path(path)
+
+        if not pdf_path.is_file():
+            log(f"❌ El archivo no existe: {pdf_path}")
+            return
+
+        try:
+            _open_with_default_app(pdf_path)
+            log(f"📄 Abriendo PDF original: {pdf_path.name}")
+        except Exception as e:
+            log(f"❌ No se pudo abrir el PDF: {e}")
+            
+    # ------------------------------------------------------
+    def on_open_output():
+        path_str = outdir_var.get().strip()
+
+        if not path_str:
+            log("⚠ No hay carpeta de salida seleccionada.")
+            return
+
+        path = Path(path_str)
+
+        if not path.exists():
+            log(f"❌ La carpeta no existe: {path}")
+            return
+
+        if not path.is_dir():
+            log(f"⚠ La ruta no es una carpeta válida: {path}")
+            return
+
         try:
             _open_with_default_app(path)
             log(f"📂 Carpeta abierta: {path}")
         except Exception as e:
             log(f"❌ No se pudo abrir la carpeta: {e}")
-
-
     # ------------------------------------------------------
     def on_view_xml():
         outdir = Path(outdir_var.get().strip() or "output")
@@ -966,16 +1039,13 @@ def run_transcription_gui():
             log(f"⚠ La carpeta de salida no existe: {outdir}")
             return
 
-        xml_files = list(outdir.glob("*.xml")) + list(outdir.glob("*.mxl"))
-
-        if not xml_files:
-            log("⚠ No se ha encontrado ningún archivo MusicXML para visualizar")
+        if not last_generated_xml or not last_generated_xml.exists():
+            log("⚠ No hay ninguna partitura generada todavía.")
             return
 
-        # Elegir el archivo más reciente (última transcripción)
-        xml_path = max(xml_files, key=lambda p: p.stat().st_mtime)
+        xml_path = last_generated_xml
 
-        log(f"🎼 Generando partitura desde: {xml_path.name}")
+        log(f"🎼 Cargando partitura: {xml_path.name}")
 
         try:
             pdf_path = render_xml_to_pdf(xml_path, outdir)
@@ -1009,22 +1079,31 @@ def run_transcription_gui():
             log(f"⚠ La carpeta de salida no existe: {outdir}")
             return
 
-        # Solo buscamos archivos editables
-        xml_files = list(outdir.glob("*.mxl")) + list(outdir.glob("*.xml"))
-
-        if not xml_files:
-            log("⚠ No se ha encontrado ningún archivo MusicXML para editar")
+        if not last_generated_xml or not last_generated_xml.exists():
+            log("⚠ No hay ninguna partitura generada todavía.")
             return
 
-        # Usar el más reciente
-        xml_path = max(xml_files, key=lambda p: p.stat().st_mtime)
+        xml_path = last_generated_xml
 
         try:
             _open_with_default_app(xml_path)
             log(f"🎵 Abriendo partitura para edición: {xml_path.name}")
         except Exception as e:
             log(f"❌ No se pudo abrir el editor: {e}")
+ 
+    # ------------------------------------------------------
+    def go_to_analysis():
+        if not last_generated_xml or not last_generated_xml.exists():
+            log("⚠ No hay ninguna partitura generada todavía.")
+            return
 
+        xml_path = last_generated_xml
+
+        # Cerrar ventana actual
+        root.destroy()
+
+        # Abrir vista coral con el XML ya cargado
+        run_coral_gui(xml_path)
     # ------------------------------------------------------
     def go_back():
         root.destroy()
@@ -1037,6 +1116,7 @@ def run_transcription_gui():
     open_btn.config(command=on_open_output)
     view_xml_btn.config(command=on_view_xml)
     edit_btn.config(command=on_edit)
-    download_wav_btn.config(command=generate_wav)
-
+    view_pdf_btn.config(command=on_view_pdf)
+    analyze_btn.config(command=go_to_analysis)
+    
     root.mainloop()

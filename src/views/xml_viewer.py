@@ -62,7 +62,7 @@ def show_xml_score(original_pdf: Path, generated_pdf: Path, mode=None):
 
     ttk.Label(
         frm,
-        text="Se ha generado una partitura a partir del archivo MusicXML.",
+        text="Se ha generado una imagen a partir del archivo MusicXML.",
         wraplength=380,
         font=("Segoe UI", 10, "bold"),
     ).pack(pady=(10, 6))
@@ -70,7 +70,7 @@ def show_xml_score(original_pdf: Path, generated_pdf: Path, mode=None):
     ttk.Label(
         frm,
         text=(
-            "Puedes visualizar la partitura utilizando el visor de partituras "
+            "Puedes visualizar la partitura utilizando el visor por defecto "
             "del sistema o bien abrirla directamente dentro de la aplicación."
         ),
         wraplength=380,

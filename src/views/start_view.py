@@ -24,10 +24,10 @@ def build_start_window():
         font=("Segoe UI", 12)
     ).pack(pady=(0, 40))
 
-    transcribe_btn = ttk.Button(frm, text="Transcribir partitura")
+    transcribe_btn = ttk.Button(frm, text="Transcribir partitura pdf a xml (Formato digital)")
     transcribe_btn.pack(fill="x", pady=15, ipady=15)
 
-    reaper_btn = ttk.Button(frm, text="Procesar XML por pistas")
+    reaper_btn = ttk.Button(frm, text="Procesar XML por pistas -> Generar MIDI, WAV y mezclas")
     reaper_btn.pack(fill="x", pady=15, ipady=15)
 
     return {
