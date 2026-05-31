@@ -689,13 +689,15 @@ def build_coral_view_window():
             # Checkbutton para habilitar/deshabilitar voz
             voice_enabled_var = tk.BooleanVar(value=True)
 
-            voice_check = ttk.Checkbutton(
-                mix_row,
-                text="Voz",
-                variable=voice_enabled_var
-            )
+            if has_lyrics:
 
-            voice_check.pack(side="left", padx=(10,0))
+                voice_check = ttk.Checkbutton(
+                    mix_row,
+                    text="Voz",
+                    variable=voice_enabled_var
+                )
+
+                voice_check.pack(side="left", padx=(10,0))
 
             voice_enable_vars[part_id] = voice_enabled_var
             pitch_vars[part_id] = pitch_var
